@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core";
 
 import pic from "../pics/l1.jpg";
 
-const useStyle = makeStyles({
+const useStyle = makeStyles((theme) => ({
   itemimg: {
     width: "350px",
     height: "350px",
@@ -12,6 +12,10 @@ const useStyle = makeStyles({
   item1: {
     margin: "3em",
     padding: "2em",
+
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: "0px",
+    },
   },
   inner: {
     backgroundColor: "white",
@@ -19,29 +23,40 @@ const useStyle = makeStyles({
     boxShadow: "0 5px 20px #777",
     margin: "1em",
     padding: "10px",
+    [theme.breakpoints.down("xs")]: {
+      padding: "5px",
+      marginLeft: "8px",
+    },
   },
   inneritem: {
     marginLeft: "4em",
     marginRight: "2em",
-    borderBottom: "2px solid black",
   },
-});
+  outerdiv: {
+    margin: "auto",
+    backgroundColor: "white",
+    [theme.breakpoints.down("xs")]: {
+      padding: "2px",
+    },
+    padding: "5px",
+    boxShadow: "0 5px 20px #777",
+  },
+  cartbtn: {
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: "25px",
+    },
+  },
+}));
 function ViewItem() {
   const classes = useStyle();
   return (
-    <div
-      style={{
-        margin: "auto",
-        backgroundColor: "white",
-        padding: "5px",
-        boxShadow: "0 5px 20px #777",
-      }}
-    >
+    <div className={classes.outerdiv}>
       <h1
         style={{
-          backgroundColor: "#03a9f4",
+          backgroundColor: "#141A46",
           borderRadius: "10px",
           padding: "10px",
+          color: "white",
           boxShadow: "0 5px 20px #777",
         }}
       >
@@ -81,7 +96,7 @@ function ViewItem() {
               <b>Name</b>
             </Grid>
             <Grid className={classes.inneritem} item>
-              <p></p>
+              <p>description</p>
             </Grid>
           </Grid>
           <Grid container className={classes.inner} spacing={4}>
@@ -89,7 +104,7 @@ function ViewItem() {
               <b>Name</b>
             </Grid>
             <Grid className={classes.inneritem} item>
-              <p></p>
+              <p>Color</p>
             </Grid>
           </Grid>
           <Grid container className={classes.inner} spacing={4}>
@@ -97,13 +112,17 @@ function ViewItem() {
               <b>Name</b>
             </Grid>
             <Grid className={classes.inneritem} item>
-              <p></p>
+              <p>category</p>
             </Grid>
           </Grid>
 
           <Grid container justifyContent="center">
             <Grid item>
-              <Button variant="contained" color="primary">
+              <Button
+                className={classes.cartbtn}
+                variant="contained"
+                color="primary"
+              >
                 Add to cart
               </Button>
             </Grid>

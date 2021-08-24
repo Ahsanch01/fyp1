@@ -3,6 +3,7 @@ import { Button, makeStyles } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import pic from "../pics/l1.jpg";
+import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 const useStyle = makeStyles({
   gridback: {
     backgroundColor: "white",
@@ -19,6 +20,10 @@ const useStyle = makeStyles({
   outer: {
     padding: "10px",
     maxWidth: "100%",
+  },
+  btn: {
+    margin: "5px",
+    backgroundColor: "#03a9f4",
   },
 });
 
@@ -50,15 +55,20 @@ function Menu({ items }) {
                 </Grid>
                 <Grid item>
                   <Button
-                    style={{
-                      marginBottom: "5px",
-                      backgroundColor: "#03a9f4",
-                    }}
+                    className={classes.btn}
                     component={Link}
                     to="/home/view"
                     variant="contained"
                   >
                     View
+                  </Button>
+                  <Button
+                    className={classes.btn}
+                    component={Link}
+                    to=""
+                    variant="contained"
+                  >
+                    <AddShoppingCartIcon />
                   </Button>
                 </Grid>
               </Grid>

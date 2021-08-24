@@ -15,6 +15,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { List } from "@material-ui/core";
 import { ListItem } from "@material-ui/core";
 import { ListItemText } from "@material-ui/core";
+
 const useStyle = makeStyles((theme) => ({
   toolbar: {
     ...theme.mixins.toolbar,
@@ -104,6 +105,7 @@ function Header() {
           to="/contact"
         />
       </Tabs>
+
       <Button className={classes.btnbar} color="secondary" variant="contained">
         Log In
       </Button>
