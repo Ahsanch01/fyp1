@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, makeStyles } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import pic from "../pics/h1.png";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import { FaShoppingCart } from "react-icons/fa";
@@ -58,6 +59,8 @@ function ProjectName() {
           className={classes.cartbtn}
           variant="contained"
           color="secondary"
+          component={Link}
+          to="/cart"
         >
           Cart <FaShoppingCart className={classes.fa} />
         </Button>

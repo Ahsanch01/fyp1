@@ -6,6 +6,7 @@ import Header from "./Pages/Header";
 import ProjectName from "./Pages/ProjectName";
 import Home from "./Pages/Home";
 import ViewItem from "./Pages/ViewItem";
+import Cart from "./Pages/Cart";
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -17,6 +18,7 @@ function App() {
           <Route path="/about" component={() => <div>About Page</div>} />
           <Route path="/contact" component={() => <div>Contact Page</div>} />
           <Route path="/home/view" component={ViewItem} />
+          <Route path="/cart" component={Cart} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>
