@@ -65,7 +65,7 @@ function Menu({ items }) {
                   <Button
                     className={classes.btn}
                     component={Link}
-                    to=""
+                    to="/cart"
                     variant="contained"
                   >
                     <AddShoppingCartIcon />

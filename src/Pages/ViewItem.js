@@ -3,6 +3,7 @@ import { Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 
 import pic from "../pics/l1.jpg";
+import { Link } from "react-router-dom";
 
 const useStyle = makeStyles((theme) => ({
   itemimg: {
@@ -122,6 +123,8 @@ function ViewItem() {
                 className={classes.cartbtn}
                 variant="contained"
                 color="primary"
+                component={Link}
+                to="/cart"
               >
                 Add to cart
               </Button>

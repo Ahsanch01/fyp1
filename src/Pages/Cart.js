@@ -43,8 +43,20 @@ const useStyles = makeStyles((theme) => ({
   outer2: {
     paddingTop: "5px",
     marginTop: "5px",
-    backgroundColor: "blue",
+    backgroundColor: "white",
     boxShadow: "0 5px 20px #777",
+  },
+  checkbtn: {
+    [theme.breakpoints.down("md")]: {
+      padding: "2px",
+      fontSize: "1em",
+    },
+  },
+  fullouter2: {
+    backgroundColor: "white",
+    boxShadow: "0 5px 20px #777",
+    marginTop: "10px",
+    padding: "10px",
   },
 }));
 const price = 2350;
@@ -65,7 +77,7 @@ function Cart() {
         <Grid item>
           <img src={pic} alt="title" className={classes.photo} />
         </Grid>
-        <Grid item style={{ backgroundColor: "turquoise" }}>
+        <Grid item>
           <Grid container justifyContent="space-between" spacing={10}>
             <Grid item className={classes.innerItem}>
               <Button variant="contained" className={classes.actionbtn}>
@@ -120,16 +132,19 @@ function Cart() {
         </Grid>
       </Grid>
 
-      <Grid container justifyContent="flex-end" spacing={10}>
-        <Grid item style={{ marginRight: "10em" }}>
+      <Grid
+        container
+        justifyContent="space-around"
+        className={classes.fullouter2}
+        spacing={2}
+      >
+        <Grid item>
           <b>Total</b>
         </Grid>
-        <Grid item style={{ marginRight: "10em" }}>
-          ${price * 2}
-        </Grid>
-        <Grid item style={{ marginRight: "12em" }}>
-          CheckOut
-        </Grid>
+        <Grid item>${price * 2}</Grid>
+        <Button variant="contained" color="secondary">
+          <Grid item>CheckOut</Grid>
+        </Button>
       </Grid>
     </React.Fragment>
   );
@@ -186,7 +201,7 @@ function Cart() {
           <b>${price}</b>
         </Grid>
         <Grid item>
-          <Button variant="contained" fontSize="small" Color="#f50057">
+          <Button color="secondary" variant="contained">
             CheckOUT
           </Button>
         </Grid>
@@ -195,7 +210,7 @@ function Cart() {
   );
 
   return (
-    <div style={{ backgroundColor: "pink" }}>
+    <div>
       <h2 className={classes.h2}>Cart Items</h2>
 
       {matches ? small : full}

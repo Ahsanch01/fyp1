@@ -50,7 +50,7 @@ function ProjectName() {
       justifyContent="space-around"
       spacing={0}
     >
-      <Grid item>
+      <Grid item component={Link} to="/admin">
         <h2 className={classes.h1}>Stock Shop</h2>
       </Grid>
 
