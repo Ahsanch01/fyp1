@@ -11,7 +11,8 @@ import Admin from "./Dashboard/Admin";
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+      <Admin />
+      {/* <BrowserRouter>
         <Header />
         <ProjectName />
         <Switch>
@@ -22,7 +23,7 @@ function App() {
           <Route path="/cart" component={Cart} />
           <Route path="/admin" component={Admin} />
         </Switch>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </ThemeProvider>
   );
 }
