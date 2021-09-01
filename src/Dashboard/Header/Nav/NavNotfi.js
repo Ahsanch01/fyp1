@@ -1,21 +1,25 @@
 import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
+
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+
+import NotificationsIcon from "@material-ui/icons/Notifications";
 import {
+  Avatar,
   IconButton,
   ListItem,
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import MailIcon from "@material-ui/icons/Mail";
+
 import { makeStyles } from "@material-ui/core";
 import Badge from "@material-ui/core/Badge";
-import SettingsIcon from "@material-ui/icons/Settings";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 const useStyles = makeStyles((theme) => ({
   micon: {
+    color: "white",
+  },
+  Avatar: {
+    backgroundColor: "blue",
     color: "white",
   },
 }));
@@ -31,8 +35,8 @@ function NavNotfi() {
     setAnchorEl(null);
   };
   const dropdown = [
-    { label: "Settings", icon: <SettingsIcon /> },
-    { label: "Logout", icon: <ExitToAppIcon /> },
+    { label: "Settings", desc: "Like your feed" },
+    { label: "Logout", desc: "comments on products" },
   ];
   return (
     <div>
@@ -42,7 +46,7 @@ function NavNotfi() {
         onClick={handleClick}
       >
         <Badge badgeContent={4} color="primary">
-          <AccountCircleIcon fontSize="large" className={classes.micon} />
+          <NotificationsIcon fontSize="medium" className={classes.micon} />
         </Badge>
       </IconButton>
       <Menu
@@ -53,9 +57,16 @@ function NavNotfi() {
         onClose={handleClose}
       >
         {dropdown.map((item, i) => (
-          <MenuItem component={ListItem} onClick={handleClose}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText>{item.label}</ListItemText>
+          <MenuItem key={i} component={ListItem} onClick={handleClose}>
+            <ListItemIcon>
+              <Avatar className={classes.Avatar}>
+                {item.label[0].toUpperCase()}
+              </Avatar>
+            </ListItemIcon>
+            <ListItemText
+              primary={item.label}
+              secondary={item.desc}
+            ></ListItemText>
           </MenuItem>
         ))}
       </Menu>
