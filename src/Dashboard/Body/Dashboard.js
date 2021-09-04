@@ -3,7 +3,8 @@ import React from "react";
 import { Card, CardContent } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-import { ArrowUpward } from "@material-ui/icons";
+import { ArrowUpward, SatelliteSharp } from "@material-ui/icons";
+import Chart from "./Chart";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -24,16 +25,25 @@ const useStyles = makeStyles((theme) => ({
   downicon: {
     color: "red",
   },
+  upicon: {
+    color: "green",
+  },
+  downtitle: {
+    color: "grey",
+    display: "flex",
+    justifyContent: "center",
+  },
 }));
 function Dashboard() {
   const classes = useStyles();
+
   return (
     <div>
       <Typography variant="h4" className={classes.pagetitle}>
         Dashboard
       </Typography>
-      <Grid container justifyContent="space-between">
-        <Grid item>
+      <Grid container justifyContent="space-between" spacing={2}>
+        <Grid item xs={12} md={3}>
           <Card className={classes.maincard}>
             <CardContent>
               <Typography variant="h5" className={classes.title}>
@@ -60,7 +70,7 @@ function Dashboard() {
           </Card>
         </Grid>
 
-        <Grid item>
+        <Grid item xs={12} md={3}>
           <Card className={classes.maincard}>
             <CardContent>
               <Typography variant="h5" className={classes.title}>
@@ -87,7 +97,7 @@ function Dashboard() {
           </Card>
         </Grid>
 
-        <Grid item>
+        <Grid item xs={12} md={3}>
           <Card className={classes.maincard}>
             <CardContent>
               <Typography variant="h5" className={classes.title}>
@@ -114,7 +124,7 @@ function Dashboard() {
           </Card>
         </Grid>
 
-        <Grid item>
+        <Grid item xs={12} md={3}>
           <Card className={classes.maincard}>
             <CardContent>
               <Typography variant="h5" className={classes.title}>
@@ -141,6 +151,7 @@ function Dashboard() {
           </Card>
         </Grid>
       </Grid>
+      <Chart />
     </div>
   );
 }
