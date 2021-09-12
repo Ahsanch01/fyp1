@@ -4,8 +4,12 @@ import Navbar from "./Nav/Navbar";
 import Sidebar from "./Sidenav/Sidenav";
 import Dashboard from "../Body/Dashboard";
 import Notification from "../Body/Notification";
-import Sales from "../Body/Sales";
-import Products from "../Body/Products";
+import Sales from "../Body/Sales/Sales";
+import Products from "../Body/Products/Products";
+import SingleProduct from "../Body/Products/SingleProduct";
+import AddNewProduct from "../Body/Products/AddNewProduct";
+import SingleSale from "../Body/Sales/SingalSale";
+import AddNewSale from "../Body/Sales/AddNewSale";
 import { Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 
@@ -17,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
     [theme.breakpoints.down("sm")]: {
       padding: theme.spacing(4, 2),
+      marginTop: "2em",
     },
   },
 }));
@@ -48,6 +53,10 @@ function HeaderComponent() {
           <Route path="/notification" exact component={Notification} />
           <Route path="/sales" exact component={Sales} />
           <Route path="/products" exact component={Products} />
+          <Route path="/products/add" exact component={AddNewProduct} />
+          <Route path="/products/:productId" exact component={SingleProduct} />
+          <Route path="/sales/add" exact component={AddNewSale} />
+          <Route path="/sales/:saleId" exact component={SingleSale} />
         </Switch>
       </Box>
     </div>

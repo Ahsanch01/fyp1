@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
-import NotificationsIcon from "@material-ui/icons/Notifications";
+import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import {
   Avatar,
   IconButton,
@@ -16,7 +16,7 @@ import { makeStyles } from "@material-ui/core";
 import Badge from "@material-ui/core/Badge";
 const useStyles = makeStyles((theme) => ({
   micon: {
-    color: "white",
+    color: "Black",
   },
   Avatar: {
     backgroundColor: "blue",
@@ -45,8 +45,8 @@ function NavNotfi() {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <Badge badgeContent={4} color="primary">
-          <NotificationsIcon fontSize="medium" className={classes.micon} />
+        <Badge badgeContent={4} color="secondary">
+          <NotificationsNoneIcon fontSize="medium" className={classes.micon} />
         </Badge>
       </IconButton>
       <Menu

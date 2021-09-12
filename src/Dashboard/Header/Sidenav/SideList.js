@@ -7,12 +7,13 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { FaProductHunt } from "react-icons/fa";
-import HomeIcon from "@material-ui/icons/Home";
-import LoyaltyIcon from "@material-ui/icons/Loyalty";
-import { GiExpense } from "react-icons/gi";
-import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import EmailIcon from "@material-ui/icons/Email";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+import { FcHome } from "react-icons/fc";
+import { FcSalesPerformance } from "react-icons/fc";
+import { FcLike } from "react-icons/fc";
+import { FcMoneyTransfer } from "react-icons/fc";
+import { FcConferenceCall } from "react-icons/fc";
+import { FcSms } from "react-icons/fc";
+import { FcInfo } from "react-icons/fc";
 import { Link, NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   navlinks: {
     color: "grey",
     "&:hover,&:hover div": {
-      color: "blue",
+      color: "#f50057",
     },
     "& div": {
       color: "grey",
@@ -44,16 +45,37 @@ const useStyles = makeStyles((theme) => ({
 function SideList({ handleDrawerClose }) {
   const classes = useStyles();
   const listitemdata = [
-    { label: "Home", Link: "/", icon: <HomeIcon /> },
-    { label: "Products", Link: "/products", icon: <FaProductHunt /> },
-    { label: "Sales", Link: "/sales", icon: <LoyaltyIcon /> },
-    { label: "Expanse", Link: "/expense", icon: <GiExpense /> },
-    { label: "People", Link: "/people", icon: <PeopleAltIcon /> },
-    { label: "Message", Link: "/message", icon: <EmailIcon /> },
+    { label: "Home", Link: "/", icon: <FcHome size="2em" /> },
+    {
+      label: "Products",
+      Link: "/products",
+      icon: <FaProductHunt size="2em" style={{ color: "green" }} />,
+    },
+    {
+      label: "Sales",
+      Link: "/sales",
+      icon: <FcSalesPerformance size="2em" />,
+    },
+    { label: "Order", Link: "/orders", icon: <FcLike size="2em" /> },
+    {
+      label: "Expense",
+      Link: "/expense",
+      icon: <FcMoneyTransfer size="2em" />,
+    },
+    {
+      label: "People",
+      Link: "/people",
+      icon: <FcConferenceCall size="2em" />,
+    },
+    {
+      label: "Message",
+      Link: "/message",
+      icon: <FcSms size="2em" />,
+    },
     {
       label: "Notification",
       Link: "/notification",
-      icon: <NotificationsIcon />,
+      icon: <FcInfo size="2em" />,
     },
   ];
   return (

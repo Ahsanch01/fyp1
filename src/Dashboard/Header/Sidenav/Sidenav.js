@@ -8,8 +8,8 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     backgroundColor: "white",
-    boxShadow: "0 5px 20px #777",
-    width: "250px",
+    boxShadow: "0 15px 15px #777",
+    width: "200px",
     marginTop: "64px",
     [theme.breakpoints.down("sm")]: {
       marginTop: "0px",

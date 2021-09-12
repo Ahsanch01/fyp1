@@ -9,12 +9,16 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
-    backgroundColor: "#000000",
+    backgroundColor: "white",
+    boxShadow: "0 5px 10px #777",
   },
   toolbar: {
     display: "flex",
     flexFlow: "row wrap",
     justifyContent: "space-between",
+  },
+  menuicon: {
+    color: "black",
   },
 }));
 function Navbar({ handleDrawerToggle }) {
@@ -22,7 +26,7 @@ function Navbar({ handleDrawerToggle }) {
   return (
     <AppBar className={classes.appbar}>
       <Toolbar className={classes.toolbar}>
-        <Typography>Dashboard</Typography>
+        <Typography style={{ color: "black" }}>Dashboard</Typography>
         <Hidden smDown>
           <Box style={{ display: "flex" }}>
             <NavNotfi />
@@ -31,7 +35,7 @@ function Navbar({ handleDrawerToggle }) {
           </Box>
         </Hidden>
         <Hidden mdUp>
-          <MenuIcon onClick={handleDrawerToggle} />
+          <MenuIcon onClick={handleDrawerToggle} className={classes.menuicon} />
         </Hidden>
       </Toolbar>
     </AppBar>
