@@ -10,6 +10,8 @@ import SingleProduct from "../Body/Products/SingleProduct";
 import AddNewProduct from "../Body/Products/AddNewProduct";
 import SingleSale from "../Body/Sales/SingalSale";
 import AddNewSale from "../Body/Sales/AddNewSale";
+import Order from "../Body/Order/Order";
+import AddOrder from "../Body/Order/AddOrder";
 import { Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 
@@ -57,6 +59,8 @@ function HeaderComponent() {
           <Route path="/products/:productId" exact component={SingleProduct} />
           <Route path="/sales/add" exact component={AddNewSale} />
           <Route path="/sales/:saleId" exact component={SingleSale} />
+          <Route path="/orders" exact component={Order} />
+          <Route path="/orders/add" exact component={AddOrder} />
         </Switch>
       </Box>
     </div>

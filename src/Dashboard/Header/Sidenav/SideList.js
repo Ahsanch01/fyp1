@@ -80,8 +80,12 @@ function SideList({ handleDrawerClose }) {
   ];
   return (
     <List>
-      {listitemdata.map((item) => (
-        <Button onClick={handleDrawerClose} className={classes.navbtn}>
+      {listitemdata.map((item, index) => (
+        <Button
+          key={index}
+          onClick={handleDrawerClose}
+          className={classes.navbtn}
+        >
           <ListItem
             exact
             to={item.Link}
