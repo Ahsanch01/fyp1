@@ -219,39 +219,38 @@ function AddNewOrder() {
               >
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Name"
+                    label="Customer Name"
                     variant="outlined"
                     fullWidth
-                    name="name"
-                    {...register("name")}
+                    name="cutomername"
+                    {...register("cutomername")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Color"
+                    label="Address"
                     variant="outlined"
                     fullWidth
-                    name="color"
-                    {...register("color")}
+                    name="address"
+                    {...register("address")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Quantity"
+                    label="Customer Number"
                     variant="outlined"
                     fullWidth
-                    name="quantity"
-                    type="number"
-                    {...register("quantity")}
+                    name="customernumber"
+                    {...register("customernumber")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="price"
+                    label="Email"
                     variant="outlined"
                     fullWidth
-                    name="price"
-                    {...register("price")}
+                    name="email"
+                    {...register("email")}
                   />
                 </Grid>
               </Grid>

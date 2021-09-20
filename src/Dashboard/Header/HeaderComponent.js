@@ -13,6 +13,7 @@ import AddNewSale from "../Body/Sales/AddNewSale";
 import Order from "../Body/Order/Order";
 import AddOrder from "../Body/Order/AddOrder";
 import { Box } from "@material-ui/core";
+
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({

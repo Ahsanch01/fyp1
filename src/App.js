@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./theme/theme";
+import UserRegister from "../src/Form/UserRegister";
+import Login from "../src/Form/Login";
 import Header from "./Pages/Header";
 import ProjectName from "./Pages/ProjectName";
 import Home from "./Pages/Home";
@@ -11,7 +13,9 @@ import Admin from "./Dashboard/Admin";
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Admin />
+      <Login />
+      {/* <UserRegister /> */}
+      {/* <Admin /> */}
       {/* <BrowserRouter>
         <Header />
         <ProjectName />

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-
+import { Link } from "react-router-dom";
 import pic from "../../../pics/l1.jpg";
 import {
   Avatar,
@@ -34,7 +34,7 @@ function Profile() {
   };
   const dropdown = [
     { label: "Settings", icon: <SettingsIcon /> },
-    { label: "Logout", icon: <ExitToAppIcon /> },
+    { label: "Logout", icon: <ExitToAppIcon />, to: "user/register" },
   ];
   return (
     <div>
@@ -52,10 +52,12 @@ function Profile() {
         onClose={handleClose}
       >
         {dropdown.map((item, i) => (
-          <MenuItem key={i} component={ListItem} onClick={handleClose}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText>{item.label}</ListItemText>
-          </MenuItem>
+          <Link to={item.to}>
+            <MenuItem key={i} component={ListItem} onClick={handleClose}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText>{item.label}</ListItemText>
+            </MenuItem>
+          </Link>
         ))}
       </Menu>
     </div>
