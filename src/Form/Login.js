@@ -11,6 +11,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   div: {
     display: "flex",
@@ -88,9 +89,11 @@ function Login() {
             </Grid>
 
             <Grid item>
-              <Button variant="contained" color="secondary" type="submit">
-                SignIN
-              </Button>
+              <Link to="/store">
+                <Button variant="contained" color="secondary" type="submit">
+                  SignIN
+                </Button>
+              </Link>
             </Grid>
           </Grid>
         </form>

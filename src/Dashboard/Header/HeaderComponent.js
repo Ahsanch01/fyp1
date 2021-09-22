@@ -52,7 +52,7 @@ function HeaderComponent() {
 
       <Box className={classes.wrapper}>
         <Switch>
-          <Route path="/" exact component={Dashboard} />
+          <Route path="/admin" exact component={Dashboard} />
           <Route path="/notification" exact component={Notification} />
           <Route path="/sales" exact component={Sales} />
           <Route path="/products" exact component={Products} />

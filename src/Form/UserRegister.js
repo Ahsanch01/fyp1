@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router";
 import DateFnsUtils from "@date-io/date-fns";
-
+import { IoIosPersonAdd } from "react-icons/io";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
   maingrid: {
     backgroundColor: "white",
-    padding: "10px",
+    padding: "20px",
+    borderRadius: "5%",
     boxShadow: "0 5px 10px #777",
     [theme.breakpoints.down("md")]: {
       width: "90%",
@@ -65,7 +66,9 @@ function UserRegister() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid spacing={2} container justifyContent="center">
             <Grid item>
-              <Typography variant="h4">Register</Typography>
+              <Typography variant="h4">
+                Register <IoIosPersonAdd color="blue" />
+              </Typography>
             </Grid>
             <Grid item>
               <Grid container spacing={1}>

@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 function SideList({ handleDrawerClose }) {
   const classes = useStyles();
   const listitemdata = [
-    { label: "Home", Link: "/", icon: <FcHome size="2em" /> },
+    { label: "Home", Link: "/admin", icon: <FcHome size="2em" /> },
     {
       label: "Products",
       Link: "/products",

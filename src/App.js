@@ -4,30 +4,24 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./theme/theme";
 import UserRegister from "../src/Form/UserRegister";
 import Login from "../src/Form/Login";
-import Header from "./Pages/Header";
-import ProjectName from "./Pages/ProjectName";
-import Home from "./Pages/Home";
-import ViewItem from "./Pages/ViewItem";
-import Cart from "./Pages/Cart";
+
 import Admin from "./Dashboard/Admin";
+import Store from "../src/Store/Store";
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Login />
-      {/* <UserRegister /> */}
-      {/* <Admin /> */}
-      {/* <BrowserRouter>
-        <Header />
-        <ProjectName />
+      <BrowserRouter>
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/about" component={() => <div>About Page</div>} />
-          <Route path="/contact" component={() => <div>Contact Page</div>} />
-          <Route path="/home/view" component={ViewItem} />
-          <Route path="/cart" component={Cart} />
-          <Route path="/admin" component={Admin} />
+          <Route path="/" exact component={Login} />
+          <Route path="/admin" exact component={Admin} />
+          <Route path="/store" exact component={Store} />
+          <Route path="/register" exact component={UserRegister} />
         </Switch>
-      </BrowserRouter> */}
+      </BrowserRouter>
+      {/* <Login /> 
+      <UserRegister />
+      <Admin />
+     <Store /> */}
     </ThemeProvider>
   );
 }

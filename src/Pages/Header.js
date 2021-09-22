@@ -91,7 +91,12 @@ function Header() {
   const tabs = (
     <React.Fragment>
       <Tabs value={value} className={classes.tabs} onChange={handleChange}>
-        <Tab className={classes.tab} label="Home" component={Link} to="/" />
+        <Tab
+          className={classes.tab}
+          label="Home"
+          component={Link}
+          to="/store"
+        />
         <Tab
           className={classes.tab}
           label="About Us"
@@ -128,7 +133,7 @@ function Header() {
             button
             onClick={() => setOpenDrawer(false)}
             component={Link}
-            to="/"
+            to="/store"
           >
             <ListItemText>Home</ListItemText>
           </ListItem>
@@ -175,7 +180,7 @@ function Header() {
       <ElevationScroll>
         <AppBar>
           <Toolbar>
-            <Button onClick={() => setValue(0)} component={Link} to="/">
+            <Button onClick={() => setValue(0)} component={Link} to="/store">
               <img src={logo} alt="logo" className={classes.logo} />
             </Button>
             {matches ? drawer : tabs}

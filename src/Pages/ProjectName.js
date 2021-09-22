@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import pic from "../pics/h1.png";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import { FaShoppingCart } from "react-icons/fa";
+import { AiOutlineDashboard } from "react-icons/ai";
 const useStyle = makeStyles((theme) => ({
   maingrid: {
     backgroundColor: "white",
@@ -50,8 +51,13 @@ function ProjectName() {
       justifyContent="space-around"
       spacing={0}
     >
-      <Grid item component={Link} to="/admin">
-        <h2 className={classes.h1}>Stock Shop</h2>
+      <Grid item>
+        <h2 className={classes.h1}>
+          <a href="/admin" style={{ textDecoration: "none" }}>
+            Dashboard
+            <AiOutlineDashboard color="white" size="1em" />
+          </a>
+        </h2>
       </Grid>
 
       <Grid item>
