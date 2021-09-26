@@ -260,7 +260,9 @@ function AddNewOrder() {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={history.goBack}
+                    onClick={() => {
+                      history.push("/orders");
+                    }}
                   >
                     Cencel
                   </Button>
@@ -270,7 +272,9 @@ function AddNewOrder() {
                     variant="contained"
                     color="secondary"
                     type="submit"
-                    onClick={history.goBack}
+                    onClick={() => {
+                      history.push("/orders");
+                    }}
                   >
                     Add
                   </Button>

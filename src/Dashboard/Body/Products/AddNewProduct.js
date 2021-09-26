@@ -10,6 +10,7 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   img: {
     width: "250px",
@@ -52,6 +53,10 @@ function AddNewProduct() {
 
   const handleChange1 = (event) => {
     setCategory(event.target.value);
+  };
+
+  const page = () => {
+    history.goBack();
   };
   const onSubmit = (data) => console.log(data);
   return (
@@ -232,7 +237,11 @@ function AddNewProduct() {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={history.goBack}
+                    // component={Link}
+                    // to="/products"
+                    onClick={() => {
+                      history.push("/products");
+                    }}
                   >
                     Cencel
                   </Button>
@@ -242,7 +251,9 @@ function AddNewProduct() {
                     variant="contained"
                     color="secondary"
                     type="submit"
-                    onClick={history.goBack}
+                    onClick={() => {
+                      history.push("/products");
+                    }}
                   >
                     Add
                   </Button>

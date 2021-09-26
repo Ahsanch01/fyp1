@@ -181,7 +181,9 @@ function SingleProduct() {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={history.goBack}
+                    onClick={() => {
+                      history.push("/products");
+                    }}
                   >
                     Cencel
                   </Button>
@@ -191,7 +193,9 @@ function SingleProduct() {
                     variant="contained"
                     color="secondary"
                     type="submit"
-                    onClick={history.goBack}
+                    onClick={() => {
+                      history.push("/products");
+                    }}
                   >
                     Update
                   </Button>

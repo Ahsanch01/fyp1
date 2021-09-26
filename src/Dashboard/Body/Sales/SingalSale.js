@@ -177,7 +177,9 @@ function SingleSale() {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={history.goBack}
+                    onClick={() => {
+                      history.push("/sales");
+                    }}
                   >
                     Cencel
                   </Button>
@@ -187,7 +189,9 @@ function SingleSale() {
                     variant="contained"
                     color="secondary"
                     type="submit"
-                    onClick={history.goBack}
+                    onClick={() => {
+                      history.push("/sales");
+                    }}
                   >
                     Update
                   </Button>

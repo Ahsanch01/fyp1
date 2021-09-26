@@ -232,7 +232,9 @@ function AddNewSale() {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={history.goBack}
+                    onClick={() => {
+                      history.push("/sales");
+                    }}
                   >
                     Cencel
                   </Button>
@@ -242,7 +244,9 @@ function AddNewSale() {
                     variant="contained"
                     color="secondary"
                     type="submit"
-                    onClick={history.goBack}
+                    onClick={() => {
+                      history.push("/sales");
+                    }}
                   >
                     Add
                   </Button>
