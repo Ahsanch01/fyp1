@@ -33,6 +33,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
   },
+  mobile: {
+    [theme.breakpoints.down("md")]: {
+      marginLeft: "4em",
+      marginBottom: "1em",
+    },
+  },
 }));
 function Dashboard() {
   const classes = useStyles();
@@ -53,6 +59,7 @@ function Dashboard() {
           item
           xs={12}
           md={3}
+          className={classes.mobile}
         >
           <Card className={classes.maincard}>
             <CardContent>
@@ -85,6 +92,7 @@ function Dashboard() {
           item
           xs={12}
           md={3}
+          className={classes.mobile}
         >
           <Card className={classes.maincard}>
             <CardContent>
@@ -117,6 +125,7 @@ function Dashboard() {
           item
           xs={12}
           md={3}
+          className={classes.mobile}
         >
           <Card className={classes.maincard}>
             <CardContent>
@@ -149,6 +158,7 @@ function Dashboard() {
           item
           xs={12}
           md={3}
+          className={classes.mobile}
         >
           <Card className={classes.maincard}>
             <CardContent>

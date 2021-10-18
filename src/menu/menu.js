@@ -47,7 +47,7 @@ function Menu({ items }) {
             transition={{
               type: "spring",
               stiffness: 260,
-              damping: 20,
+              damping: 80,
             }}
             whileHover={{ scale: 1.1, color: "red" }}
           >
