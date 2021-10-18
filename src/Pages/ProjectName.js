@@ -6,6 +6,7 @@ import pic from "../pics/h1.png";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import { FaShoppingCart } from "react-icons/fa";
 import { AiOutlineDashboard } from "react-icons/ai";
+import { motion } from "framer-motion";
 const useStyle = makeStyles((theme) => ({
   maingrid: {
     backgroundColor: "white",
@@ -51,16 +52,24 @@ function ProjectName() {
       justifyContent="space-around"
       spacing={0}
     >
-      <Grid item>
+      <motion.Grid
+        whileHover={{ scale: 1.03, originX: 0 }}
+        transition={{ type: "spring", duration: 1.5 }}
+        item
+      >
         <h2 className={classes.h1}>
           <a href="/admin" style={{ textDecoration: "none" }}>
             Dashboard
             <AiOutlineDashboard color="white" size="1em" />
           </a>
         </h2>
-      </Grid>
+      </motion.Grid>
 
-      <Grid item>
+      <motion.Grid
+        whileHover={{ scale: 1.01, originX: 0 }}
+        transition={{ type: "spring", duration: 1.5 }}
+        item
+      >
         <Button
           className={classes.cartbtn}
           variant="contained"
@@ -70,7 +79,7 @@ function ProjectName() {
         >
           Cart <FaShoppingCart className={classes.fa} />
         </Button>
-      </Grid>
+      </motion.Grid>
     </Grid>
   );
 }

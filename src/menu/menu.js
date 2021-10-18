@@ -4,6 +4,7 @@ import { Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import pic from "../pics/l1.jpg";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import { motion } from "framer-motion";
 const useStyle = makeStyles({
   gridback: {
     backgroundColor: "white",
@@ -39,7 +40,17 @@ function Menu({ items }) {
       {items.map((item) => {
         const { id, title, category, price, img, desc } = item;
         return (
-          <div key={id}>
+          <motion.div
+            key={id}
+            initial={{ scale: 0 }}
+            animate={{ rotate: 360, scale: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+            }}
+            whileHover={{ scale: 1.1, color: "red" }}
+          >
             <Grid item className={classes.gridback}>
               <Grid container direction="column" alignItems="center">
                 <Grid item>
@@ -73,7 +84,7 @@ function Menu({ items }) {
                 </Grid>
               </Grid>
             </Grid>
-          </div>
+          </motion.div>
         );
       })}
     </Grid>

@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { ArrowUpward, SatelliteSharp } from "@material-ui/icons";
 import Chart from "./Chart";
-
+import { motion } from "framer-motion";
 const useStyles = makeStyles((theme) => ({
   title: {
     display: "flex",
@@ -42,8 +42,18 @@ function Dashboard() {
       <Typography variant="h4" className={classes.pagetitle}>
         Dashboard
       </Typography>
-      <Grid container justifyContent="space-between" spacing={2}>
-        <Grid item xs={12} md={3}>
+      <Grid
+        container
+        justifyContent="space-between"
+        spacing={2}
+        alignItems="center"
+      >
+        <motion.Grid
+          whileHover={{ scale: 1.05, originX: 0 }}
+          item
+          xs={12}
+          md={3}
+        >
           <Card className={classes.maincard}>
             <CardContent>
               <Typography variant="h5" className={classes.title}>
@@ -68,9 +78,14 @@ function Dashboard() {
               </Typography>
             </CardContent>
           </Card>
-        </Grid>
+        </motion.Grid>
 
-        <Grid item xs={12} md={3}>
+        <motion.Grid
+          whileHover={{ scale: 1.04, originX: 0 }}
+          item
+          xs={12}
+          md={3}
+        >
           <Card className={classes.maincard}>
             <CardContent>
               <Typography variant="h5" className={classes.title}>
@@ -95,9 +110,14 @@ function Dashboard() {
               </Typography>
             </CardContent>
           </Card>
-        </Grid>
+        </motion.Grid>
 
-        <Grid item xs={12} md={3}>
+        <motion.Grid
+          whileHover={{ scale: 1.03, originX: 0 }}
+          item
+          xs={12}
+          md={3}
+        >
           <Card className={classes.maincard}>
             <CardContent>
               <Typography variant="h5" className={classes.title}>
@@ -122,9 +142,14 @@ function Dashboard() {
               </Typography>
             </CardContent>
           </Card>
-        </Grid>
+        </motion.Grid>
 
-        <Grid item xs={12} md={3}>
+        <motion.Grid
+          whileHover={{ scale: 1.02, originX: 0 }}
+          item
+          xs={12}
+          md={3}
+        >
           <Card className={classes.maincard}>
             <CardContent>
               <Typography variant="h5" className={classes.title}>
@@ -149,7 +174,7 @@ function Dashboard() {
               </Typography>
             </CardContent>
           </Card>
-        </Grid>
+        </motion.Grid>
       </Grid>
       <Chart />
     </div>
