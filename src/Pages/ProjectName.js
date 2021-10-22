@@ -59,7 +59,7 @@ function ProjectName() {
       >
         <h2 className={classes.h1}>
           <a href="/admin" style={{ textDecoration: "none" }}>
-            Dashboard
+            tenant
             <AiOutlineDashboard color="white" size="1em" />
           </a>
         </h2>
