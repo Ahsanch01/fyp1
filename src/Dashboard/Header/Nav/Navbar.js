@@ -26,10 +26,11 @@ function Navbar({ handleDrawerToggle }) {
   return (
     <AppBar className={classes.appbar}>
       <Toolbar className={classes.toolbar}>
-        <Typography style={{ color: "black" }}>Dashboard</Typography>
+        <Store />
+        {/* <Typography style={{ color: "black" }}>Dashboard</Typography> */}
+
         <Hidden smDown>
           <Box style={{ display: "flex" }}>
-            <Store />
             <NavNotfi />
             <Message />
             <Profile />

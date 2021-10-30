@@ -4,7 +4,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./theme/theme";
 import UserRegister from "../src/Form/UserRegister";
 import Login from "../src/Form/Login";
-
+import TenantLogin from "../src/Form/TenantLogin";
 import Admin from "./Dashboard/Admin";
 import Store from "../src/Store/Store";
 function App() {
@@ -13,6 +13,7 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route path="/" exact component={Login} />
+          <Route path="/tenantlogin" exact component={TenantLogin} />
           <Route path="/admin" exact component={Admin} />
           <Route path="/store" exact component={Store} />
           <Route path="/register" exact component={UserRegister} />
