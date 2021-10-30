@@ -6,7 +6,7 @@ import NavNotfi from "./NavNotfi";
 import Profile from "./profile";
 import Message from "./Messages";
 import MenuIcon from "@material-ui/icons/Menu";
-
+import Store from "./Store";
 const useStyles = makeStyles((theme) => ({
   appbar: {
     backgroundColor: "white",
@@ -29,6 +29,7 @@ function Navbar({ handleDrawerToggle }) {
         <Typography style={{ color: "black" }}>Dashboard</Typography>
         <Hidden smDown>
           <Box style={{ display: "flex" }}>
+            <Store />
             <NavNotfi />
             <Message />
             <Profile />
