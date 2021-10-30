@@ -21,7 +21,6 @@ function Sidenav({ mobileOpen, handleDrawerToggle, handleDrawerClose }) {
 
   return (
     <nav className={classes.drawer} aria-label="mailbox folders">
-      {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
       <Hidden mdUp implementation="css">
         <Drawer
           variant="temporary"
@@ -32,7 +31,7 @@ function Sidenav({ mobileOpen, handleDrawerToggle, handleDrawerClose }) {
             paper: classes.drawerPaper,
           }}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
         >
           <SideList handleDrawerClose={handleDrawerClose} />
