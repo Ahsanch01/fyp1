@@ -110,10 +110,15 @@ function Header() {
           to="/contact"
         />
       </Tabs>
-
-      <Button className={classes.btnbar} color="secondary" variant="contained">
-        Log In
-      </Button>
+      <a href="/register" style={{ textDecoration: "none" }}>
+        <Button
+          className={classes.btnbar}
+          color="secondary"
+          variant="contained"
+        >
+          Log In
+        </Button>
+      </a>
     </React.Fragment>
   );
 
