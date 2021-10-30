@@ -3,14 +3,9 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router";
-import DateFnsUtils from "@date-io/date-fns";
+
 import { BiLogInCircle } from "react-icons/bi";
 
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   div: {
@@ -41,17 +36,6 @@ function Login() {
   const [category, setCategory] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const handleChange2 = (event) => {
-    setAvailable(event.target.value);
-  };
-
-  const handleChange1 = (event) => {
-    setCategory(event.target.value);
-  };
   const onSubmit = (data) => console.log(data);
   return (
     <div className={classes.div}>
@@ -68,31 +52,53 @@ function Login() {
                 SingIn <BiLogInCircle color="blue" />
               </Typography>
             </Grid>
-            <Grid item sm={12}>
-              <TextField
-                label="User_Name"
-                variant="outlined"
-                fullWidth
-                name="username"
-                {...register("username")}
-              />
-            </Grid>
-            <Grid item sm={12}>
-              <TextField
-                label="Password"
-                variant="outlined"
-                fullWidth
-                name="password"
-                type="Password"
-                {...register("password")}
-              />
-            </Grid>
+            <Grid container justifyContent="center" spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  label="Email"
+                  variant="outlined"
+                  fullWidth
+                  name="email"
+                  {...register("email")}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Password"
+                  variant="outlined"
+                  fullWidth
+                  name="password"
+                  type="password"
+                  {...register("password")}
+                />
+              </Grid>
 
+              <Grid container justifyContent="center" spacing={2}>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    type="submit"
+                    // onClick={history.goBack}
+                  >
+                    SingIn
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    type="submit"
+                    // onClick={history.goBack}
+                  >
+                    SingUp
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
             <Grid item>
-              <Link to="/store">
-                <Button variant="contained" color="secondary" type="submit">
-                  SignIN
-                </Button>
+              <Link>
+                <Typography>Forgot Password?</Typography>
               </Link>
             </Grid>
           </Grid>
