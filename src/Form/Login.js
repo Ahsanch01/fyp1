@@ -75,24 +75,28 @@ function Login() {
 
               <Grid container justifyContent="center" spacing={2}>
                 <Grid item>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    type="submit"
-                    // onClick={history.goBack}
-                  >
-                    SingIn
-                  </Button>
+                  <Link to="/store" style={{ textDecoration: "none" }}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      type="submit"
+                      // onClick={history.goBack}
+                    >
+                      SingIn
+                    </Button>
+                  </Link>
                 </Grid>
                 <Grid item>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    type="submit"
-                    // onClick={history.goBack}
-                  >
-                    SingUp
-                  </Button>
+                  <Link to="/register" style={{ textDecoration: "none" }}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      type="submit"
+                      // onClick={history.goBack}
+                    >
+                      SingUp
+                    </Button>
+                  </Link>
                 </Grid>
               </Grid>
             </Grid>

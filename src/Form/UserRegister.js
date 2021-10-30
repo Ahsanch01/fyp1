@@ -5,6 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router";
 
 import { IoIosPersonAdd } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   div: {
@@ -131,14 +132,16 @@ function UserRegister() {
                   style={{ marginTop: 10 }}
                 >
                   <Grid item>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      type="submit"
-                      // onClick={history.goBack}
-                    >
-                      Register
-                    </Button>
+                    <Link to="/" style={{ textDecoration: "none" }}>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        type="submit"
+                        // onClick={history.goBack}
+                      >
+                        Register
+                      </Button>
+                    </Link>
                   </Grid>
                 </Grid>
               </Grid>
