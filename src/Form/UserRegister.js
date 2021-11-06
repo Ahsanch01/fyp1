@@ -132,16 +132,16 @@ function UserRegister() {
                   style={{ marginTop: 10 }}
                 >
                   <Grid item>
-                    <Link to="/" style={{ textDecoration: "none" }}>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        type="submit"
-                        // onClick={history.goBack}
-                      >
-                        Register
-                      </Button>
-                    </Link>
+                    {/* <Link to="/" style={{ textDecoration: "none" }}> */}
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      type="submit"
+                      // onClick={history.goBack}
+                    >
+                      Register
+                    </Button>
+                    {/* </Link> */}
                   </Grid>
                 </Grid>
               </Grid>

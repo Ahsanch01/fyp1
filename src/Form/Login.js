@@ -1,9 +1,9 @@
 import { Box, Button, Grid, TextField, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router";
-
+import axios from "axios";
 import { BiLogInCircle } from "react-icons/bi";
 
 import { Link } from "react-router-dom";
@@ -35,8 +35,21 @@ function Login() {
   const [available, setAvailable] = useState("");
   const [category, setCategory] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
+  const [api, setApi] = useState("");
 
-  const onSubmit = (data) => console.log(data);
+  // const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+    axios
+      .post("http://7295-103-162-136-18.ngrok.io/API/users/login", data)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log("error is", error);
+      });
+  };
+
   return (
     <div className={classes.div}>
       <Grid
@@ -75,28 +88,28 @@ function Login() {
 
               <Grid container justifyContent="center" spacing={2}>
                 <Grid item>
-                  <Link to="/store" style={{ textDecoration: "none" }}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      type="submit"
-                      // onClick={history.goBack}
-                    >
-                      SingIn
-                    </Button>
-                  </Link>
+                  {/* <Link to="/store" style={{ textDecoration: "none" }}> */}
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    type="submit"
+                    // onClick={history.goBack}
+                  >
+                    SingIn
+                  </Button>
+                  {/* </Link> */}
                 </Grid>
                 <Grid item>
-                  <Link to="/register" style={{ textDecoration: "none" }}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      type="submit"
-                      // onClick={history.goBack}
-                    >
-                      SingUp
-                    </Button>
-                  </Link>
+                  {/* <Link to="/register" style={{ textDecoration: "none" }}> */}
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    type="submit"
+                    // onClick={history.goBack}
+                  >
+                    SingUp
+                  </Button>
+                  {/* </Link> */}
                 </Grid>
               </Grid>
             </Grid>
