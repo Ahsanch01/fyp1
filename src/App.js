@@ -16,6 +16,7 @@ function App() {
           <Route path="/tenantlogin" exact component={TenantLogin} />
           <Route path="/admin" exact component={Admin} />
           <Route path="/store" exact component={Store} />
+          <Route path="/store/:token" exact component={Store} />
           <Route path="/register" exact component={UserRegister} />
         </Switch>
       </BrowserRouter>

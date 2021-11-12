@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router";
-
+import axios from "axios";
 import { IoIosPersonAdd } from "react-icons/io";
 import { Link } from "react-router-dom";
 
@@ -39,7 +39,42 @@ function UserRegister() {
   const classes = useStyles();
   const { register, handleSubmit, control } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const functionName = async (info) => {
+    axios
+      .post("http://localhost:3007/API/users/register", info)
+      .then((res) => {
+        const { token } = res.data;
+        localStorage.setItem("registertoken", token);
+        console.log(res.data);
+
+        // history.push("/login");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // const f2 = async () => {
+  //   axios
+  //     .post("http://localhost:3007/API/users/ActivateAccount", {
+  //       Headers: {
+  //         token: localStorage.getItem("token"),
+  //       },
+  //     })
+  //     .then(() => {
+  //       history.push("http://localhost:3000/store");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+
+  const onSubmit = (data) => {
+    // console.log(data);
+    functionName(data);
+    // f2();
+  };
+
   return (
     <div className={classes.div}>
       <Grid container className={classes.maingrid}>
@@ -57,8 +92,8 @@ function UserRegister() {
                     label="First_Name"
                     variant="outlined"
                     fullWidth
-                    name="fname"
-                    {...register("fname")}
+                    name="firstname"
+                    {...register("firstname")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -66,8 +101,8 @@ function UserRegister() {
                     label="Last_Name"
                     variant="outlined"
                     fullWidth
-                    name="lname"
-                    {...register("lname")}
+                    name="lastname"
+                    {...register("lastname")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -85,8 +120,8 @@ function UserRegister() {
                     label="Contact_Number"
                     variant="outlined"
                     fullWidth
-                    name="number"
-                    {...register("number")}
+                    name="contact"
+                    {...register("contact")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>

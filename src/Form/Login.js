@@ -38,16 +38,23 @@ function Login() {
   const [api, setApi] = useState("");
 
   // const onSubmit = (data) => console.log(data);
-  const onSubmit = (data) => {
-    console.log(data);
+  const functionName = async (data) => {
     axios
-      .post("http://7295-103-162-136-18.ngrok.io/API/users/login", data)
-      .then((response) => {
-        console.log(response.data);
+      .post("http://localhost:3007/API/users/login", data)
+      .then((res) => {
+        const { token } = res.data;
+        localStorage.setItem("token", token);
+        console.log(res.data);
+        history.push("/store");
       })
-      .catch((error) => {
-        console.log("error is", error);
+      .catch((err) => {
+        console.log(err);
       });
+  };
+
+  const onSubmit = (data) => {
+    // console.log(data);
+    functionName(data);
   };
 
   return (
@@ -105,7 +112,7 @@ function Login() {
                     variant="contained"
                     color="secondary"
                     type="submit"
-                    // onClick={history.goBack}
+                    onClick={history.push("/register")}
                   >
                     SingUp
                   </Button>

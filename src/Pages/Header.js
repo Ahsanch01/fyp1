@@ -87,7 +87,9 @@ function Header() {
   const handleChange = (e, value) => {
     setValue(value);
   };
-
+  const logoutfunction = () => {
+    localStorage.removeItem("token");
+  };
   const tabs = (
     <React.Fragment>
       <Tabs value={value} className={classes.tabs} onChange={handleChange}>
@@ -110,15 +112,30 @@ function Header() {
           to="/contact"
         />
       </Tabs>
-      <a href="/register" style={{ textDecoration: "none" }}>
-        <Button
-          className={classes.btnbar}
-          color="secondary"
-          variant="contained"
-        >
-          Log In
-        </Button>
-      </a>
+
+      {localStorage.getItem("token") ? (
+        <a href="/" style={{ textDecoration: "none" }}>
+          <Button
+            className={classes.btnbar}
+            color="secondary"
+            variant="contained"
+            onClick={() => logoutfunction()}
+          >
+            {" "}
+            Logout{" "}
+          </Button>
+        </a>
+      ) : (
+        <a href="/" style={{ textDecoration: "none" }}>
+          <Button
+            className={classes.btnbar}
+            color="secondary"
+            variant="contained"
+          >
+            Login
+          </Button>
+        </a>
+      )}
     </React.Fragment>
   );
 
