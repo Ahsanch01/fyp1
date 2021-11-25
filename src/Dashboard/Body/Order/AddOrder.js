@@ -1,7 +1,7 @@
 import { Button, Grid, TextField, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
-import { FcUpload } from "react-icons/fc";
+
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router";
 import DateFnsUtils from "@date-io/date-fns";

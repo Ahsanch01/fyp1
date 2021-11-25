@@ -38,10 +38,11 @@ function Menu({ items }) {
       justifyContent="space-evenly"
     >
       {items.map((item) => {
-        const { id, title, category, price, img, desc } = item;
+        const { _id, title, category, price, picture, description, color } =
+          item;
         return (
           <motion.div
-            key={id}
+            key={_id}
             initial={{ scale: 0 }}
             animate={{ rotate: 360, scale: 1 }}
             transition={{
@@ -54,7 +55,7 @@ function Menu({ items }) {
             <Grid item className={classes.gridback}>
               <Grid container direction="column" alignItems="center">
                 <Grid item>
-                  <img className={classes.itemimg} src={pic} alt={title} />
+                  <img className={classes.itemimg} src={picture} alt={title} />
                 </Grid>
                 <Grid container direction="row" justifyContent="space-around">
                   <Grid item>
@@ -68,7 +69,7 @@ function Menu({ items }) {
                   <Button
                     className={classes.btn}
                     component={Link}
-                    to="/home/view"
+                    to={`/home/view/${_id}`}
                     variant="contained"
                   >
                     View

@@ -44,10 +44,14 @@ function Store() {
       <ProjectName />
       <Switch>
         <Route path="/store" exact component={Home} />
-        <Route path="/about" component={() => <div>About Page</div>} />
-        <Route path="/contact" component={() => <div>Contact Page</div>} />
-        <Route path="/home/view" component={ViewItem} />
-        <Route path="/cart" component={Cart} />
+        <Route path="/about" exact component={() => <div>About Page</div>} />
+        <Route
+          path="/contact"
+          exact
+          component={() => <div>Contact Page</div>}
+        />
+        <Route path="/home/view/:_id" exact component={ViewItem} />
+        <Route path="/cart" exact component={Cart} />
       </Switch>
     </BrowserRouter>
   );

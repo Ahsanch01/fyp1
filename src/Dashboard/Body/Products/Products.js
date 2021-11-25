@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-import pic from "../../../pics/m1.jpg";
+// import pic from "../../../pics/m1.jpg";
 import { Link, useRouteMatch } from "react-router-dom";
 import sales from "../DisplayItem";
 

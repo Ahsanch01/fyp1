@@ -1,10 +1,10 @@
 import React from "react";
 import { Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
-
+import { useState, useEffect } from "react";
 import pic from "../pics/l1.jpg";
-import { Link } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 const useStyle = makeStyles((theme) => ({
   itemimg: {
     width: "350px",
@@ -48,8 +48,21 @@ const useStyle = makeStyles((theme) => ({
     },
   },
 }));
+
 function ViewItem() {
   const classes = useStyle();
+  let { _id } = useParams();
+  const [item, setItem] = useState({});
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3007/API/products/${_id}`)
+      .then((res) => {
+        console.log(res.data);
+        setItem(res.data);
+      })
+      .then((error) => console.log(error));
+  }, []);
+  console.log(item);
   return (
     <div className={classes.outerdiv}>
       <h1
@@ -70,50 +83,50 @@ function ViewItem() {
               <b>Name</b>
             </Grid>
             <Grid className={classes.inneritem} item>
-              Laptop
+              {item.name}
             </Grid>
           </Grid>
 
           <Grid container className={classes.inner} spacing={4}>
             <Grid className={classes.inneritem} item>
-              <b>Name</b>
+              <b>Price</b>
             </Grid>
             <Grid className={classes.inneritem} item>
-              Laptop
-            </Grid>
-          </Grid>
-
-          <Grid container className={classes.inner} spacing={4}>
-            <Grid className={classes.inneritem} item>
-              <b>Name</b>
-            </Grid>
-            <Grid className={classes.inneritem} item>
-              Laptop
+              {item.price}
             </Grid>
           </Grid>
 
           <Grid container className={classes.inner} spacing={4}>
             <Grid className={classes.inneritem} item>
-              <b>Name</b>
+              <b>Color</b>
             </Grid>
             <Grid className={classes.inneritem} item>
-              <p>description</p>
+              {item.color}
+            </Grid>
+          </Grid>
+
+          <Grid container className={classes.inner} spacing={4}>
+            <Grid className={classes.inneritem} item>
+              <b>Category</b>
+            </Grid>
+            <Grid className={classes.inneritem} item>
+              {item.category}
             </Grid>
           </Grid>
           <Grid container className={classes.inner} spacing={4}>
             <Grid className={classes.inneritem} item>
-              <b>Name</b>
+              <b>Stiilll</b>
             </Grid>
             <Grid className={classes.inneritem} item>
-              <p>Color</p>
+              <p>Still</p>
             </Grid>
           </Grid>
           <Grid container className={classes.inner} spacing={4}>
             <Grid className={classes.inneritem} item>
-              <b>Name</b>
+              <b>Description</b>
             </Grid>
             <Grid className={classes.inneritem} item>
-              <p>category</p>
+              {item.description}
             </Grid>
           </Grid>
 
@@ -135,7 +148,7 @@ function ViewItem() {
         <Grid item>
           <Grid container direction="column">
             <Grid item>
-              <img src={pic} className={classes.itemimg} alt="lp" />
+              <img src={item.picture} className={classes.itemimg} alt="lp" />
             </Grid>
           </Grid>
         </Grid>

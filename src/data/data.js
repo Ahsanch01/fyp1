@@ -65,4 +65,19 @@ const menu = [
     desc: `ombucha chillwave fanny pack 3 wolf moon street art photo booth before they sold out organic viral.`,
   },
 ];
+// import axios from "axios";
+// const items = async () => {
+//   axios
+//     .get("http://localhost:3007/API/products")
+//     .then((res) => {
+//       console.log(res.data);
+
+//       // history.push("/login");
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
+// export default { items } ;
+
 export default menu;

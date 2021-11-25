@@ -121,8 +121,7 @@ function Header() {
             variant="contained"
             onClick={() => logoutfunction()}
           >
-            {" "}
-            Logout{" "}
+            Logout
           </Button>
         </a>
       ) : (

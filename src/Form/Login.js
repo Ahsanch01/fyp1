@@ -32,10 +32,10 @@ function Login() {
   let history = useHistory();
   const classes = useStyles();
   const { register, handleSubmit, control } = useForm();
-  const [available, setAvailable] = useState("");
-  const [category, setCategory] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
-  const [api, setApi] = useState("");
+  // const [available, setAvailable] = useState("");
+  // const [category, setCategory] = useState("");
+  // const [selectedDate, setSelectedDate] = useState("");
+  // const [api, setApi] = useState("");
 
   // const onSubmit = (data) => console.log(data);
   const functionName = async (data) => {
@@ -112,7 +112,7 @@ function Login() {
                     variant="contained"
                     color="secondary"
                     type="submit"
-                    onClick={history.push("/register")}
+                    onClick={() => history.push("/register")}
                   >
                     SingUp
                   </Button>

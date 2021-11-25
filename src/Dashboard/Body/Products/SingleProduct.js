@@ -1,4 +1,4 @@
-import { Button, Grid, TextField, Typography } from "@material-ui/core";
+import { Button, Grid, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { FcUpload } from "react-icons/fc";

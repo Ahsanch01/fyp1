@@ -3,7 +3,7 @@ import React from "react";
 import { Card, CardContent } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-import { ArrowUpward, SatelliteSharp } from "@material-ui/icons";
+import { ArrowUpward } from "@material-ui/icons";
 import Chart from "./Chart";
 import { motion } from "framer-motion";
 const useStyles = makeStyles((theme) => ({
