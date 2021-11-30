@@ -42,8 +42,9 @@ function Login() {
     axios
       .post("http://localhost:3007/API/users/login", data)
       .then((res) => {
-        const { token } = res.data;
+        const { token, users } = res.data;
         localStorage.setItem("token", token);
+        localStorage.setItem("userID", users._id);
         console.log(res.data);
         history.push("/store");
       })

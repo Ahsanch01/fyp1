@@ -33,7 +33,9 @@ function Categories({ filterItem, categories }) {
             <Button
               key={index}
               className={classes.btn}
-              onClick={() => filterItem(category)}
+              onClick={() => {
+                filterItem(category);
+              }}
               variant="contained"
             >
               {category}

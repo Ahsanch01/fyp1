@@ -3,6 +3,9 @@ import { Button, makeStyles } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
 import bg from "../pics/p.jpg";
 import Main from "../menu/main";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 const useStyle = makeStyles({
   gridback: {
     backgroundColor: "white",
@@ -22,10 +25,24 @@ const useStyle = makeStyles({
 });
 
 function Home() {
+  const [items, setItem] = useState([]);
+  useEffect(async () => {
+    await axios
+      .get("http://localhost:3007/API/products")
+      .then((res) => {
+        let getitems = res.data;
+        setItem(getitems);
+        // console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [items]);
+  console.log(items);
   const classes = useStyle();
   return (
     <>
-      <Main />
+      <Main items={items} />
     </>
   );
 }

@@ -90,6 +90,7 @@ function Header() {
   const logoutfunction = () => {
     localStorage.removeItem("token");
   };
+  const _id = localStorage.getItem("userID");
   const tabs = (
     <React.Fragment>
       <Tabs value={value} className={classes.tabs} onChange={handleChange}>
@@ -109,7 +110,7 @@ function Header() {
           className={classes.tab}
           label="Contact Us"
           component={Link}
-          to="/contact"
+          to={`/contact/${_id}`}
         />
       </Tabs>
 

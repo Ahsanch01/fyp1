@@ -13,6 +13,7 @@ const useStyle = makeStyles({
     padding: "20px",
     boxShadow: "0 5px 20px #777",
   },
+
   itemimg: {
     width: "200px",
     height: "200px",
@@ -38,7 +39,7 @@ function Menu({ items }) {
       justifyContent="space-evenly"
     >
       {items.map((item) => {
-        const { _id, title, category, price, picture, description, color } =
+        const { _id, name, category, price, picture, description, color } =
           item;
         return (
           <motion.div
@@ -55,11 +56,11 @@ function Menu({ items }) {
             <Grid item className={classes.gridback}>
               <Grid container direction="column" alignItems="center">
                 <Grid item>
-                  <img className={classes.itemimg} src={picture} alt={title} />
+                  <img className={classes.itemimg} src={picture} alt={name} />
                 </Grid>
                 <Grid container direction="row" justifyContent="space-around">
                   <Grid item>
-                    <h4>{title}</h4>
+                    <h4>{name}</h4>
                   </Grid>
                   <Grid item>
                     <p>${price}</p>
@@ -74,14 +75,15 @@ function Menu({ items }) {
                   >
                     View
                   </Button>
-                  <Button
+                  {/* <Button
                     className={classes.btn}
                     component={Link}
                     to="/cart"
                     variant="contained"
+                   
                   >
                     <AddShoppingCartIcon />
-                  </Button>
+                  </Button> */}
                 </Grid>
               </Grid>
             </Grid>

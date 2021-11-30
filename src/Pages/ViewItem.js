@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import pic from "../pics/l1.jpg";
 import { Link, useParams } from "react-router-dom";
+import FlashMessage from "./FlashMessage";
 import axios from "axios";
 const useStyle = makeStyles((theme) => ({
   itemimg: {
@@ -52,6 +53,8 @@ const useStyle = makeStyles((theme) => ({
 function ViewItem() {
   const classes = useStyle();
   let { _id } = useParams();
+  const [success, setSuccess] = useState(false);
+  const user_id = localStorage.getItem("userID");
   const [item, setItem] = useState({});
   useEffect(() => {
     axios
@@ -63,6 +66,15 @@ function ViewItem() {
       .then((error) => console.log(error));
   }, []);
   console.log(item);
+
+  let cart = {
+    cartItems: {
+      product: `${item._id}`,
+      quantity: "1",
+      price: `${item.price}`,
+    },
+  };
+
   return (
     <div className={classes.outerdiv}>
       <h1
@@ -136,11 +148,26 @@ function ViewItem() {
                 className={classes.cartbtn}
                 variant="contained"
                 color="primary"
-                component={Link}
-                to="/cart"
+                // component={Link}
+                // to="/cart"
+                onClick={() => {
+                  console.log(cart);
+                  axios
+                    .post(
+                      `http://localhost:3007/API/cart/addtocart/${user_id}`,
+                      cart
+                    )
+                    .then((res) => {
+                      console.log(res.data);
+                      setSuccess(true);
+                    })
+                    .then((error) => console.log(error));
+                  setSuccess(false);
+                }}
               >
                 Add to cart
               </Button>
+              {success ? <FlashMessage message={"Product Added"} /> : " "}
             </Grid>
           </Grid>
         </Grid>

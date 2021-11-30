@@ -28,21 +28,21 @@ import axios from "axios";
 
 // const allCategories = ["all", ...new Set(items.map((item) => item.category))];
 
-function Main() {
-  const [items, setItem] = useState([]);
-  useEffect(async () => {
-    await axios
-      .get("http://localhost:3007/API/products")
-      .then((res) => {
-        let getitems = res.data;
-        setItem(getitems);
-        // console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-  console.log(items);
+function Main({ items }) {
+  // const [items, setItem] = useState([]);
+  // useEffect(async () => {
+  //   await axios
+  //     .get("http://localhost:3007/API/products")
+  //     .then((res) => {
+  //       let getitems = res.data;
+  //       setItem(getitems);
+  //       // console.log(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+  // console.log(items);
   // let items = [];
   // items = axios
   //   .get("http://localhost:3007/API/products")
@@ -55,7 +55,10 @@ function Main() {
 
   // const [menuItems, setmenuItem] = useState(items);
   // console.log(menuItems);
-  const allCategories = ["all", ...new Set(items.map((item) => item.category))];
+  const allCategories = [
+    "all",
+    ...new Set(items.map((item) => item.category.name)),
+  ];
   // console.log(allCategories);
   const [categories, setCategories] = useState(allCategories);
   console.log(categories);
@@ -66,7 +69,7 @@ function Main() {
       setmenuItem(items);
       return;
     }
-    const newItems = items.filter((item) => item.category === category);
+    const newItems = items.filter((item) => item.category.name === category);
     setmenuItem(newItems);
   };
   console.log(menuItems);

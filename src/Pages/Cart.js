@@ -7,7 +7,8 @@ import { GrSubtractCircle } from "react-icons/gr";
 import { MdDelete } from "react-icons/md";
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core";
-
+import { useState, useEffect } from "react";
+import axios from "axios";
 const useStyles = makeStyles((theme) => ({
   outer: {
     backgroundColor: "white",
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   smallouter: {
     backgroundColor: "white",
-    padding: "10px",
+    padding: "0px",
   },
   outer2: {
     paddingTop: "5px",
@@ -65,155 +66,146 @@ function Cart() {
   const matches = useMediaQuery(theme.breakpoints.down("md"));
 
   const classes = useStyles();
+  const [cartitems, setcartitems] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3007/API/cart")
+      .then((res) => setcartitems(res.data))
+      .then((error) => console.log(error));
+  }, []);
 
-  const full = (
-    <React.Fragment>
-      <Grid
-        container
-        className={classes.outer}
-        justifyContent="space-evenly"
-        alignItems="center"
-      >
-        <Grid item>
-          <img src={pic} alt="title" className={classes.photo} />
-        </Grid>
-        <Grid item>
-          <Grid container justifyContent="space-between" spacing={10}>
-            <Grid item className={classes.innerItem}>
-              <Button variant="contained" className={classes.actionbtn}>
-                <BsPlusCircleFill />
-              </Button>
-              1
-              <Button variant="contained" className={classes.actionbtn}>
-                <GrSubtractCircle />
-              </Button>
-            </Grid>
-            <Grid item className={classes.innerItem}>
-              $ {price}
-            </Grid>
-            <Grid item className={classes.innerItem}>
-              <Button variant="contained">
-                <MdDelete fontSize="large" color="red" />
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+  console.log(cartitems);
 
-      <Grid
-        container
-        className={classes.outer}
-        justifyContent="space-evenly"
-        alignItems="center"
-      >
-        <Grid item>
-          <img src={pic} alt="title" className={classes.photo} />
-        </Grid>
-        <Grid item>
-          <Grid container justifyContent="space-between" spacing={10}>
-            <Grid item className={classes.innerItem}>
-              <Button variant="contained" className={classes.actionbtn}>
-                <BsPlusCircleFill />
-              </Button>
-              1
-              <Button variant="contained" className={classes.actionbtn}>
-                <GrSubtractCircle />
-              </Button>
-            </Grid>
-            <Grid item className={classes.innerItem}>
-              $ {price}
-            </Grid>
-            <Grid item className={classes.innerItem}>
-              <Button variant="contained">
-                <MdDelete fontSize="large" color="red" />
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+  // const full = (
+  //   <React.Fragment>
+  //     <Grid
+  //       container
+  //       className={classes.outer}
+  //       justifyContent="space-evenly"
+  //       alignItems="center"
+  //     >
+  //       <Grid item>
+  //         <img src={pic} alt="title" className={classes.photo} />
+  //       </Grid>
+  //       <Grid item>
+  //         <Grid container justifyContent="space-between" spacing={10}>
+  //           <Grid item className={classes.innerItem}>
+  //             <Button variant="contained" className={classes.actionbtn}>
+  //               <BsPlusCircleFill />
+  //             </Button>
+  //             1
+  //             <Button variant="contained" className={classes.actionbtn}>
+  //               <GrSubtractCircle />
+  //             </Button>
+  //           </Grid>
+  //           <Grid item className={classes.innerItem}>
+  //             $ {price}
+  //           </Grid>
+  //           <Grid item className={classes.innerItem}>
+  //             <Button variant="contained">
+  //               <MdDelete fontSize="large" color="red" />
+  //             </Button>
+  //           </Grid>
+  //         </Grid>
+  //       </Grid>
+  //     </Grid>
 
-      <Grid
-        container
-        justifyContent="space-around"
-        className={classes.fullouter2}
-        spacing={2}
-      >
-        <Grid item>
-          <b>Total</b>
-        </Grid>
-        <Grid item>${price * 2}</Grid>
-        <Button variant="contained" color="secondary">
-          <Grid item>CheckOut</Grid>
-        </Button>
-      </Grid>
-    </React.Fragment>
-  );
+  //     <Grid
+  //       container
+  //       justifyContent="space-around"
+  //       className={classes.fullouter2}
+  //       spacing={2}
+  //     >
+  //       <Grid item>
+  //         <b>Total</b>
+  //       </Grid>
+  //       <Grid item>${price * 2}</Grid>
+  //       <Button variant="contained" color="secondary">
+  //         <Grid item>CheckOut</Grid>
+  //       </Button>
+  //     </Grid>
+  //   </React.Fragment>
+  // );
 
-  const small = (
-    <React.Fragment>
-      <Grid
-        container
-        justifyContent="space-between"
-        alignItems="center"
-        className={classes.smallouter}
-      >
-        <Grid item>
-          <img src={pic} alt="title" className={classes.photo} />
-        </Grid>
-        <Grid item>
-          <Grid container direction="column" spacing={2}>
-            <Grid item>
-              Title:<b>Laptop</b>
-            </Grid>
-            <Grid item>
-              price:<b>{price}</b>
-            </Grid>
-            <Grid item>
-              <Button variant="outlined">
-                <BsPlusCircleFill />
-              </Button>
-              1
-              <Button variant="outlined">
-                <GrSubtractCircle />
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item>
-          <Grid item>
-            <Button variant="outlined">
-              <MdDelete fontSize="large" color="red" />
-            </Button>
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid
-        container
-        justifyContent="flex-end"
-        spacing={2}
-        alignItems="center"
-        className={classes.outer2}
-      >
-        <Grid item>
-          <b>Total</b>
-        </Grid>
-        <Grid item>
-          <b>${price}</b>
-        </Grid>
-        <Grid item>
-          <Button color="secondary" variant="contained">
-            CheckOUT
-          </Button>
-        </Grid>
-      </Grid>
-    </React.Fragment>
-  );
+  // const small = (
+
+  // );
 
   return (
     <div>
       <h2 className={classes.h2}>Cart Items</h2>
 
-      {matches ? small : full}
+      {/* {matches ? small : full}
+      {small} */}
+
+      {cartitems.map((item) => {
+        {
+          /* setcartitems(item.cartItems); */
+        }
+
+        console.log(item.cartItems);
+
+        return (
+          <React.Fragment>
+            <Grid
+              container
+              justifyContent="space-around"
+              alignItems="center"
+              className={classes.smallouter}
+              key={item._id}
+            >
+              <Grid item>
+                <img src={pic} alt="title" className={classes.photo} />
+              </Grid>
+              <Grid item>
+                <Grid container direction="column" spacing={2}>
+                  <Grid item>
+                    <b>Title:</b>
+                  </Grid>
+                  <Grid item>
+                    <b>price:</b>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="outlined">
+                      <BsPlusCircleFill />
+                    </Button>
+                    1
+                    <Button variant="outlined">
+                      <GrSubtractCircle />
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Grid item>
+                  <Button variant="outlined">
+                    <MdDelete fontSize="large" color="red" />
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              justifyContent="flex-end"
+              spacing={2}
+              alignItems="center"
+              className={classes.outer2}
+            >
+              <Grid item>
+                <b>Total</b>
+              </Grid>
+              <Grid item>
+                <b>${price}</b>
+              </Grid>
+              <Grid item>
+                <Button color="secondary" variant="contained">
+                  CheckOUT
+                </Button>
+              </Grid>
+            </Grid>
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 }

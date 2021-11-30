@@ -7,6 +7,8 @@ import ViewItem from "../Pages/ViewItem";
 import Cart from "../Pages/Cart";
 import axios from "axios";
 import { useEffect } from "react";
+import ContactUs from "../Pages/ContactUs";
+import AboutUs from "../Pages/AboutUs";
 
 const gettoken = localStorage.getItem("registertoken");
 
@@ -44,12 +46,8 @@ function Store() {
       <ProjectName />
       <Switch>
         <Route path="/store" exact component={Home} />
-        <Route path="/about" exact component={() => <div>About Page</div>} />
-        <Route
-          path="/contact"
-          exact
-          component={() => <div>Contact Page</div>}
-        />
+        <Route path="/about" exact component={AboutUs} />
+        <Route path="/contact/:_id" exact component={ContactUs} />
         <Route path="/home/view/:_id" exact component={ViewItem} />
         <Route path="/cart" exact component={Cart} />
       </Switch>
