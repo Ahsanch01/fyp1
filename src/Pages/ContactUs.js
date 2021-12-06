@@ -67,18 +67,27 @@ function UserRegister() {
           <Grid spacing={1} container justifyContent="center">
             <Grid item>
               <Grid container spacing={1} justifyContent="center">
-                <Grid item>
+                <Grid item xs={12} sm={12}>
                   <Typography variant="h4">
                     Feedback <FcFeedback color="blue" />
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={12}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     label="Email"
                     variant="outlined"
                     fullWidth
                     name="email"
                     {...register("email")}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="User_Name"
+                    variant="outlined"
+                    fullWidth
+                    name="id"
+                    {...register("id")}
                   />
                 </Grid>
 

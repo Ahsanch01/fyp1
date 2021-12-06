@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 
@@ -24,6 +24,13 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 function Categories({ filterItem, categories }) {
+  console.log("asasasa", categories);
+  const a = "abc";
+  useEffect(() => {
+    console.log("aqsa");
+    filterItem(["all"]);
+  }, []);
+  console.log("im n");
   const classes = useStyle();
   return (
     <Grid container className={classes.outer} spacing={2}>

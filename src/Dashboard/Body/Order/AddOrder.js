@@ -1,7 +1,7 @@
 import { Button, Grid, TextField, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
-
+// import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router";
 import DateFnsUtils from "@date-io/date-fns";
@@ -41,6 +41,21 @@ function AddNewOrder() {
   const [available, setAvailable] = useState("");
   const [category, setCategory] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
+  const [dropdownitem, setDropdownitem] = useState();
+
+  // useEffect(async () => {
+  //   await axios
+  //     .get("http://localhost:3007/API/categories")
+  //     .then((res, req) => {
+  //       // history.push("http://localhost:3000/store");
+  //       console.log(res.data);
+
+  //       setDropdownitem(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);

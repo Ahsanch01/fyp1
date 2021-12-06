@@ -1,10 +1,13 @@
 import { Button, Grid, TextField } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import { FcUpload } from "react-icons/fc";
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router";
 import DateFnsUtils from "@date-io/date-fns";
+import FlashMessage from "../../../Pages/FlashMessage";
+import AsyncSelect from "react-select/async";
+import axios from "axios";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -26,39 +29,127 @@ const useStyles = makeStyles((theme) => ({
     border: "1px dashed grey",
   },
 }));
-const Status = [
-  { value: "available", label: "Available" },
-  { value: "not-available", label: "Not Available" },
-];
-const Category = [
-  { vale: "computer", label: "Computer" },
-  { value: "mobile", label: "Mobile" },
-  { value: "tv", label: "TV" },
-];
+
 function AddNewProduct() {
   let history = useHistory();
   const classes = useStyles();
+  const [success, setSuccess] = useState(false);
   const { register, handleSubmit, control } = useForm();
-  const [available, setAvailable] = useState("");
-  const [category, setCategory] = useState("");
+  const [stateimage, Setsatateimage] = useState();
   const [selectedDate, setSelectedDate] = useState("");
+  const [productdata, setProductData] = useState({
+    name: "",
+    price: "",
+    stock: "",
+    color: "",
+    picture: "",
+    category: "",
+    date: "",
+    time: "",
+    description: "",
+  });
+  const {
+    name,
+    price,
+    stock,
+    color,
+    picture,
+    category,
+    date,
+    time,
+    description,
+  } = productdata;
+  let formData = new FormData();
+  // formData.append("data", productdata);
+  // console.log("formDATA", formData);
+  // formData.append("name", name);
+  // formData.append("price", price);
+  // formData.append("stock", stock);
+  // formData.append("color", color);
+  // formData.append("picture", picture);
+  // formData.append("category", category);
+  // formData.append("date", date);
+  // formData.append("time", time);
+  // formData.append("description", description);
 
+  // const staticData = () => {
+  //   formData.append("name", "ahsan");
+  //   formData.append("id", "124");
+  //   console.log(Array.from(formData));
+  //   for (let obj of formData) {
+  //     console.log(obj);
+  //   }
+  // };
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
-  const handleChange2 = (event) => {
-    setAvailable(event.target.value);
+  const f1 = async (info) => {
+    let formData = new FormData();
+    formData.append("name", info.name);
+    formData.append("price", info.price);
+    formData.append("id", info.id);
+    formData.append("stock", info.stock);
+    formData.append("color", info.color);
+    formData.append("image", info.image[0]);
+    formData.append("category", info.category);
+    formData.append("date", info.date);
+    formData.append("time", info.time);
+    formData.append("description", info.description);
+
+    console.log("clicked");
+    axios({
+      method: "post",
+      url: "http://localhost:3007/API/products",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then(function (response) {
+        //handle success
+        console.log(response);
+        setSuccess(true);
+      })
+      .catch(function (response) {
+        //handle error
+        console.log(response);
+      });
+
+    // info.image = stateimage;
+
+    // await axios
+    //   .post("http://localhost:3007/API/products", info, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
-  const handleChange1 = (event) => {
-    setCategory(event.target.value);
+  const handleimage = (e) => {
+    Setsatateimage(e.target.files[0]);
+    const selected = e.target.files[0];
+    const Allowed_Tpes = ["picture/*"];
+    if (selected && Allowed_Tpes) {
+      formData.append("picture", e.target.files[0]);
+      console.log("select");
+    } else {
+      console.log("file not supported");
+    }
   };
 
-  const page = () => {
-    history.goBack();
+  console.log(productdata);
+
+  const onSubmit = (data) => {
+    console.log(data);
+    // staticData();
+    setProductData(data);
+    f1(data);
   };
-  const onSubmit = (data) => console.log(data);
   return (
     <div>
       <h1>Add Product</h1>
@@ -85,16 +176,7 @@ function AddNewProduct() {
                     {...register("color")}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Quantity"
-                    variant="outlined"
-                    fullWidth
-                    name="quantity"
-                    type="number"
-                    {...register("quantity")}
-                  />
-                </Grid>
+
                 <Grid item xs={12} sm={6}>
                   <TextField
                     label="price"
@@ -104,54 +186,34 @@ function AddNewProduct() {
                     {...register("price")}
                   />
                 </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="id"
+                    variant="outlined"
+                    fullWidth
+                    name="id"
+                    {...register("id")}
+                  />
+                </Grid>
 
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    id="category"
-                    select
-                    fullWidth
                     label="Category"
-                    value={category}
-                    defaultValue=""
+                    variant="outlined"
+                    fullWidth
                     name="category"
                     {...register("category")}
-                    onChange={handleChange1}
-                    SelectProps={{
-                      native: true,
-                    }}
-                    helperText="Please select category"
-                    variant="outlined"
-                  >
-                    {Category.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    id="outlined-select-currency-native"
-                    select
-                    fullWidth
-                    name="status"
-                    {...register("status")}
-                    label="Status"
-                    value={available}
-                    defaultValue=""
-                    onChange={handleChange2}
-                    SelectProps={{
-                      native: true,
-                    }}
-                    helperText="Please select status"
+                    label="Stock"
                     variant="outlined"
-                  >
-                    {Status.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
+                    fullWidth
+                    name="stock"
+                    type="number"
+                    {...register("stock")}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={12}>
                   <TextField
@@ -161,8 +223,8 @@ function AddNewProduct() {
                     multiline
                     rows={4}
                     defaultValue=""
-                    name="desc"
-                    {...register("desc")}
+                    name="description"
+                    {...register("description")}
                     variant="outlined"
                   />
                 </Grid>
@@ -228,7 +290,15 @@ function AddNewProduct() {
                   />
                 </Grid>
                 <Grid item>
-                  <FcUpload size="3em" />
+                  <TextField
+                    name="image"
+                    type="file"
+                    onChange={handleimage}
+                    {...register("image")}
+                  />
+
+                  {/* <FcUpload size="3em" type="file" /> */}
+                  {/* </input> */}
                 </Grid>
               </Grid>
 
@@ -252,7 +322,7 @@ function AddNewProduct() {
                     color="secondary"
                     type="submit"
                     onClick={() => {
-                      history.push("/products");
+                      // history.push("/products");
                     }}
                   >
                     Add
@@ -262,6 +332,7 @@ function AddNewProduct() {
             </Grid>
           </Grid>
         </form>
+        {success ? <FlashMessage message={"product Added"} /> : ""}
       </Grid>
     </div>
   );

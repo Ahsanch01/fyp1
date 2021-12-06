@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, makeStyles } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -29,7 +29,9 @@ const useStyle = makeStyles({
   },
 });
 
-function Menu({ items }) {
+function Menu({ items, categories }) {
+  useEffect(() => {}, [categories]);
+  console.log("items", items);
   const classes = useStyle();
   return (
     <Grid
@@ -38,44 +40,53 @@ function Menu({ items }) {
       direction="row"
       justifyContent="space-evenly"
     >
-      {items.map((item) => {
-        const { _id, name, category, price, picture, description, color } =
-          item;
-        return (
-          <motion.div
-            key={_id}
-            initial={{ scale: 0 }}
-            animate={{ rotate: 360, scale: 1 }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 80,
-            }}
-            whileHover={{ scale: 1.1, color: "red" }}
-          >
-            <Grid item className={classes.gridback}>
-              <Grid container direction="column" alignItems="center">
-                <Grid item>
-                  <img className={classes.itemimg} src={picture} alt={name} />
-                </Grid>
-                <Grid container direction="row" justifyContent="space-around">
-                  <Grid item>
-                    <h4>{name}</h4>
-                  </Grid>
-                  <Grid item>
-                    <p>${price}</p>
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <Button
-                    className={classes.btn}
-                    component={Link}
-                    to={`/home/view/${_id}`}
-                    variant="contained"
-                  >
-                    View
-                  </Button>
-                  {/* <Button
+      {items != ""
+        ? items.map((item) => {
+            const { _id, name, category, price, picture, description, color } =
+              item;
+            return (
+              <motion.div
+                key={_id}
+                initial={{ scale: 0 }}
+                animate={{ rotate: 360, scale: 1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 80,
+                }}
+                whileHover={{ scale: 1.1, color: "red" }}
+              >
+                <Grid item className={classes.gridback}>
+                  <Grid container direction="column" alignItems="center">
+                    <Grid item>
+                      <img
+                        className={classes.itemimg}
+                        src={`http://localhost:3007/uploads/${picture}`}
+                        alt={name}
+                      />
+                    </Grid>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-around"
+                    >
+                      <Grid item>
+                        <h4>{name}</h4>
+                      </Grid>
+                      <Grid item>
+                        <p>${price}</p>
+                      </Grid>
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        className={classes.btn}
+                        component={Link}
+                        to={`/home/view/${_id}`}
+                        variant="contained"
+                      >
+                        View
+                      </Button>
+                      {/* <Button
                     className={classes.btn}
                     component={Link}
                     to="/cart"
@@ -84,12 +95,72 @@ function Menu({ items }) {
                   >
                     <AddShoppingCartIcon />
                   </Button> */}
+                    </Grid>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Grid>
-          </motion.div>
-        );
-      })}
+              </motion.div>
+            );
+          })
+        : categories.map((item) => {
+            const { _id, name, category, price, picture, description, color } =
+              item;
+            return (
+              <motion.div
+                key={_id}
+                initial={{ scale: 0 }}
+                animate={{ rotate: 360, scale: 1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 80,
+                }}
+                whileHover={{ scale: 1.1, color: "red" }}
+              >
+                <Grid item className={classes.gridback}>
+                  <Grid container direction="column" alignItems="center">
+                    <Grid item>
+                      <img
+                        className={classes.itemimg}
+                        src={`http://localhost:3007/uploads/${picture}`}
+                        alt={name}
+                      />
+                    </Grid>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-around"
+                    >
+                      <Grid item>
+                        <h4>{name}</h4>
+                      </Grid>
+                      <Grid item>
+                        <p>${price}</p>
+                      </Grid>
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        className={classes.btn}
+                        component={Link}
+                        to={`/home/view/${_id}`}
+                        variant="contained"
+                      >
+                        View
+                      </Button>
+                      {/* <Button
+                    className={classes.btn}
+                    component={Link}
+                    to="/cart"
+                    variant="contained"
+                   
+                  >
+                    <AddShoppingCartIcon />
+                  </Button> */}
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </motion.div>
+            );
+          })}
     </Grid>
   );
 }

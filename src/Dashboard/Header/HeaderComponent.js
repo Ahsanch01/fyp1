@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import Navbar from "./Nav/Navbar";
 import Sidebar from "./Sidenav/Sidenav";
@@ -11,8 +11,14 @@ import AddNewProduct from "../Body/Products/AddNewProduct";
 import SingleSale from "../Body/Sales/SingalSale";
 import AddNewSale from "../Body/Sales/AddNewSale";
 import Order from "../Body/Order/Order";
+import FlashMessage from "../../Pages/FlashMessage";
 import AddOrder from "../Body/Order/AddOrder";
 import { Box } from "@material-ui/core";
+import Category from "../Body/Category/category";
+import AddCategory from "../Body/Category/AddCategory";
+import EditCategory from "../Body/Category/EditCategory";
+import Message from "../Body/Message/Message";
+import axios from "axios";
 
 import { makeStyles } from "@material-ui/core";
 
@@ -29,8 +35,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const gettoken = localStorage.getItem("adminregistertoken");
+
+const f2 = async () => {
+  console.log(gettoken, "get token");
+  const data = {
+    token: gettoken,
+  };
+  console.log("from Activation api");
+
+  axios
+    .post("http://localhost:3007/API/admin/ActivateAccount", data)
+    .then((res) => {
+      // history.push("http://localhost:3000/store");
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 function HeaderComponent() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem("adminregistertoken")) {
+      f2();
+      setSuccess(true);
+    } else if (localStorage.getItem("admintoken")) {
+      console.log("u r logedin");
+      setSuccess(true);
+    } else {
+      console.log("Kindly register or use correct ");
+    }
+  }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -49,12 +87,14 @@ function HeaderComponent() {
         handleDrawerToggle={handleDrawerToggle}
         handleDrawerClose={handleDrawerClose}
       />
-
+      {success ? <FlashMessage message={"Your are logedIn"} /> : ""}
       <Box className={classes.wrapper}>
         <Switch>
           <Route path="/admin" exact component={Dashboard} />
+          <Route path="/admin/:token" exact component={Dashboard} />
           <Route path="/notification" exact component={Notification} />
           <Route path="/sales" exact component={Sales} />
+          <Route path="/message" exact component={Message} />
           <Route path="/products" exact component={Products} />
           <Route path="/products/add" exact component={AddNewProduct} />
           <Route path="/products/:productId" exact component={SingleProduct} />
@@ -62,6 +102,9 @@ function HeaderComponent() {
           <Route path="/sales/:saleId" exact component={SingleSale} />
           <Route path="/orders" exact component={Order} />
           <Route path="/orders/add" exact component={AddOrder} />
+          <Route path="/category" exact component={Category} />
+          <Route path="/category/add" exact component={AddCategory} />
+          <Route path="/category/:id" exact component={EditCategory} />
         </Switch>
       </Box>
     </div>

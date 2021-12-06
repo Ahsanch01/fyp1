@@ -14,6 +14,7 @@ import { FcMoneyTransfer } from "react-icons/fc";
 import { FcConferenceCall } from "react-icons/fc";
 import { FcSms } from "react-icons/fc";
 import { FcInfo } from "react-icons/fc";
+import { MdCategory } from "react-icons/md";
 
 import { Link, NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
@@ -72,6 +73,21 @@ function SideList({ handleDrawerClose }) {
       label: "Message",
       Link: "/message",
       icon: <FcSms size="2em" />,
+    },
+    {
+      label: "Notification",
+      Link: "/notification",
+      icon: <FcInfo size="2em" />,
+    },
+    {
+      label: "Category",
+      Link: "/category",
+      icon: <MdCategory style={{ color: "blue" }} size="2em" />,
+    },
+    {
+      label: "Notification",
+      Link: "/notification",
+      icon: <FcInfo size="2em" />,
     },
     {
       label: "Notification",

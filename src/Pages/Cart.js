@@ -14,10 +14,15 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     boxShadow: "0 5px 20px #777",
     marginBottom: "0.5em",
+    boxShadow: "0 5px 20px #777",
+    paddingLeft: "1em",
+    borderRadius: "8px",
+    // mx: "1em",
     [theme.breakpoints.down("md")]: {},
   },
   photo: {
     width: "100px",
+    borderRadius: "10px",
     height: "100px",
     borderBottom: "1px solid grey",
   },
@@ -62,6 +67,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const price = 2350;
 function Cart() {
+  console.log("testing cart");
+  const [productData, setProductData] = useState([]);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -70,7 +77,15 @@ function Cart() {
   useEffect(() => {
     axios
       .get("http://localhost:3007/API/cart")
-      .then((res) => setcartitems(res.data))
+      .then((res) => {
+        // debugger;
+        console.log("caaaart", res.data[0].cartItems);
+        let testing = res.data[0].cartItems;
+        setProductData(testing);
+        console.log("testing", testing);
+
+        setcartitems(res.data);
+      })
       .then((error) => console.log(error));
   }, []);
 
@@ -135,77 +150,100 @@ function Cart() {
     <div>
       <h2 className={classes.h2}>Cart Items</h2>
 
-      {/* {matches ? small : full}
-      {small} */}
+      <React.Fragment>
+        {/* <Grid
+          container
+          justifyContent="space-around"
+          alignItems="center"
+          className={classes.smallouter}
+          // key={._id}
+        > */}
 
-      {cartitems.map((item) => {
-        {
-          /* setcartitems(item.cartItems); */
-        }
-
-        console.log(item.cartItems);
-
-        return (
-          <React.Fragment>
-            <Grid
-              container
-              justifyContent="space-around"
-              alignItems="center"
-              className={classes.smallouter}
-              key={item._id}
-            >
-              <Grid item>
-                <img src={pic} alt="title" className={classes.photo} />
-              </Grid>
-              <Grid item>
-                <Grid container direction="column" spacing={2}>
-                  <Grid item>
-                    <b>Title:</b>
+        {console.log(
+          "testing1111",
+          productData.map((item, index) => {
+            console.log("testing22222", item.product.name);
+          })
+        )}
+        {productData.length > 0 &&
+          productData.map((item) => {
+            return (
+              <>
+                <Grid
+                  container
+                  direction="row"
+                  // spacing={1}
+                  justifyContent="space-between"
+                  alignItems="center"
+                  width="100%"
+                  style={{ padding: "1em 2em" }}
+                  className={classes.outer}
+                >
+                  <Grid item xs={3} sm={4.5}>
+                    <img
+                      src={`http://localhost:3007/uploads/${item.product.picture}`}
+                      alt="title"
+                      className={classes.photo}
+                    />
                   </Grid>
-                  <Grid item>
-                    <b>price:</b>
+                  <Grid item xs={3} sm={4.5} style={{ textAlign: "center" }}>
+                    <Grid container direction="column" colum>
+                      <Grid item style={{ marginBottom: "2px" }}>
+                        <b>Title :</b>
+                        {item.product.name}
+                      </Grid>
+                      <Grid item style={{ marginBottom: "2px" }}>
+                        <b>price : </b>
+                        {item.price}
+                      </Grid>
+
+                      <Grid item style={{ marginBottom: "2px" }}>
+                        {/* <Button variant="outlined">
+                          <BsPlusCircleFill />
+                        </Button> */}
+                        <b>Quantity :</b>
+                        {item.quantity}
+                        {/* <Button variant="outlined">
+                          <GrSubtractCircle />
+                        </Button> */}
+                      </Grid>
+                      <Grid item style={{ marginBottom: "2px" }}>
+                        <b>Price Total : </b>
+                        {item.price * item.quantity}
+                      </Grid>
+                    </Grid>
                   </Grid>
-                  <Grid item>
+                  <Grid item xs={3} sm={3} style={{ textAlign: "right" }}>
                     <Button variant="outlined">
-                      <BsPlusCircleFill />
-                    </Button>
-                    1
-                    <Button variant="outlined">
-                      <GrSubtractCircle />
+                      <MdDelete fontSize="large" color="red" />
                     </Button>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid item>
-                <Grid item>
-                  <Button variant="outlined">
-                    <MdDelete fontSize="large" color="red" />
-                  </Button>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              justifyContent="flex-end"
-              spacing={2}
-              alignItems="center"
-              className={classes.outer2}
-            >
-              <Grid item>
-                <b>Total</b>
-              </Grid>
-              <Grid item>
-                <b>${price}</b>
-              </Grid>
-              <Grid item>
-                <Button color="secondary" variant="contained">
-                  CheckOUT
-                </Button>
-              </Grid>
-            </Grid>
-          </React.Fragment>
-        );
-      })}
+              </>
+            );
+          })}
+
+        {/* </Grid> */}
+        <Grid
+          container
+          justifyContent="flex-end"
+          spacing={2}
+          alignItems="center"
+          className={classes.outer2}
+        >
+          <Grid item>
+            <b>Total</b>
+          </Grid>
+          <Grid item>
+            <b>${price}</b>
+          </Grid>
+          <Grid item>
+            <Button color="secondary" variant="contained">
+              CheckOUT
+            </Button>
+          </Grid>
+        </Grid>
+      </React.Fragment>
     </div>
   );
 }

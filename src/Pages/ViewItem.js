@@ -70,7 +70,7 @@ function ViewItem() {
   let cart = {
     cartItems: {
       product: `${item._id}`,
-      quantity: "1",
+      quantity: 1,
       price: `${item.price}`,
     },
   };
@@ -127,10 +127,10 @@ function ViewItem() {
           </Grid>
           <Grid container className={classes.inner} spacing={4}>
             <Grid className={classes.inneritem} item>
-              <b>Stiilll</b>
+              <b>Date</b>
             </Grid>
             <Grid className={classes.inneritem} item>
-              <p>Still</p>
+              {item.date}
             </Grid>
           </Grid>
           <Grid container className={classes.inner} spacing={4}>
@@ -152,13 +152,14 @@ function ViewItem() {
                 // to="/cart"
                 onClick={() => {
                   console.log(cart);
+                  console.log(user_id);
                   axios
                     .post(
                       `http://localhost:3007/API/cart/addtocart/${user_id}`,
                       cart
                     )
                     .then((res) => {
-                      console.log(res.data);
+                      console.log("add cart response    ", res.data);
                       setSuccess(true);
                     })
                     .then((error) => console.log(error));
@@ -175,7 +176,11 @@ function ViewItem() {
         <Grid item>
           <Grid container direction="column">
             <Grid item>
-              <img src={item.picture} className={classes.itemimg} alt="lp" />
+              <img
+                src={`http://localhost:3007/uploads/${item.picture}`}
+                className={classes.itemimg}
+                alt="lp"
+              />
             </Grid>
           </Grid>
         </Grid>

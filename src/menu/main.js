@@ -28,21 +28,23 @@ import axios from "axios";
 
 // const allCategories = ["all", ...new Set(items.map((item) => item.category))];
 
-function Main({ items }) {
-  // const [items, setItem] = useState([]);
-  // useEffect(async () => {
-  //   await axios
-  //     .get("http://localhost:3007/API/products")
-  //     .then((res) => {
-  //       let getitems = res.data;
-  //       setItem(getitems);
-  //       // console.log(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-  // console.log(items);
+function Main() {
+  useEffect(() => {}, []);
+  const [items, setItem] = useState([]);
+  useEffect(async () => {
+    await axios
+      .get("http://localhost:3007/API/products")
+      .then((res) => {
+        let getitems = res.data;
+        setCategories(res.data);
+        setItem(getitems);
+        console.log("ssssssssssssss:::", res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  console.log(items);
   // let items = [];
   // items = axios
   //   .get("http://localhost:3007/API/products")
@@ -55,29 +57,26 @@ function Main({ items }) {
 
   // const [menuItems, setmenuItem] = useState(items);
   // console.log(menuItems);
-  const allCategories = [
-    "all",
-    ...new Set(items.map((item) => item.category.name)),
-  ];
+  const allCategories = ["all", ...new Set(items.map((item) => item.category))];
   // console.log(allCategories);
-  const [categories, setCategories] = useState(allCategories);
-  console.log(categories);
-  const [menuItems, setmenuItem] = useState(items);
+  const [categories, setCategories] = useState([]);
+  console.log("awaaaaa", allCategories);
+  const [menuItems, setmenuItem] = useState(categories);
 
   const filterItem = (category) => {
     if (category === "all") {
       setmenuItem(items);
       return;
     }
-    const newItems = items.filter((item) => item.category.name === category);
+    const newItems = items.filter((item) => item.category === category);
     setmenuItem(newItems);
   };
-  console.log(menuItems);
+  console.log("sssss::", menuItems);
 
   return (
     <div>
       <Category categories={allCategories} filterItem={filterItem} />
-      <Menu items={menuItems} />
+      <Menu items={menuItems} categories={categories} />
     </div>
   );
 }

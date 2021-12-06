@@ -25,24 +25,24 @@ const useStyle = makeStyles({
 });
 
 function Home() {
-  const [items, setItem] = useState([]);
-  useEffect(async () => {
-    await axios
-      .get("http://localhost:3007/API/products")
-      .then((res) => {
-        let getitems = res.data;
-        setItem(getitems);
-        // console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [items]);
-  console.log(items);
+  // const [items, setItem] = useState([]);
+  // useEffect(async () => {
+  //   await axios
+  //     .get("http://localhost:3007/API/products")
+  //     .then((res) => {
+  //       let getitems = res.data;
+  //       setItem(getitems);
+  //       // console.log(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+  // console.log(items);
   const classes = useStyle();
   return (
     <>
-      <Main items={items} />
+      <Main />
     </>
   );
 }

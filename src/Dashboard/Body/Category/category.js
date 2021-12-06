@@ -1,12 +1,12 @@
 import { DataGrid } from "@material-ui/data-grid";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-// import pic from "../../../pics/m1.jpg";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { FcPrint } from "react-icons/fc";
+import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import FlashMessage from "../../../Pages/FlashMessage";
-import sales from "../DisplayItem";
+import EditCategory from "../Category/EditCategory";
 import axios from "axios";
 const useStyles = makeStyles((theme) => ({
   miandiv: {
@@ -37,19 +37,18 @@ const useStyles = makeStyles((theme) => ({
   edit: {},
 }));
 
-function Products() {
+function Category() {
   const classes = useStyles();
+  let history = useHistory();
   let { path, url } = useRouteMatch();
-  const [data, setDate] = useState(sales);
+  // const [data, setDate] = useState(orders);
   const [rowdata, setRowdata] = useState([]);
   const [success, setSuccess] = useState(false);
-  let history = useHistory();
-
   const handleDelete = (_id) => {
     console.log(_id);
 
     axios
-      .delete(`http://localhost:3007/API/products/${_id}`)
+      .delete(`http://localhost:3007/API/categories/${_id}`)
       .then((res) => {
         // history.push("http://localhost:3000/store");
         console.log(res.data);
@@ -63,9 +62,51 @@ function Products() {
       });
   };
 
+  const columns = [
+    { field: "id", headerName: "ID", width: 195 },
+    {
+      field: "name",
+      headerName: "Category_Name",
+      width: 400,
+      editable: true,
+    },
+
+    {
+      field: "action",
+      headerName: "Action",
+      renderCell: (params) => {
+        return (
+          <>
+            <Link>
+              <Button
+                variant="contained"
+                style={{
+                  marginRight: "5px",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleDelete(params.row._id)}
+              >
+                <DeleteOutlineIcon
+                  style={{ color: "red", marginRight: "5px" }}
+                />
+              </Button>
+            </Link>
+
+            <Link to={`${url}/${params.row._id}`}>
+              <Button variant="contained">
+                <EditIcon style={{ color: "blue", cursor: "pointer" }} />
+              </Button>
+            </Link>
+          </>
+        );
+      },
+      width: 260,
+    },
+  ];
+
   useEffect(async () => {
     await axios
-      .get("http://localhost:3007/API/products")
+      .get("http://localhost:3007/API/categories")
       .then((res, req) => {
         // history.push("http://localhost:3000/store");
         console.log(res.data);
@@ -76,87 +117,14 @@ function Products() {
         console.log(err);
       });
   }, []);
+  console.log(rowdata);
 
-  const columns = [
-    { field: "id", headerName: "ID", width: 100 },
+  const rows = [
     {
-      field: "name",
-      headerName: "Name",
-      width: 190,
-      editable: true,
-      renderCell: (params) => {
-        return (
-          <>
-            <img
-              src={`http://localhost:3007/uploads/${params.row.picture}`}
-              style={{ width: "50px", height: "50px", marginRight: "5px" }}
-              alt=""
-            />
-            {params.row.name}
-          </>
-        );
-      },
-    },
-    {
-      field: "stock",
-      headerName: "Stock",
-      type: "number",
-      width: 140,
-      editable: true,
-    },
-    {
-      field: "color",
-      headerName: "Color",
-      width: 130,
-      editable: true,
-    },
-    {
-      field: "price",
-      headerName: "Price",
-      width: 130,
-      editable: true,
-    },
-    {
-      field: "date",
-      headerName: "Date",
-      width: 130,
-      editable: true,
-    },
-    {
-      field: "time",
-      headerName: "Time",
-      width: 130,
-      editable: true,
-    },
-    {
-      field: "action",
-      headerName: "Action",
-      renderCell: (params) => {
-        return (
-          <>
-            <Button
-              variant="contained"
-              style={{
-                marginRight: "5px",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(params.row._id)}
-            >
-              <DeleteOutlineIcon style={{ color: "red", marginRight: "5px" }} />
-            </Button>
-
-            <Link to={`${url}/:productId` + params.row._id}>
-              <Button variant="contained">
-                <EditIcon style={{ color: "blue", cursor: "pointer" }} />
-              </Button>
-            </Link>
-          </>
-        );
-      },
-      width: 160,
+      id: 1,
+      name: "Ahsan",
     },
   ];
-
   return (
     <>
       <Grid
@@ -167,15 +135,11 @@ function Products() {
       >
         <Grid item>
           <Typography variant="h3" className={classes.title}>
-            Products
+            Category
           </Typography>
         </Grid>
         <Grid item>
-          <Link
-            to="/products/add"
-            to={`${url}/add`}
-            style={{ textDecoration: "none" }}
-          >
+          <Link to={`${url}/add`} style={{ textDecoration: "none" }}>
             <Button
               variant="contained"
               style={{
@@ -184,16 +148,17 @@ function Products() {
                 cursor: "pointer",
               }}
             >
-              Add New
+              Add Category
             </Button>
           </Link>
         </Grid>
       </Grid>
+
       <div className={classes.miandiv}>
         <DataGrid
           rows={rowdata}
           columns={columns}
-          pageSize={7}
+          pageSize={5}
           checkboxSelection
           disableSelectionOnClick
         />
@@ -203,4 +168,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default Category;

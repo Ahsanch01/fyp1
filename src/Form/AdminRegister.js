@@ -39,14 +39,14 @@ function UserRegister() {
   let history = useHistory();
   const classes = useStyles();
   const [success, setSuccess] = useState(false);
-  const { register, handleSubmit, control } = useForm();
+  const { register, handleSubmit, reset, control } = useForm();
 
   const functionName = async (info) => {
     axios
-      .post("http://localhost:3007/API/users/register", info)
+      .post("http://localhost:3007/API/admin/register", info)
       .then((res) => {
         const { token } = res.data;
-        localStorage.setItem("registertoken", token);
+        localStorage.setItem("adminregistertoken", token);
         console.log(res.data);
         setSuccess(true);
 
@@ -74,8 +74,10 @@ function UserRegister() {
   // };
 
   const onSubmit = (data) => {
-    // console.log(data);
+    console.log(data);
+
     functionName(data);
+    // reset();
     // f2();
   };
 
@@ -86,7 +88,7 @@ function UserRegister() {
           <Grid spacing={2} container justifyContent="center">
             <Grid item>
               <Typography variant="h4">
-                Register <IoIosPersonAdd color="blue" />
+                Admin Register <IoIosPersonAdd color="blue" />
               </Typography>
             </Grid>
             <Grid item>
@@ -187,7 +189,7 @@ function UserRegister() {
             </Grid>
           </Grid>
         </form>
-        {success ? <FlashMessage message={"Check Email"} /> : " "}
+        {success ? <FlashMessage message={"Check your Email"} /> : " "}
       </Grid>
     </div>
   );
