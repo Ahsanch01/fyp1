@@ -1,11 +1,13 @@
 import { DataGrid } from "@material-ui/data-grid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-import pic from "../../../pics/m1.jpg";
+import { FcPrint } from "react-icons/fc";
 import { Link, useRouteMatch } from "react-router-dom";
-import sales from "../DisplayItem";
+import orders from "../OrderList";
+import { orderplaced } from "../../../Actions/Order";
+import { getSales } from "../../../Actions/Getsales";
 
 const useStyles = makeStyles((theme) => ({
   miandiv: {
@@ -39,76 +41,57 @@ const useStyles = makeStyles((theme) => ({
 function Sales() {
   const classes = useStyles();
   let { path, url } = useRouteMatch();
-  const [data, setDate] = useState(sales);
+  const [data, setDate] = useState([]);
   const handleDelete = (id) => {
     setDate(data.filter((item) => item.id !== id));
   };
+  useEffect(() => {
+    getSales(setDate);
+  }, []);
 
+  console.log(data, "data");
   const columns = [
-    { field: "id", headerName: "ID", width: 100 },
+    { field: "id", headerName: "ID", width: 95 },
     {
-      field: "Name",
-      headerName: "Name",
-      width: 190,
-      editable: true,
-      renderCell: (params) => {
-        return (
-          <>
-            <img
-              src={params.row.avatar}
-              style={{ width: "50px", height: "50px", marginRight: "5px" }}
-              alt=""
-            />
-            {params.row.Name}
-          </>
-        );
-      },
+      field: "customerName",
+      headerName: "Customer_Name",
+      width: 200,
     },
     {
-      field: "quantity",
-      headerName: "Quantity",
+      field: "number",
+      headerName: "Customer_Number",
+      width: 200,
+    },
+    {
+      field: "totalprice",
+      headerName: "Total_Price",
+
+      width: 160,
+    },
+    {
+      field: "address",
+      headerName: "Address",
       type: "number",
-      width: 140,
-      editable: true,
+      width: 150,
+      editable: !true,
     },
+
     {
       field: "status",
       headerName: "Status",
-      width: 130,
+      width: 150,
       editable: true,
     },
-    {
-      field: "price",
-      headerName: "Price",
-      width: 130,
-      editable: true,
-    },
-    {
-      field: "action",
-      headerName: "Action",
-      renderCell: (params) => {
-        return (
-          <>
-            <Button
-              variant="contained"
-              style={{
-                marginRight: "5px",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(params.row.id)}
-            >
-              <DeleteOutlineIcon style={{ color: "red", marginRight: "5px" }} />
-            </Button>
+  ];
 
-            <Link to={`${url}/:saleId` + params.row.id}>
-              <Button variant="contained">
-                <EditIcon style={{ color: "blue", cursor: "pointer" }} />
-              </Button>
-            </Link>
-          </>
-        );
-      },
-      width: 160,
+  const rows = [
+    {
+      id: 1,
+      CustomerName: "Ahsan123",
+      number: "03134162172",
+      totalprice: 1290,
+      totalproducts: 3,
+      status: "paid",
     },
   ];
 
@@ -125,29 +108,17 @@ function Sales() {
             Sales
           </Typography>
         </Grid>
-        <Grid item>
-          <Link to={`${url}/add`} style={{ textDecoration: "none" }}>
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "green",
-                color: "white",
-                cursor: "pointer",
-              }}
-            >
-              Add Sale
-            </Button>
-          </Link>
-        </Grid>
       </Grid>
       <div className={classes.miandiv}>
-        <DataGrid
-          rows={data}
-          columns={columns}
-          pageSize={7}
-          checkboxSelection
-          disableSelectionOnClick
-        />
+        {data.length > 0 && (
+          <DataGrid
+            rows={data}
+            columns={columns}
+            pageSize={5}
+            checkboxSelection
+            disableSelectionOnClick
+          />
+        )}
       </div>
     </>
   );

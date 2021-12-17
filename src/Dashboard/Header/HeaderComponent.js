@@ -18,6 +18,10 @@ import Category from "../Body/Category/category";
 import AddCategory from "../Body/Category/AddCategory";
 import EditCategory from "../Body/Category/EditCategory";
 import Message from "../Body/Message/Message";
+import People from "../Body/people/People";
+import Expense from "../Body/Expense/Expense";
+import AddExpense from "../Body/Expense/AddExpense";
+import EditExpense from "../Body/Expense/EditExpense";
 import axios from "axios";
 
 import { makeStyles } from "@material-ui/core";
@@ -25,6 +29,7 @@ import { makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   wrapper: {
     height: "100vh",
+    marginTop: "1.5em",
     // backgroundColor: "#27ABEB",
     padding: theme.spacing(6, 2, 0, 32),
 
@@ -95,6 +100,11 @@ function HeaderComponent() {
           <Route path="/notification" exact component={Notification} />
           <Route path="/sales" exact component={Sales} />
           <Route path="/message" exact component={Message} />
+          <Route path="/people" exact component={People} />
+          <Route path="/expense" exact component={Expense} />
+          <Route path="/expense/add" exact component={AddExpense} />
+          <Route path="/expense/:id" exact component={EditExpense} />
+
           <Route path="/products" exact component={Products} />
           <Route path="/products/add" exact component={AddNewProduct} />
           <Route path="/products/:productId" exact component={SingleProduct} />

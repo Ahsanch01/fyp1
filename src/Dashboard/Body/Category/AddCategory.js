@@ -106,7 +106,7 @@ function AddCategory() {
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                      //   history.push("/orders");
+                      history.push("/category");
                     }}
                   >
                     Cencel

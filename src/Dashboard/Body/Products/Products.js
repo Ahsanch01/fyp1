@@ -78,7 +78,7 @@ function Products() {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "ID", width: 100 },
+    // { field: "id", headerName: "ID", width: 100 },
     {
       field: "name",
       headerName: "Name",
@@ -189,15 +189,17 @@ function Products() {
           </Link>
         </Grid>
       </Grid>
-      <div className={classes.miandiv}>
-        <DataGrid
-          rows={rowdata}
-          columns={columns}
-          pageSize={7}
-          checkboxSelection
-          disableSelectionOnClick
-        />
-      </div>
+      {rowdata.length > 0 && (
+        <div className={classes.miandiv}>
+          <DataGrid
+            rows={rowdata}
+            columns={columns}
+            pageSize={7}
+            checkboxSelection
+            disableSelectionOnClick
+          />
+        </div>
+      )}
       {success ? <FlashMessage message={"Category Delete"} /> : ""}
     </>
   );

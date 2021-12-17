@@ -5,7 +5,8 @@ import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router";
 import axios from "axios";
 import { BiLogInCircle } from "react-icons/bi";
-
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   div: {
@@ -27,11 +28,21 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
+let schema = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup.string().required(),
+});
 function Login() {
   let history = useHistory();
   const classes = useStyles();
-  const { register, handleSubmit, reset, control } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   // const [available, setAvailable] = useState("");
   // const [category, setCategory] = useState("");
   // const [selectedDate, setSelectedDate] = useState("");
@@ -84,6 +95,7 @@ function Login() {
                   name="email"
                   {...register("email")}
                 />
+                <p style={{ color: "red" }}>{errors.email?.message}</p>
               </Grid>
               <Grid item xs={12}>
                 <TextField

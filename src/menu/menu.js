@@ -131,7 +131,7 @@ function Menu({ items, categories }) {
                       justifyContent="space-around"
                     >
                       <Grid item>
-                        <h4>{name}</h4>
+                        <h5>{name}</h5>
                       </Grid>
                       <Grid item>
                         <p>${price}</p>

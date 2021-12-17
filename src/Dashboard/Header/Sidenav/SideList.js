@@ -74,25 +74,15 @@ function SideList({ handleDrawerClose }) {
       Link: "/message",
       icon: <FcSms size="2em" />,
     },
-    {
-      label: "Notification",
-      Link: "/notification",
-      icon: <FcInfo size="2em" />,
-    },
+    // {
+    //   label: "Notification",
+    //   Link: "/notification",
+    //   icon: <FcInfo size="2em" />,
+    // },
     {
       label: "Category",
       Link: "/category",
       icon: <MdCategory style={{ color: "blue" }} size="2em" />,
-    },
-    {
-      label: "Notification",
-      Link: "/notification",
-      icon: <FcInfo size="2em" />,
-    },
-    {
-      label: "Notification",
-      Link: "/notification",
-      icon: <FcInfo size="2em" />,
     },
   ];
   return (

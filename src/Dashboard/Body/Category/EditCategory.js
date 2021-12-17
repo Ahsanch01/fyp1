@@ -7,6 +7,11 @@ import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router";
 import { Link, useParams } from "react-router-dom";
 import Editform from "./Editform";
+import {
+  getCategory,
+  editCategory,
+} from "../../../Actions/Categories/category";
+import { Form } from "react-bootstrap";
 const useStyles = makeStyles((theme) => ({
   img: {
     width: "250px",
@@ -27,29 +32,19 @@ function AddCategory() {
   let history = useHistory();
   let { id } = useParams();
   const classes = useStyles();
-  const [getData, setData] = useState([]);
+  const [getData, setData] = useState({});
 
   const { register, handleSubmit, reset, control } = useForm();
 
   const [success, setSuccess] = useState(false);
 
-  useEffect(async () => {
-    console.log(id);
+  useEffect(() => {
+    console.log(id, "ididididididididid");
 
-    await axios
-      .get(`http://localhost:3007/API/categories/${id}`)
-      .then((res) => {
-        console.log(res?.data);
-
-        setData(res?.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getCategory(id, setData);
   }, []);
 
-  console.log(getData);
-  console.log(getData.name);
+  console.log(getData, "getDatagetDatagetDatagetData");
   console.log(getData.id);
 
   let Name = getData.name;
@@ -57,25 +52,36 @@ function AddCategory() {
   const [dataName, setDataname] = useState(getData?.name);
   console.log(dataName);
 
-  const functionName = async (data) => {
-    await axios
-      .put(`http://localhost:3007/API/categories/${id}`, data)
-      .then((res) => {
-        console.log(res.data);
-        setSuccess(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    setSuccess(false);
-  };
+  // const functionName = async (data, history) => {
+
+  //   editCategory( data, history,id,setSuccess)
+  //   // await axios
+  //   //   .put(`http://localhost:3007/API/categories/${id}`, data)
+  //   //   .then((res) => {
+  //   //     console.log(res.data);
+  //   //     history.push("/category");
+  //   //     setSuccess(true);
+  //   //   })
+  //   //   .catch((err) => {
+  //   //     console.log(err);
+  //   //   });
+  //   // setSuccess(false);
+  // };
 
   const onSubmit = (data) => {
+    debugger;
     console.log(data);
-    functionName(data);
+    if (!data.id) {
+      data.id = getData.id;
+    }
+    if (!data.name) {
+      data.name = getData.name;
+    }
+    // functionName(data, history);
+    editCategory(data, history, id, setSuccess);
     reset();
   };
-  const handlechange = (e) => {};
+
   return (
     <div>
       <h1>Add Category</h1>
@@ -88,31 +94,56 @@ function AddCategory() {
       <Grid container className={classes.maingrid} justifyContent="center">
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid spacing={2} container justifyContent="center">
-            <Grid item md={12}>
+            <Grid item sm={12} md={12}>
               <Typography variant="h5"> Edit Details</Typography>
             </Grid>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                value={dataName}
-                onChange={(e) => {
-                  setDataname(e.target.value);
-                }}
+            {/* <Grid item xs={12} sm={12}> */}
+            {/* <TextField
+                // value={dataName}
+                onChange={handleChange}
                 variant="outlined"
                 fullWidth
                 type="text"
                 name="name"
                 {...register("name")}
-              />
+              /> */}
+            <Grid item>
+              <Grid container>
+                <Grid item>
+                  <Form.Group style={{ marginRight: ".25em" }} className="mb-3">
+                    <Form.Label> Category Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="name"
+                      {...register("name")}
+                      defaultValue={getData.name && getData.name}
+                      placeholder="Enter category name"
+                    />
+                  </Form.Group>
+                </Grid>
+                <Grid item>
+                  <Form.Group style={{ marginLeft: ".25em" }} className="mb-3">
+                    <Form.Label> Category Id</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="id"
+                      {...register("id")}
+                      defaultValue={getData.id && getData.id}
+                      placeholder="Enter Id"
+                    />
+                  </Form.Group>
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={12}>
+            {/* </Grid> */}
+            {/* <Grid item xs={12} sm={12}>
               <TextField
-                value={getData.id}
                 variant="outlined"
                 fullWidth
                 name="id"
                 {...register("id")}
               />
-            </Grid>
+            </Grid> */}
 
             <Grid item>
               <Grid container justifyContent="center" spacing={1}>
@@ -121,7 +152,7 @@ function AddCategory() {
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                      //   history.push("/orders");
+                      history.push("/category");
                     }}
                   >
                     Cencel

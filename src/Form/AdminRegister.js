@@ -7,7 +7,8 @@ import axios from "axios";
 import { IoIosPersonAdd } from "react-icons/io";
 import { Link } from "react-router-dom";
 import FlashMessage from "../Pages/FlashMessage";
-
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 const useStyles = makeStyles((theme) => ({
   div: {
     display: "flex",
@@ -34,12 +35,28 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "3em",
   },
 }));
+let schema = yup.object().shape({
+  firstname: yup.string().min(3).max(15).required(),
+  lastname: yup.string().min(3).max(15).required(),
+  id: yup.string().min(5).max(15).required(),
+  email: yup.string().email().required(),
+  password: yup.string().required(),
+  confirmpassword: yup.string().oneOf([yup.ref("password"), null]),
+  contact: yup.number().required(),
+});
 
 function UserRegister() {
   let history = useHistory();
   const classes = useStyles();
   const [success, setSuccess] = useState(false);
-  const { register, handleSubmit, reset, control } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const functionName = async (info) => {
     axios
@@ -101,6 +118,7 @@ function UserRegister() {
                     name="firstname"
                     {...register("firstname")}
                   />
+                  <p style={{ color: "red" }}>{errors.firstname?.message}</p>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -110,6 +128,7 @@ function UserRegister() {
                     name="lastname"
                     {...register("lastname")}
                   />
+                  <p style={{ color: "red" }}>{errors.lastname?.message}</p>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -129,6 +148,8 @@ function UserRegister() {
                     name="contact"
                     {...register("contact")}
                   />
+
+                  <p style={{ color: "red" }}>{errors.contact?.message}</p>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -138,6 +159,8 @@ function UserRegister() {
                     name="username"
                     {...register("username")}
                   />
+
+                  <p style={{ color: "red" }}>{errors.username?.message}</p>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -147,6 +170,8 @@ function UserRegister() {
                     name="email"
                     {...register("email")}
                   />
+
+                  <p style={{ color: "red" }}>{errors.email?.message}</p>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -156,6 +181,8 @@ function UserRegister() {
                     name="password"
                     {...register("password")}
                   />
+
+                  <p style={{ color: "red" }}>{errors.password?.message}</p>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -165,6 +192,10 @@ function UserRegister() {
                     name="confirmpassword"
                     {...register("confirmpassword")}
                   />
+
+                  <p style={{ color: "red" }}>
+                    {errors.confirmpassword?.message}
+                  </p>
                 </Grid>
 
                 <Grid

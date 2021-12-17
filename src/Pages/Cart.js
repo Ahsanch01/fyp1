@@ -8,7 +8,9 @@ import { MdDelete } from "react-icons/md";
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core";
 import { useState, useEffect } from "react";
+import Popup from "./Popup";
 import axios from "axios";
+import { OrderCheckout } from "../Actions/Order";
 const useStyles = makeStyles((theme) => ({
   outer: {
     backgroundColor: "white",
@@ -65,24 +67,50 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
   },
 }));
-const price = 2350;
 function Cart() {
   console.log("testing cart");
   const [productData, setProductData] = useState([]);
+  const [openPopup, setOpenPopup] = useState(false);
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("md"));
+  const user_id = localStorage.getItem("userID");
+  // const matches = useMediaQuery(theme.breakpoints.down("md"));
+  let price = 0;
+  const handleCheckout = () => {
+    debugger;
+
+    const addr = localStorage.getItem("address");
+    const payload = {
+      address: addr,
+      totalAmount: price,
+      payment: "COD",
+      items: productData.map((data) => {
+        return {
+          product: data.product,
+          quantity: data.quantity,
+        };
+      }),
+    };
+    debugger;
+    OrderCheckout(payload);
+  };
 
   const classes = useStyles();
   const [cartitems, setcartitems] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3007/API/cart")
+      .get(`http://localhost:3007/API/cart/${user_id}`)
       .then((res) => {
         // debugger;
-        console.log("caaaart", res.data[0].cartItems);
-        let testing = res.data[0].cartItems;
+        console.log("first data", res.data);
+        // console.log("first data", res.data);
+        // console.log("caaaart", res.data[0].cartItems);
+        // // let testing = res.data[0].cartItems;
+        // let testing = res.data.cartItems[0];
+        let testing = res.data.cartItems;
         setProductData(testing);
-        console.log("testing", testing);
+        // console.log("testing", testing.price);
+        // console.log("testing", testing.quantity);
+        // console.log("testing", testing.quantity);
 
         setcartitems(res.data);
       })
@@ -147,6 +175,8 @@ function Cart() {
   // );
 
   return (
+    // <p>heololololoo</p>
+
     <div>
       <h2 className={classes.h2}>Cart Items</h2>
 
@@ -167,6 +197,7 @@ function Cart() {
         )}
         {productData.length > 0 &&
           productData.map((item) => {
+            price += item.price * item.quantity;
             return (
               <>
                 <Grid
@@ -214,7 +245,20 @@ function Cart() {
                     </Grid>
                   </Grid>
                   <Grid item xs={3} sm={3} style={{ textAlign: "right" }}>
-                    <Button variant="outlined">
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        console.log("user ID", user_id);
+                        console.log("id ID", item.product._id);
+                        axios
+                          .delete(
+                            `http://localhost:3007/API/cart/${user_id}/${item.product._id}`
+                          )
+                          .then((res) => {
+                            console.log(res.data);
+                          });
+                      }}
+                    >
                       <MdDelete fontSize="large" color="red" />
                     </Button>
                   </Grid>
@@ -235,14 +279,19 @@ function Cart() {
             <b>Total</b>
           </Grid>
           <Grid item>
-            <b>${price}</b>
+            <b>${price && price}</b>
           </Grid>
           <Grid item>
-            <Button color="secondary" variant="contained">
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={() => setOpenPopup(true)}
+            >
               CheckOUT
             </Button>
           </Grid>
         </Grid>
+        <Popup openPopup={openPopup} handleCheckout={handleCheckout} />
       </React.Fragment>
     </div>
   );

@@ -12,8 +12,11 @@ const useStyle = makeStyles((theme) => ({
     backgroundColor: "white",
     borderRadius: "10px",
     boxShadow: "0 5px 20px #777",
-    marginTop: "1em",
+    marginTop: "3em",
     marginBottom: "1em",
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "2em",
+    },
   },
   h1: {
     backgroundColor: "#03a9f4",
@@ -53,21 +56,22 @@ function ProjectName() {
       spacing={0}
     >
       <motion.Grid
-        whileHover={{ scale: 1.03, originX: 0 }}
-        transition={{ type: "spring", duration: 1.5 }}
+        whileHover={{ scale: 1, originX: 0 }}
+        transition={{ type: "spring", duration: 0.5 }}
         item
       >
         <h2 className={classes.h1}>
-          <a href="/admin" style={{ textDecoration: "none" }}>
-            tenant
+          {/* href="/admin" */}
+          <a style={{ textDecoration: "none" }}>
+            Shop
             <AiOutlineDashboard color="white" size="1em" />
           </a>
         </h2>
       </motion.Grid>
 
       <motion.Grid
-        whileHover={{ scale: 1.01, originX: 0 }}
-        transition={{ type: "spring", duration: 1.5 }}
+        whileHover={{ scale: 1.03, originX: 0 }}
+        transition={{ type: "spring", duration: 0.5 }}
         item
       >
         <Button

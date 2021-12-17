@@ -46,7 +46,6 @@ function Category() {
   const [success, setSuccess] = useState(false);
   const handleDelete = (_id) => {
     console.log(_id);
-
     axios
       .delete(`http://localhost:3007/API/categories/${_id}`)
       .then((res) => {
@@ -61,14 +60,13 @@ function Category() {
         console.log(err);
       });
   };
-
+  console.log(rowdata, "rowdatarowdatarowdata");
   const columns = [
-    { field: "id", headerName: "ID", width: 195 },
+    // { field: "id", headerName: "ID", width: 195 },
     {
       field: "name",
-      headerName: "Category_Name",
-      width: 400,
-      editable: true,
+      headerName: "Name",
+      width: 320,
     },
 
     {
@@ -100,14 +98,16 @@ function Category() {
           </>
         );
       },
-      width: 260,
+      width: 360,
     },
   ];
 
-  useEffect(async () => {
-    await axios
+  useEffect(() => {
+    debugger;
+    axios
       .get("http://localhost:3007/API/categories")
       .then((res, req) => {
+        debugger;
         // history.push("http://localhost:3000/store");
         console.log(res.data);
 
@@ -119,12 +119,12 @@ function Category() {
   }, []);
   console.log(rowdata);
 
-  const rows = [
-    {
-      id: 1,
-      name: "Ahsan",
-    },
-  ];
+  // const rows = [
+  //   {
+  //     id: 1,
+  //     name: "Ahsan",
+  //   },
+  // ];
   return (
     <>
       <Grid
@@ -154,15 +154,17 @@ function Category() {
         </Grid>
       </Grid>
 
-      <div className={classes.miandiv}>
-        <DataGrid
-          rows={rowdata}
-          columns={columns}
-          pageSize={5}
-          checkboxSelection
-          disableSelectionOnClick
-        />
-      </div>
+      {rowdata.length > 0 && (
+        <div className={classes.miandiv}>
+          <DataGrid
+            rows={rowdata}
+            columns={columns}
+            pageSize={5}
+            checkboxSelection
+            disableSelectionOnClick
+          />
+        </div>
+      )}
       {success ? <FlashMessage message={"Category Delete"} /> : ""}
     </>
   );

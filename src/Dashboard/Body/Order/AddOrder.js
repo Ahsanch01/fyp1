@@ -43,20 +43,6 @@ function AddNewOrder() {
   const [selectedDate, setSelectedDate] = useState("");
   const [dropdownitem, setDropdownitem] = useState();
 
-  // useEffect(async () => {
-  //   await axios
-  //     .get("http://localhost:3007/API/categories")
-  //     .then((res, req) => {
-  //       // history.push("http://localhost:3000/store");
-  //       console.log(res.data);
-
-  //       setDropdownitem(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };

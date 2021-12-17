@@ -1,13 +1,13 @@
 import { DataGrid } from "@material-ui/data-grid";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-import { FcPrint } from "react-icons/fc";
+import pic from "../../../pics/m1.jpg";
 import { Link, useRouteMatch, useHistory } from "react-router-dom";
-import FlashMessage from "../../../Pages/FlashMessage";
-import EditCategory from "../Category/EditCategory";
+import sales from "../DisplayItem";
 import axios from "axios";
+
 const useStyles = makeStyles((theme) => ({
   miandiv: {
     // width: "100%",
@@ -37,24 +37,26 @@ const useStyles = makeStyles((theme) => ({
   edit: {},
 }));
 
-function Message() {
-  const classes = useStyles();
+function Expense() {
   let history = useHistory();
+  const classes = useStyles();
   let { path, url } = useRouteMatch();
-  // const [data, setDate] = useState(orders);
   const [rowdata, setRowdata] = useState([]);
-  const [success, setSuccess] = useState(false);
+  // const [data, setDate] = useState(sales);
+  // const handleDelete = (id) => {
+  //   setDate(data.filter((item) => item.id !== id));
+  // };
+
   const handleDelete = (_id) => {
     console.log(_id);
-
     axios
-      .delete(`http://localhost:3007/API/feedback/${_id}`)
+      .delete(`http://localhost:3007/API/expense/${_id}`)
       .then((res) => {
         // history.push("http://localhost:3000/store");
         console.log(res.data);
 
         setRowdata(rowdata);
-        setSuccess(true);
+
         history.push("/admin");
       })
       .catch((err) => {
@@ -63,49 +65,76 @@ function Message() {
   };
 
   const columns = [
-    // { field: "id", headerName: "Name", width: 195 },
+    // { field: "id", headerName: "ID", width: 100 },
     {
-      field: "email",
-      headerName: "Email",
-      width: 400,
+      field: "product_name",
+      headerName: "Product_Name",
+      width: 200,
       editable: true,
     },
     {
-      field: "feedback",
-      headerName: "Feedback",
-      width: 400,
+      field: "description",
+      headerName: "Description",
+      width: 600,
       editable: true,
     },
+    {
+      field: "labourExpense",
+      headerName: "Labour_Expense",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "travellingExpense",
+      headerName: "Travelling_Expense",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "date",
+      headerName: "Date",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "time",
+      headerName: "Time",
+      width: 200,
+      editable: true,
+    },
+
     {
       field: "action",
       headerName: "Action",
       renderCell: (params) => {
         return (
           <>
-            <Link>
-              <Button
-                variant="contained"
-                style={{
-                  marginRight: "5px",
-                  cursor: "pointer",
-                }}
-                onClick={() => handleDelete(params.row._id)}
-              >
-                <DeleteOutlineIcon
-                  style={{ color: "red", marginRight: "5px" }}
-                />
+            <Button
+              variant="contained"
+              style={{
+                marginRight: "5px",
+                cursor: "pointer",
+              }}
+              onClick={() => handleDelete(params.row._id)}
+            >
+              <DeleteOutlineIcon style={{ color: "red", marginRight: "5px" }} />
+            </Button>
+
+            <Link to={`${url}/${params.row._id}`}>
+              <Button variant="contained">
+                <EditIcon style={{ color: "blue", cursor: "pointer" }} />
               </Button>
             </Link>
           </>
         );
       },
-      width: 260,
+      width: 160,
     },
   ];
-
-  useEffect(async () => {
-    await axios
-      .get("http://localhost:3007/API/feedback")
+  useEffect(() => {
+    debugger;
+    axios
+      .get("http://localhost:3007/API/expense")
       .then((res, req) => {
         // history.push("http://localhost:3000/store");
         console.log(res.data);
@@ -117,13 +146,6 @@ function Message() {
       });
   }, []);
   console.log(rowdata);
-
-  const rows = [
-    {
-      id: 1,
-      name: "Ahsan",
-    },
-  ];
   return (
     <>
       <Grid
@@ -134,25 +156,37 @@ function Message() {
       >
         <Grid item>
           <Typography variant="h3" className={classes.title}>
-            Feedback
+            Expense
           </Typography>
         </Grid>
+        <Grid item>
+          <Link to={`${url}/add`} style={{ textDecoration: "none" }}>
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "green",
+                color: "white",
+                cursor: "pointer",
+              }}
+            >
+              Add Expense
+            </Button>
+          </Link>
+        </Grid>
       </Grid>
-
       {rowdata.length > 0 && (
         <div className={classes.miandiv}>
           <DataGrid
             rows={rowdata}
             columns={columns}
-            pageSize={5}
+            pageSize={10}
             checkboxSelection
             disableSelectionOnClick
           />
         </div>
       )}
-      {success ? <FlashMessage message={"Category Delete"} /> : ""}
     </>
   );
 }
 
-export default Message;
+export default Expense;

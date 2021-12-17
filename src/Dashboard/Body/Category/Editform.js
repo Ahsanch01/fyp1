@@ -92,7 +92,7 @@ function Editform({ _id, id, name }) {
                       //   history.push("/orders");
                     }}
                   >
-                    Cencel
+                    Editform
                   </Button>
                 </Grid>
                 <Grid item>

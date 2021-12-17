@@ -40,6 +40,7 @@ function Store() {
       console.log("Kindly register or use correct ");
     }
   }, []);
+  console.log("sssssssd3s");
   return (
     <BrowserRouter>
       <Header />

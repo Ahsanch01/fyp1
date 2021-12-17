@@ -9,6 +9,7 @@ import Admin from "./Dashboard/Admin";
 import Store from "../src/Store/Store";
 import adminLogin from "../src/Form/adminLogin";
 import AdminRegister from "../src/Form/AdminRegister";
+import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
   return (
     <ThemeProvider theme={theme}>

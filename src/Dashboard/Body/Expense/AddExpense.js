@@ -1,10 +1,12 @@
-import { Button, Grid, TextField } from "@material-ui/core";
-import React, { useState } from "react";
+import { Button, Grid, TextField, Typography } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
-import { FcUpload } from "react-icons/fc";
+// import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router";
 import DateFnsUtils from "@date-io/date-fns";
+import FlashMessage from "../../../Pages/FlashMessage";
+import axios from "axios";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -25,22 +27,30 @@ const useStyles = makeStyles((theme) => ({
     border: "1px dashed grey",
   },
 }));
-const Status = [
-  { value: "available", label: "Available" },
-  { value: "not-available", label: "Not Available" },
-];
-const Category = [
-  { vale: "computer", label: "Computer" },
-  { value: "mobile", label: "Mobile" },
-  { value: "tv", label: "TV" },
-];
-function AddNewSale() {
+
+function AddNewOrder() {
   let history = useHistory();
   const classes = useStyles();
   const { register, handleSubmit, control } = useForm();
   const [available, setAvailable] = useState("");
+  const [success, setSuccess] = useState(false);
   const [category, setCategory] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
+  const [dropdownitem, setDropdownitem] = useState();
+
+  // useEffect(async () => {
+  //   await axios
+  //     .get("http://localhost:3007/API/categories")
+  //     .then((res, req) => {
+  //       // history.push("http://localhost:3000/store");
+  //       console.log(res.data);
+
+  //       setDropdownitem(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -53,25 +63,43 @@ function AddNewSale() {
   const handleChange1 = (event) => {
     setCategory(event.target.value);
   };
-  const onSubmit = (data) => console.log(data);
+
+  const functionName = async (data) => {
+    axios
+      .post("http://localhost:3007/API/expense", data)
+      .then((res) => {
+        console.log(res.data);
+        setSuccess(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setSuccess(false);
+  };
+
+  const onSubmit = (data) => {
+    console.log(data);
+    functionName(data);
+  };
   return (
     <div>
-      <h1>Add Sale</h1>
+      <h1>Add Expense</h1>
       <Grid container className={classes.maingrid}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid spacing={2} container>
-            <Grid item md={8}>
+            <Grid item md={6}>
+              <Typography variant="h4"> Item Details</Typography>
               <Grid container spacing={1}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={12}>
                   <TextField
                     label="Name"
                     variant="outlined"
                     fullWidth
-                    name="name"
-                    {...register("name")}
+                    name="product_name"
+                    {...register("product_name")}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                {/* <Grid item xs={12} sm={6}>
                   <TextField
                     label="Color"
                     variant="outlined"
@@ -98,7 +126,7 @@ function AddNewSale() {
                     name="price"
                     {...register("price")}
                   />
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={12} sm={12}>
                   <TextField
@@ -108,8 +136,8 @@ function AddNewSale() {
                     multiline
                     rows={4}
                     defaultValue=""
-                    name="desc"
-                    {...register("desc")}
+                    name="description"
+                    {...register("description")}
                     variant="outlined"
                   />
                 </Grid>
@@ -159,14 +187,43 @@ function AddNewSale() {
                 </MuiPickersUtilsProvider>
               </Grid>
             </Grid>
-            <Grid item md={4}>
+            <Grid item md={6} style={{ borderLeft: "1px dashed grey" }}>
+              <Typography variant="h4"> Expense Details</Typography>
               <Grid
                 container
                 alignItems="center"
                 justifyContent="center"
                 spacing={1}
                 style={{ marginBottom: "5em" }}
-              ></Grid>
+              >
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    label="Expense_id"
+                    variant="outlined"
+                    fullWidth
+                    name="id"
+                    {...register("id")}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Travelling_Expense"
+                    variant="outlined"
+                    fullWidth
+                    name="travellingExpense"
+                    {...register("travellingExpense")}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Laboura_Expense"
+                    variant="outlined"
+                    fullWidth
+                    name="labourExpense"
+                    {...register("labourExpense")}
+                  />
+                </Grid>
+              </Grid>
 
               <Grid container justifyContent="center" spacing={1}>
                 <Grid item>
@@ -174,7 +231,7 @@ function AddNewSale() {
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                      history.push("/sales");
+                      history.push("/expense");
                     }}
                   >
                     Cencel
@@ -185,9 +242,9 @@ function AddNewSale() {
                     variant="contained"
                     color="secondary"
                     type="submit"
-                    onClick={() => {
-                      history.push("/sales");
-                    }}
+                    // onClick={() => {
+                    //   history.push("/orders");
+                    // }}
                   >
                     Add
                   </Button>
@@ -196,9 +253,10 @@ function AddNewSale() {
             </Grid>
           </Grid>
         </form>
+        {success ? <FlashMessage message={"Expense Added"} /> : ""}
       </Grid>
     </div>
   );
 }
 
-export default AddNewSale;
+export default AddNewOrder;

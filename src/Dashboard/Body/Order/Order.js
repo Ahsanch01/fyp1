@@ -1,11 +1,12 @@
 import { DataGrid } from "@material-ui/data-grid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import { FcPrint } from "react-icons/fc";
 import { Link, useRouteMatch } from "react-router-dom";
 import orders from "../OrderList";
+import { getOrders, orderplaced } from "../../../Actions/Order";
 
 const useStyles = makeStyles((theme) => ({
   miandiv: {
@@ -39,38 +40,39 @@ const useStyles = makeStyles((theme) => ({
 function Order() {
   const classes = useStyles();
   let { path, url } = useRouteMatch();
-  const [data, setDate] = useState(orders);
+  const [data, setDate] = useState([]);
   const handleDelete = (id) => {
     setDate(data.filter((item) => item.id !== id));
   };
+  useEffect(() => {
+    getOrders(setDate);
+  }, []);
 
+  console.log(data, "data");
   const columns = [
     { field: "id", headerName: "ID", width: 95 },
     {
-      field: "CustomerName",
+      field: "customerName",
       headerName: "Customer_Name",
       width: 200,
-      editable: true,
     },
     {
       field: "number",
       headerName: "Customer_Number",
       width: 200,
-      editable: true,
     },
     {
       field: "totalprice",
       headerName: "Total_Price",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
+
       width: 160,
     },
     {
-      field: "totalproducts",
-      headerName: "Total_Product",
+      field: "address",
+      headerName: "Address",
       type: "number",
       width: 150,
-      editable: true,
+      editable: !true,
     },
 
     {
@@ -84,9 +86,18 @@ function Order() {
       headerName: "Print",
       renderCell: (params) => {
         return (
-          <Button variant="contained" fullWidth styele={{ cursor: "pointer" }}>
-            <FcPrint size="2.3em" />
-          </Button>
+          <>
+            {params.row.status === "pending" && (
+              <Button
+                variant="contained"
+                fullWidth
+                style={{ cursor: "pointer" }}
+                onClick={() => orderplaced(params.row.id)}
+              >
+                Deliver
+              </Button>
+            )}
+          </>
         );
       },
       width: 150,
@@ -109,7 +120,7 @@ function Order() {
               <DeleteOutlineIcon style={{ color: "red", marginRight: "5px" }} />
             </Button>
 
-            <Link to={`${url}/:productId` + params.row.id}>
+            <Link to={`${url}/${params.row.id}`}>
               <Button variant="contained">
                 <EditIcon style={{ color: "blue", cursor: "pointer" }} />
               </Button>
@@ -161,13 +172,15 @@ function Order() {
         </Grid>
       </Grid>
       <div className={classes.miandiv}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          checkboxSelection
-          disableSelectionOnClick
-        />
+        {data.length > 0 && (
+          <DataGrid
+            rows={data}
+            columns={columns}
+            pageSize={5}
+            checkboxSelection
+            disableSelectionOnClick
+          />
+        )}
       </div>
     </>
   );

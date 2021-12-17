@@ -1,65 +1,28 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import { Link } from "react-router-dom";
-import pic from "../../../pics/l1.jpg";
-import {
-  Avatar,
-  IconButton,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@material-ui/core";
+
+import { Link, useHistory } from "react-router-dom";
+
+import { FcBusinessman } from "react-icons/fc";
 
 import { makeStyles } from "@material-ui/core";
+import { components } from "react-select";
 
-import SettingsIcon from "@material-ui/icons/Settings";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-const useStyles = makeStyles((theme) => ({
-  micon: {
-    color: "white",
-  },
-}));
+const useStyles = makeStyles((theme) => ({}));
 function Profile() {
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const history = useHistory();
+  const handleClick = () => {
+    debugger;
+    localStorage.removeItem("admintoken");
+    history.push("/adminlogin");
+    window.location.reload();
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const dropdown = [
-    { label: "Settings", icon: <SettingsIcon /> },
-    { label: "Logout", icon: <ExitToAppIcon />, to: "user/register" },
-  ];
   return (
     <div>
-      <Button
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        startIcon={<Avatar src={pic} alt="profile"></Avatar>}
-      ></Button>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        {dropdown.map((item, i) => (
-          <Link to={item.to}>
-            <MenuItem key={i} component={ListItem} onClick={handleClose}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText>{item.label}</ListItemText>
-            </MenuItem>
-          </Link>
-        ))}
-      </Menu>
+      <Button Component={Link} to="/adminlogin" onClick={handleClick}>
+        <FcBusinessman size="3em" />
+      </Button>
     </div>
   );
 }

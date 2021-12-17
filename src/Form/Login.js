@@ -2,10 +2,11 @@ import { Box, Button, Grid, TextField, Typography } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useHistory } from "react-router";
 import axios from "axios";
 import { BiLogInCircle } from "react-icons/bi";
-
+import * as yup from "yup";
 import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   div: {
@@ -28,10 +29,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+let schema = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup.string().required(),
+});
+
 function Login() {
   let history = useHistory();
   const classes = useStyles();
-  const { register, handleSubmit, control } = useForm();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
   // const [available, setAvailable] = useState("");
   // const [category, setCategory] = useState("");
   // const [selectedDate, setSelectedDate] = useState("");
@@ -45,6 +60,8 @@ function Login() {
         const { token, users } = res.data;
         localStorage.setItem("token", token);
         localStorage.setItem("userID", users._id);
+        localStorage.setItem("address", users.address);
+
         console.log(res.data);
         history.push("/store");
       })
@@ -54,7 +71,8 @@ function Login() {
   };
 
   const onSubmit = (data) => {
-    // console.log(data);
+    console.log(data);
+
     functionName(data);
   };
 
@@ -82,6 +100,9 @@ function Login() {
                   name="email"
                   {...register("email")}
                 />
+
+                {/* {console.log(errors)} */}
+                <p style={{ color: "red" }}>{errors.email?.message}</p>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -92,6 +113,8 @@ function Login() {
                   type="password"
                   {...register("password")}
                 />
+                <p>{errors.password?.message}</p>
+                {/* <p>{errors.password.message && errors.password.message}</p> */}
               </Grid>
 
               <Grid container justifyContent="center" spacing={2}>
