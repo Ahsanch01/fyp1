@@ -8,6 +8,7 @@ import { BiLogInCircle } from "react-icons/bi";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
+import FlashMessage from "../Pages/FlashMessage";
 const useStyles = makeStyles((theme) => ({
   div: {
     display: "flex",
@@ -35,6 +36,8 @@ let schema = yup.object().shape({
 function Login() {
   let history = useHistory();
   const classes = useStyles();
+  const [loginMessage, setLoginMessage] = useState("");
+  const [ErrorDisplay, setErrorDisplay] = useState(false);
   const {
     register,
     handleSubmit,
@@ -49,101 +52,107 @@ function Login() {
   // const [api, setApi] = useState("");
   // const onSubmit = (data) => console.log(data);
 
-  const functionName = async (data) => {
+  const functionName = (data) => {
     axios
       .post("http://localhost:3007/API/admin/login", data)
       .then((res) => {
-        const { token, users } = res.data;
+        console.log(res, "res");
+        const { token, admins } = res.data;
         localStorage.setItem("admintoken", token);
+        localStorage.setItem("adminID", admins._id);
         // localStorage.setItem("userID", users._id);
         console.log(res.data);
-        history.push("/admin");
+        history.push("/tenantlogin");
       })
       .catch((err) => {
+        setLoginMessage(err.message);
+        setErrorDisplay(true);
         console.log(err);
       });
   };
 
   const onSubmit = (data) => {
     console.log(data);
-
     functionName(data);
     // history.push("/admin");
   };
 
   return (
-    <div className={classes.div}>
-      <Grid
-        container
-        className={classes.maingrid}
-        justifyContent="center"
-        alignItems="center"
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={3} justifyContent="center">
-            <Grid item>
-              <Typography variant="h4">
-                Admin SingIn <BiLogInCircle color="blue" />
-              </Typography>
-            </Grid>
-            <Grid container justifyContent="center" spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  label="Email"
-                  variant="outlined"
-                  fullWidth
-                  name="email"
-                  {...register("email")}
-                />
-                <p style={{ color: "red" }}>{errors.email?.message}</p>
+    <>
+      <div className={classes.div}>
+        <Grid
+          container
+          className={classes.maingrid}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={3} justifyContent="center">
+              <Grid item>
+                <Typography variant="h4">
+                  Admin SingIn <BiLogInCircle color="blue" />
+                </Typography>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Password"
-                  variant="outlined"
-                  fullWidth
-                  name="password"
-                  type="password"
-                  {...register("password")}
-                />
-              </Grid>
-
               <Grid container justifyContent="center" spacing={2}>
-                <Grid item>
-                  {/* <Link to="/store" style={{ textDecoration: "none" }}> */}
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    type="submit"
-                    // onClick={history.goBack}
-                  >
-                    SingIn
-                  </Button>
-                  {/* </Link> */}
+                <Grid item xs={12}>
+                  <TextField
+                    label="Email"
+                    variant="outlined"
+                    fullWidth
+                    name="email"
+                    {...register("email")}
+                  />
+                  <p style={{ color: "red" }}>{errors.email?.message}</p>
                 </Grid>
-                <Grid item>
-                  {/* <Link to="/register" style={{ textDecoration: "none" }}> */}
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    type="submit"
-                    onClick={() => history.push("/register")}
-                  >
-                    SingUp
-                  </Button>
-                  {/* </Link> */}
+                <Grid item xs={12}>
+                  <TextField
+                    label="Password"
+                    variant="outlined"
+                    fullWidth
+                    name="password"
+                    type="password"
+                    {...register("password")}
+                  />
+                </Grid>
+
+                <Grid container justifyContent="center" spacing={2}>
+                  <Grid item>
+                    {/* <Link to="/store" style={{ textDecoration: "none" }}> */}
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      type="submit"
+                      // onClick={history.goBack}
+                    >
+                      SingIn
+                    </Button>
+                    {/* </Link> */}
+                  </Grid>
+                  <Grid item>
+                    {/* <Link to="/register" style={{ textDecoration: "none" }}> */}
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      type="submit"
+                      onClick={() => history.push("/registeradmin")}
+                    >
+                      SingUp
+                    </Button>
+                    {/* </Link> */}
+                  </Grid>
                 </Grid>
               </Grid>
+              <Grid item>
+                <Link>
+                  <Typography>Forgot Password?</Typography>
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link>
-                <Typography>Forgot Password?</Typography>
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </Grid>
-    </div>
+          </form>
+        </Grid>
+      </div>
+      {ErrorDisplay && <FlashMessage message={loginMessage} />}
+    </>
   );
 }
 

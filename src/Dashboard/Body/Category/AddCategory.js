@@ -35,6 +35,8 @@ const Category = [
   { value: "mobile", label: "Mobile" },
   { value: "tv", label: "TV" },
 ];
+
+let tenantID = localStorage.getItem("tenantId");
 function AddCategory() {
   let history = useHistory();
   const classes = useStyles();
@@ -52,7 +54,7 @@ function AddCategory() {
   };
   const functionName = async (data) => {
     axios
-      .post("http://localhost:3007/API/categories", data)
+      .post(`http://localhost:3007/API/categories/${tenantID}`, data)
       .then((res) => {
         console.log(res.data);
         setSuccess(true);
@@ -68,6 +70,8 @@ function AddCategory() {
   };
   const onSubmit = (data) => {
     console.log(data);
+    const myTenantId = localStorage.getItem("tenantId");
+    data.tenant_id = myTenantId;
     functionName(data);
     reset();
   };
@@ -89,6 +93,17 @@ function AddCategory() {
                 {...register("name")}
               />
             </Grid>
+            {/* <Grid item xs={12} sm={12}>
+              <TextField
+                label="Tenant_Id"
+
+                variant="outlined"
+                defaultValue={tenantID}
+                fullWidth
+                name="tenant_id"
+                {...register("tenant_id")}
+              />
+            </Grid> */}
             <Grid item xs={12} sm={12}>
               <TextField
                 label="Id"

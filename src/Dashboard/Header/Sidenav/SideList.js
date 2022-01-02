@@ -84,6 +84,11 @@ function SideList({ handleDrawerClose }) {
       Link: "/category",
       icon: <MdCategory style={{ color: "blue" }} size="2em" />,
     },
+    // {
+    //   label: "ManualOrder",
+    //   Link: "/ordermanual",
+    //   icon: <MdCategory style={{ color: "blue" }} size="2em" />,
+    // },
   ];
   return (
     <List>

@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
   edit: {},
 }));
 
+let tenantID = localStorage.getItem("tenantId");
 function Category() {
   const classes = useStyles();
   let history = useHistory();
@@ -62,10 +63,15 @@ function Category() {
   };
   console.log(rowdata, "rowdatarowdatarowdata");
   const columns = [
-    // { field: "id", headerName: "ID", width: 195 },
+    { field: "id", headerName: "ID", width: 195 },
     {
       field: "name",
       headerName: "Name",
+      width: 320,
+    },
+    {
+      field: "tenant_id",
+      headerName: "Tenant_Id",
       width: 320,
     },
 
@@ -103,14 +109,11 @@ function Category() {
   ];
 
   useEffect(() => {
-    debugger;
     axios
-      .get("http://localhost:3007/API/categories")
+      .get(`http://localhost:3007/API/categories/${tenantID}`)
       .then((res, req) => {
-        debugger;
         // history.push("http://localhost:3000/store");
         console.log(res.data);
-
         setRowdata(res.data);
       })
       .catch((err) => {

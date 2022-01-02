@@ -3,10 +3,11 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { useHistory } from "react-router";
 import axios from "axios";
 import { BiLogInCircle } from "react-icons/bi";
-import * as yup from "yup";
+import FlashMessage from "../Pages/FlashMessage";
 import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   div: {
@@ -37,7 +38,8 @@ let schema = yup.object().shape({
 function Login() {
   let history = useHistory();
   const classes = useStyles();
-
+  const [loginMessage, setLoginMessage] = useState("");
+  const [ErrorDisplay, setErrorDisplay] = useState(false);
   const {
     register,
     handleSubmit,
@@ -67,6 +69,8 @@ function Login() {
       })
       .catch((err) => {
         console.log(err);
+        setLoginMessage(err.message);
+        setErrorDisplay(true);
       });
   };
 
@@ -145,12 +149,13 @@ function Login() {
               </Grid>
             </Grid>
             <Grid item>
-              <Link>
+              <Link to="/forgotpassword">
                 <Typography>Forgot Password?</Typography>
               </Link>
             </Grid>
           </Grid>
         </form>
+        {ErrorDisplay && <FlashMessage message={loginMessage} />}
       </Grid>
     </div>
   );

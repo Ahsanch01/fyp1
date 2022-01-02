@@ -1,4 +1,5 @@
 import axios from "axios";
+let tenantID = localStorage.getItem("tenantId");
 export const editCategory = (data, history, id, setSuccess) => {
   axios
     .put(`http://localhost:3007/API/categories/${id}`, data)
@@ -10,9 +11,11 @@ export const editCategory = (data, history, id, setSuccess) => {
     .then((error) => console.log(error));
 };
 export const getCategory = (id, setData) => {
+  debugger;
   axios
-    .get(`http://localhost:3007/API/categories/${id}`, id)
+    .get(`http://localhost:3007/API/categories/tenant/${id}`, id)
     .then((res) => {
+      debugger;
       console.log("add cart response    ", res.data);
       setData(res.data);
     })

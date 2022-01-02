@@ -1,12 +1,13 @@
 import { Box, Button, Grid, TextField, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router";
-
+import { MdDelete } from "react-icons/md";
 import { BiLogInCircle } from "react-icons/bi";
-
+import FlashMessage from "../Pages/FlashMessage";
 import { Link } from "react-router-dom";
+import axios from "axios";
 const useStyles = makeStyles((theme) => ({
   div: {
     display: "flex",
@@ -17,9 +18,10 @@ const useStyles = makeStyles((theme) => ({
   maingrid: {
     backgroundColor: "white",
     padding: "20px",
-    borderRadius: "20%",
-    boxShadow: "0 5px 10px #777",
-    width: "30%",
+    borderRadius: "10%",
+    // boxShadow: "0 5px 10px #777",
+    border: "0.5px solid grey",
+    width: "40%",
     marginTop: "6em",
     [theme.breakpoints.down("md")]: {
       width: "90%",
@@ -27,18 +29,74 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+const gettoken = localStorage.getItem("adminregistertoken");
+
+const f2 = async () => {
+  console.log(gettoken, "get token");
+  const data = {
+    token: gettoken,
+  };
+  console.log("from Activation api");
+
+  axios
+    .post("http://localhost:3007/API/admin/ActivateAccount", data)
+    .then((res) => {
+      // history.push("http://localhost:3000/store");
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 function Login() {
   let history = useHistory();
   const classes = useStyles();
   const { register, handleSubmit, control } = useForm();
-  const [available, setAvailable] = useState("");
-  const [category, setCategory] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [TenantItem, setTenantItem] = useState([]);
 
-  const onSubmit = (data) => console.log(data);
+  useEffect(() => {
+    if (localStorage.getItem("adminregistertoken")) {
+      f2();
+      setSuccess(true);
+    } else if (localStorage.getItem("admintoken")) {
+      console.log("u r logedin");
+      setSuccess(true);
+    } else {
+      console.log("Kindly register or use correct ");
+    }
+    axios
+      .get(`http://localhost:3007/API/tenant`)
+      .then((res) => {
+        console.log(res.data);
+        setTenantItem(res.data[0].Tenant);
+        //   history.push("/store");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const handleDelete = (Tenant_id) => {
+    debugger;
+    const id = localStorage.getItem("adminID");
+    axios
+      .delete(`http://localhost:3007/API/tenant/${id}/${Tenant_id}`)
+      .then((res) => {
+        console.log(res.data);
+
+        //   history.push("/store");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  // const onSubmit = (data) => console.log(data);
+  console.log(TenantItem);
   return (
     <div className={classes.div}>
+      {success ? <FlashMessage message={"Your are logedIn"} /> : ""}
       <Grid
         container
         className={classes.maingrid}
@@ -57,26 +115,56 @@ function Login() {
               Tenant Login <BiLogInCircle color="blue" />
             </Typography>
           </Grid>
+
+          {TenantItem.map((item) => {
+            console.log("check1", item.Tenant_name);
+            return (
+              <Grid item>
+                <Grid
+                  container
+                  alignItems="center"
+                  justifyContent="center"
+                  spacing={2}
+                  style={{
+                    boxShadow: "0 5px 10px #777",
+                    border: "0.5px solid grey",
+                    borderRadius: "10px",
+                    backgroundColor: "",
+                    marginTop: "1em",
+                  }}
+                >
+                  <Grid item>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="secondary"
+                      type="submit"
+                      onClick={() => {
+                        localStorage.setItem("tenantId", item.Tenant_id);
+                        history.push("/admin");
+                      }}
+                    >
+                      {item.Tenant_name}
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button onClick={() => handleDelete(item._id)}>
+                      <MdDelete size="3em" color="red" />
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+            );
+          })}
           <Grid item>
             <Button
               fullWidth
               variant="contained"
-              color="secondary"
+              color="primary"
               type="submit"
-              // onClick={history.goBack}
+              onClick={() => history.push("/createnew")}
             >
-              Tenant 1
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              fullWidth
-              variant="contained"
-              color="secondary"
-              type="submit"
-              // onClick={history.goBack}
-            >
-              Tenant 2
+              Create New
             </Button>
           </Grid>
         </Grid>

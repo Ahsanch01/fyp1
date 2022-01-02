@@ -6,7 +6,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import { FcPrint } from "react-icons/fc";
 import { Link, useRouteMatch } from "react-router-dom";
 import orders from "../OrderList";
-import { getOrders, orderplaced } from "../../../Actions/Order";
+import { orderplaced } from "../../../Actions/Order";
+import { getManualSales, getSales } from "../../../Actions/Getsales";
 
 const useStyles = makeStyles((theme) => ({
   miandiv: {
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   edit: {},
 }));
 
-function Order() {
+function Sales() {
   const classes = useStyles();
   let { path, url } = useRouteMatch();
   const [data, setDate] = useState([]);
@@ -45,7 +46,7 @@ function Order() {
     setDate(data.filter((item) => item.id !== id));
   };
   useEffect(() => {
-    getOrders(setDate);
+    getManualSales(setDate);
   }, []);
 
   console.log(data, "data");
@@ -81,55 +82,6 @@ function Order() {
       width: 150,
       editable: true,
     },
-    {
-      field: "print",
-      headerName: "Print",
-      renderCell: (params) => {
-        return (
-          <>
-            {params.row.status === "pending" && (
-              <Button
-                variant="contained"
-                fullWidth
-                style={{ cursor: "pointer" }}
-                onClick={() => orderplaced(params.row.id)}
-              >
-                Deliver
-              </Button>
-            )}
-          </>
-        );
-      },
-      width: 150,
-      editable: true,
-    },
-    {
-      field: "action",
-      headerName: "Action",
-      renderCell: (params) => {
-        return (
-          <>
-            <Button
-              variant="contained"
-              style={{
-                marginRight: "5px",
-                cursor: "pointer",
-              }}
-              onClick={() => handleDelete(params.row.id)}
-            >
-              <DeleteOutlineIcon style={{ color: "red", marginRight: "5px" }} />
-            </Button>
-
-            <Link to={`${url}/${params.row.id}`}>
-              <Button variant="contained">
-                <EditIcon style={{ color: "blue", cursor: "pointer" }} />
-              </Button>
-            </Link>
-          </>
-        );
-      },
-      width: 160,
-    },
   ];
 
   const rows = [
@@ -150,38 +102,14 @@ function Order() {
         justifyContent="space-between"
         alignItems="center"
         className={classes.uppergrid}
-        // direction="column"
       >
         <Grid item>
           <Typography variant="h3" className={classes.title}>
-            Online Order
+            Manual Sale
           </Typography>
         </Grid>
         <Grid item>
-          {/* <Button
-            to="/order"
-            component={Link}
-            style={{
-              marginRight: "5px",
-              backgroundColor: "Green",
-              color: "white",
-            }}
-            variant="contained"
-          >
-            Online Order
-          </Button> */}
-          <Button
-            to="/ordermanual"
-            component={Link}
-            variant="contained"
-            style={{ backgroundColor: "Green", color: "white" }}
-          >
-            Manual Order
-          </Button>
-        </Grid>
-
-        {/* <Grid item>
-          <Link to={`${url}/add`} style={{ textDecoration: "none" }}>
+          <Link to={`/sales`} style={{ textDecoration: "none" }}>
             <Button
               variant="contained"
               style={{
@@ -190,11 +118,12 @@ function Order() {
                 cursor: "pointer",
               }}
             >
-              Add Order
+              Back
             </Button>
           </Link>
-        </Grid> */}
+        </Grid>
       </Grid>
+
       <div className={classes.miandiv}>
         {data.length > 0 && (
           <DataGrid
@@ -210,4 +139,4 @@ function Order() {
   );
 }
 
-export default Order;
+export default Sales;

@@ -3,6 +3,7 @@ import Menu from "./menu";
 import Category from "./categories";
 import items from "../data/data";
 import axios from "axios";
+import { Link, useParams } from "react-router-dom";
 // let items = [];
 // axios
 //   .get("http://localhost:3007/API/products")
@@ -27,13 +28,15 @@ import axios from "axios";
 // };
 
 // const allCategories = ["all", ...new Set(items.map((item) => item.category))];
-
+let tenantID = localStorage.getItem("tenantId");
 function Main() {
+  let id = useParams();
+
   useEffect(() => {}, []);
   const [items, setItem] = useState([]);
   useEffect(async () => {
     await axios
-      .get("http://localhost:3007/API/products")
+      .get(`http://localhost:3007/API/products/tenant/${tenantID}`)
       .then((res) => {
         let getitems = res.data;
         setCategories(res.data);

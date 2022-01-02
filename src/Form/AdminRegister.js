@@ -7,8 +7,9 @@ import axios from "axios";
 import { IoIosPersonAdd } from "react-icons/io";
 import { Link } from "react-router-dom";
 import FlashMessage from "../Pages/FlashMessage";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
 const useStyles = makeStyles((theme) => ({
   div: {
     display: "flex",
@@ -35,16 +36,17 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "3em",
   },
 }));
-let schema = yup.object().shape({
-  firstname: yup.string().min(3).max(15).required(),
-  lastname: yup.string().min(3).max(15).required(),
-  id: yup.string().min(5).max(15).required(),
-  email: yup.string().email().required(),
-  password: yup.string().required(),
-  confirmpassword: yup.string().oneOf([yup.ref("password"), null]),
-  contact: yup.number().required(),
-});
-
+let schema = yup
+  .object({
+    firstname: yup.string().min(3).max(15).required(),
+    lastname: yup.string().min(3).max(15).required(),
+    username: yup.string().min(5).max(15).required(),
+    email: yup.string().email().required(),
+    password: yup.string().required(),
+    confirmpassword: yup.string().oneOf([yup.ref("password"), null]),
+    contact: yup.string().required(),
+  })
+  .required();
 function UserRegister() {
   let history = useHistory();
   const classes = useStyles();
@@ -57,11 +59,18 @@ function UserRegister() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm();
 
-  const functionName = async (info) => {
+  const functionName = (info) => {
+    debugger;
     axios
       .post("http://localhost:3007/API/admin/register", info)
       .then((res) => {
+        debugger;
         const { token } = res.data;
         localStorage.setItem("adminregistertoken", token);
         console.log(res.data);
@@ -70,10 +79,28 @@ function UserRegister() {
         // history.push("/login");
       })
       .catch((err) => {
+        debugger;
         console.log(err);
       });
     setSuccess(false);
   };
+  // const functionName = async (info) => {
+  //   debugger;
+  //   axios
+  //     .post("http://localhost:3007/API/users/register", info)
+  //     .then((res) => {
+  //       const { token } = res.data;
+  //       localStorage.setItem("registertoken", token);
+  //       console.log(res.data);
+  //       setSuccess(true);
+
+  //       // history.push("/login");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  //   setSuccess(false);
+  // };
 
   // const f2 = async () => {
   //   axios
@@ -91,11 +118,9 @@ function UserRegister() {
   // };
 
   const onSubmit = (data) => {
+    console.log(errors);
     console.log(data);
-
     functionName(data);
-    // reset();
-    // f2();
   };
 
   return (
@@ -105,7 +130,7 @@ function UserRegister() {
           <Grid spacing={2} container justifyContent="center">
             <Grid item>
               <Typography variant="h4">
-                Admin Register <IoIosPersonAdd color="blue" />
+                Register Admin <IoIosPersonAdd color="blue" />
               </Typography>
             </Grid>
             <Grid item>
@@ -116,9 +141,26 @@ function UserRegister() {
                     variant="outlined"
                     fullWidth
                     name="firstname"
-                    {...register("firstname")}
+                    id="firstname"
+                    {...register(
+                      "firstname"
+                      //  {
+                      //   required: "required",
+                      //   minLength: { value: 5, message: "Must be 5 char long" },
+                      // }
+                    )}
                   />
-                  <p style={{ color: "red" }}>{errors.firstname?.message}</p>
+                  {errors.firstname ? (
+                    <p style={{ color: "red" }}>{errors.firstname.message}</p>
+                  ) : (
+                    ""
+                  )}
+
+                  {/* <p>
+                    {errors.firstname?.message === "required" &&
+                      "First name is required"}
+                  </p> */}
+                  {/* <p style={{ color: "red" }}>{errors.firstname?.message}</p> */}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -130,16 +172,53 @@ function UserRegister() {
                   />
                   <p style={{ color: "red" }}>{errors.lastname?.message}</p>
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Address"
+                    label="User_Name"
                     variant="outlined"
                     fullWidth
-                    name="address"
-                    {...register("address")}
+                    name="username"
+                    {...register("username")}
                   />
+                  <p style={{ color: "red" }}>{errors.username?.message}</p>
                 </Grid>
-
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Email"
+                    variant="outlined"
+                    fullWidth
+                    name="email"
+                    {...register("email")}
+                  />
+                  <p style={{ color: "red" }}>{errors.email?.message}</p>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Password"
+                    variant="outlined"
+                    fullWidth
+                    name="password"
+                    {...register("password")}
+                  />
+                  <p style={{ color: "red" }}>{errors.password?.message}</p>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Confirm_Password"
+                    variant="outlined"
+                    fullWidth
+                    name="confirmpassword"
+                    {...register("confirmpassword")}
+                  />
+                  <p style={{ color: "red" }}>
+                    {errors.confirmpassword?.message}
+                  </p>
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  {" "}
+                  <hr style={{ height: 0.5, color: "black" }} />
+                </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     label="Contact_Number"
@@ -151,51 +230,15 @@ function UserRegister() {
 
                   <p style={{ color: "red" }}>{errors.contact?.message}</p>
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="User_Name"
+                    label="Address"
                     variant="outlined"
                     fullWidth
-                    name="username"
-                    {...register("username")}
+                    name="address"
+                    {...register("address")}
                   />
-
-                  <p style={{ color: "red" }}>{errors.username?.message}</p>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Email"
-                    variant="outlined"
-                    fullWidth
-                    name="email"
-                    {...register("email")}
-                  />
-
-                  <p style={{ color: "red" }}>{errors.email?.message}</p>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Password"
-                    variant="outlined"
-                    fullWidth
-                    name="password"
-                    {...register("password")}
-                  />
-
-                  <p style={{ color: "red" }}>{errors.password?.message}</p>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Confirm_Password"
-                    variant="outlined"
-                    fullWidth
-                    name="confirmpassword"
-                    {...register("confirmpassword")}
-                  />
-
-                  <p style={{ color: "red" }}>
-                    {errors.confirmpassword?.message}
-                  </p>
                 </Grid>
 
                 <Grid
@@ -220,7 +263,7 @@ function UserRegister() {
             </Grid>
           </Grid>
         </form>
-        {success ? <FlashMessage message={"Check your Email"} /> : " "}
+        {success ? <FlashMessage message={"Check Email"} /> : " "}
       </Grid>
     </div>
   );

@@ -63,10 +63,11 @@ function AddNewOrder() {
   const handleChange1 = (event) => {
     setCategory(event.target.value);
   };
+  let tenantID = localStorage.getItem("tenantId");
 
   const functionName = async (data) => {
     axios
-      .post("http://localhost:3007/API/expense", data)
+      .post(`http://localhost:3007/API/expense/${tenantID}`, data)
       .then((res) => {
         console.log(res.data);
         setSuccess(true);
@@ -221,6 +222,16 @@ function AddNewOrder() {
                     fullWidth
                     name="labourExpense"
                     {...register("labourExpense")}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    label="Tenant_Id"
+                    variant="outlined"
+                    defaultValue={tenantID}
+                    fullWidth
+                    name="tenant_id"
+                    {...register("tenant_id")}
                   />
                 </Grid>
               </Grid>

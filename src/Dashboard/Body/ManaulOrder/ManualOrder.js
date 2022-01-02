@@ -1,12 +1,17 @@
 import { DataGrid } from "@material-ui/data-grid";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-import pic from "../../../pics/m1.jpg";
-import { Link, useRouteMatch, useHistory } from "react-router-dom";
-import sales from "../DisplayItem";
-import axios from "axios";
+import { FcPrint } from "react-icons/fc";
+import { Link, useRouteMatch } from "react-router-dom";
+import orders from "../OrderList";
+import {
+  getManualOrders,
+  getOrders,
+  Manualorderplaced,
+  orderplaced,
+} from "../../../Actions/Order";
 
 const useStyles = makeStyles((theme) => ({
   miandiv: {
@@ -36,73 +41,73 @@ const useStyles = makeStyles((theme) => ({
   },
   edit: {},
 }));
-let tenantID = localStorage.getItem("tenantId");
-function Expense() {
-  let history = useHistory();
+
+function Order() {
   const classes = useStyles();
   let { path, url } = useRouteMatch();
-  const [rowdata, setRowdata] = useState([]);
-  // const [data, setDate] = useState(sales);
-  // const handleDelete = (id) => {
-  //   setDate(data.filter((item) => item.id !== id));
-  // };
-
-  const handleDelete = (_id) => {
-    console.log(_id);
-    axios
-      .delete(`http://localhost:3007/API/expense/${_id}`)
-      .then((res) => {
-        // history.push("http://localhost:3000/store");
-        console.log(res.data);
-
-        setRowdata(rowdata);
-
-        history.push("/admin");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const [data, setDate] = useState([]);
+  const handleDelete = (id) => {
+    setDate(data.filter((item) => item.id !== id));
   };
+  useEffect(() => {
+    getManualOrders(setDate);
+  }, []);
 
+  console.log(data, "data");
   const columns = [
-    // { field: "id", headerName: "ID", width: 100 },
+    { field: "id", headerName: "ID", width: 95 },
     {
-      field: "product_name",
-      headerName: "Product_Name",
+      field: "name",
+      headerName: "Customer_Name",
       width: 200,
-      editable: true,
     },
     {
-      field: "description",
-      headerName: "Description",
-      width: 600,
-      editable: true,
+      field: "number",
+      headerName: "Customer_Number",
+      width: 200,
     },
     {
-      field: "labourExpense",
-      headerName: "Labour_Expense",
-      width: 200,
-      editable: true,
+      field: "totalprice",
+      headerName: "Total_Price",
+
+      width: 160,
     },
     {
-      field: "travellingExpense",
-      headerName: "Travelling_Expense",
-      width: 200,
-      editable: true,
-    },
-    {
-      field: "date",
-      headerName: "Date",
-      width: 200,
-      editable: true,
-    },
-    {
-      field: "time",
-      headerName: "Time",
-      width: 200,
-      editable: true,
+      field: "address",
+      headerName: "Address",
+      type: "number",
+      width: 150,
+      editable: !true,
     },
 
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "print",
+      headerName: "Print",
+      renderCell: (params) => {
+        return (
+          <>
+            {params.row.status === "pending" && (
+              <Button
+                variant="contained"
+                fullWidth
+                style={{ cursor: "pointer" }}
+                onClick={() => Manualorderplaced(params.row.id)}
+              >
+                Deliver
+              </Button>
+            )}
+          </>
+        );
+      },
+      width: 150,
+      editable: true,
+    },
     {
       field: "action",
       headerName: "Action",
@@ -115,12 +120,12 @@ function Expense() {
                 marginRight: "5px",
                 cursor: "pointer",
               }}
-              onClick={() => handleDelete(params.row._id)}
+              onClick={() => handleDelete(params.row.id)}
             >
               <DeleteOutlineIcon style={{ color: "red", marginRight: "5px" }} />
             </Button>
 
-            <Link to={`${url}/${params.row._id}`}>
+            <Link to={`${url}/${params.row.id}`}>
               <Button variant="contained">
                 <EditIcon style={{ color: "blue", cursor: "pointer" }} />
               </Button>
@@ -131,21 +136,18 @@ function Expense() {
       width: 160,
     },
   ];
-  useEffect(() => {
-    debugger;
-    axios
-      .get(`http://localhost:3007/API/expense/tenant/${tenantID}`)
-      .then((res, req) => {
-        // history.push("http://localhost:3000/store");
-        console.log(res.data);
 
-        setRowdata(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-  console.log(rowdata);
+  const rows = [
+    {
+      id: 1,
+      CustomerName: "Ahsan123",
+      number: "03134162172",
+      totalprice: 1290,
+      totalproducts: 3,
+      status: "paid",
+    },
+  ];
+
   return (
     <>
       <Grid
@@ -156,7 +158,7 @@ function Expense() {
       >
         <Grid item>
           <Typography variant="h3" className={classes.title}>
-            Expense
+            Manual Order
           </Typography>
         </Grid>
         <Grid item>
@@ -169,24 +171,24 @@ function Expense() {
                 cursor: "pointer",
               }}
             >
-              Add Expense
+              Add Order
             </Button>
           </Link>
         </Grid>
       </Grid>
-      {rowdata.length > 0 && (
-        <div className={classes.miandiv}>
+      <div className={classes.miandiv}>
+        {data.length > 0 && (
           <DataGrid
-            rows={rowdata}
+            rows={data}
             columns={columns}
-            pageSize={10}
+            pageSize={5}
             checkboxSelection
             disableSelectionOnClick
           />
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 }
 
-export default Expense;
+export default Order;

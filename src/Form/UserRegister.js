@@ -7,8 +7,9 @@ import axios from "axios";
 import { IoIosPersonAdd } from "react-icons/io";
 import { Link } from "react-router-dom";
 import FlashMessage from "../Pages/FlashMessage";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
 const useStyles = makeStyles((theme) => ({
   div: {
     display: "flex",
@@ -35,15 +36,17 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "3em",
   },
 }));
-let schema = yup.object().shape({
-  firstname: yup.string().min(3).max(15).required(),
-  lastname: yup.string().min(3).max(15).required(),
-  id: yup.string().min(5).max(15).required(),
-  email: yup.string().email().required(),
-  password: yup.string().required(),
-  confirmpassword: yup.string().oneOf([yup.ref("password"), null]),
-  contact: yup.number().required(),
-});
+let schema = yup
+  .object({
+    firstname: yup.string().min(3).max(15).required(),
+    lastname: yup.string().min(3).max(15).required(),
+    id: yup.string().min(5).max(15).required(),
+    email: yup.string().email().required(),
+    password: yup.string().required(),
+    confirmpassword: yup.string().oneOf([yup.ref("password"), null]),
+    contact: yup.string().required(),
+  })
+  .required();
 function UserRegister() {
   let history = useHistory();
   const classes = useStyles();
@@ -56,8 +59,33 @@ function UserRegister() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm();
 
+  // const functionName = (info) => {
+  //   debugger;
+  //   axios
+  //     .post("http://localhost:3007/API/admin/register", info)
+  //     .then((res) => {
+  //       debugger;
+  //       const { token } = res.data;
+  //       localStorage.setItem("adminregistertoken", token);
+  //       console.log(res.data);
+  //       setSuccess(true);
+
+  //       // history.push("/login");
+  //     })
+  //     .catch((err) => {
+  //       debugger;
+  //       console.log(err);
+  //     });
+  //   setSuccess(false);
+  // };
   const functionName = async (info) => {
+    debugger;
     axios
       .post("http://localhost:3007/API/users/register", info)
       .then((res) => {
@@ -90,8 +118,9 @@ function UserRegister() {
   // };
 
   const onSubmit = (data) => {
+    console.log(errors);
     console.log(data);
-    // functionName(data);
+    functionName(data);
   };
 
   return (
@@ -112,9 +141,26 @@ function UserRegister() {
                     variant="outlined"
                     fullWidth
                     name="firstname"
-                    {...register("firstname")}
+                    id="firstname"
+                    {...register(
+                      "firstname"
+                      //  {
+                      //   required: "required",
+                      //   minLength: { value: 5, message: "Must be 5 char long" },
+                      // }
+                    )}
                   />
-                  <p style={{ color: "red" }}>{errors.firstname?.message}</p>
+                  {errors.firstname ? (
+                    <p style={{ color: "red" }}>{errors.firstname.message}</p>
+                  ) : (
+                    ""
+                  )}
+
+                  {/* <p>
+                    {errors.firstname?.message === "required" &&
+                      "First name is required"}
+                  </p> */}
+                  {/* <p style={{ color: "red" }}>{errors.firstname?.message}</p> */}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField

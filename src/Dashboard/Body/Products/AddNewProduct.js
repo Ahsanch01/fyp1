@@ -95,6 +95,7 @@ function AddNewProduct() {
     formData.append("category", info.category);
     formData.append("date", info.date);
     formData.append("time", info.time);
+    formData.append("Tenant_id", info.Tenant_id);
     formData.append("description", info.description);
 
     console.log("clicked");
@@ -143,7 +144,7 @@ function AddNewProduct() {
   };
 
   console.log(productdata);
-
+  let tenantID = localStorage.getItem("tenantId");
   const onSubmit = (data) => {
     console.log(data);
     // staticData();
@@ -299,6 +300,16 @@ function AddNewProduct() {
 
                   {/* <FcUpload size="3em" type="file" /> */}
                   {/* </input> */}
+                </Grid>
+                <Grid item>
+                  <TextField
+                    fullWidth
+                    label="Tenant_Id"
+                    defaultValue={tenantID}
+                    name="Tenant_id"
+                    {...register("Tenant_id")}
+                    variant="outlined"
+                  />
                 </Grid>
               </Grid>
 

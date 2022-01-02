@@ -108,7 +108,22 @@ function Sales() {
             Sales
           </Typography>
         </Grid>
+        <Grid item>
+          <Link to={`${url}/manual`} style={{ textDecoration: "none" }}>
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "green",
+                color: "white",
+                cursor: "pointer",
+              }}
+            >
+              Manual Sale
+            </Button>
+          </Link>
+        </Grid>
       </Grid>
+
       <div className={classes.miandiv}>
         {data.length > 0 && (
           <DataGrid

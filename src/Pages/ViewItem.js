@@ -49,7 +49,7 @@ const useStyle = makeStyles((theme) => ({
     },
   },
 }));
-
+let tenantID = localStorage.getItem("tenantId");
 function ViewItem() {
   const classes = useStyle();
   let { _id } = useParams();
@@ -155,7 +155,7 @@ function ViewItem() {
                   console.log(user_id);
                   axios
                     .post(
-                      `http://localhost:3007/API/cart/addtocart/${user_id}`,
+                      `http://localhost:3007/API/cart/addtocart/${user_id}/${tenantID}`,
                       cart
                     )
                     .then((res) => {

@@ -22,6 +22,8 @@ import People from "../Body/people/People";
 import Expense from "../Body/Expense/Expense";
 import AddExpense from "../Body/Expense/AddExpense";
 import EditExpense from "../Body/Expense/EditExpense";
+import ManualOrder from "../Body/ManaulOrder/ManualOrder";
+import ManualSale from "../Body/Sales/ManualSale";
 import axios from "axios";
 
 import { makeStyles } from "@material-ui/core";
@@ -40,40 +42,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const gettoken = localStorage.getItem("adminregistertoken");
+// const gettoken = localStorage.getItem("adminregistertoken");
 
-const f2 = async () => {
-  console.log(gettoken, "get token");
-  const data = {
-    token: gettoken,
-  };
-  console.log("from Activation api");
+// const f2 = async () => {
+//   console.log(gettoken, "get token");
+//   const data = {
+//     token: gettoken,
+//   };
+//   console.log("from Activation api");
 
-  axios
-    .post("http://localhost:3007/API/admin/ActivateAccount", data)
-    .then((res) => {
-      // history.push("http://localhost:3000/store");
-      console.log(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+//   axios
+//     .post("http://localhost:3007/API/admin/ActivateAccount", data)
+//     .then((res) => {
+//       // history.push("http://localhost:3000/store");
+//       console.log(res.data);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
 
 function HeaderComponent() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [success, setSuccess] = useState(false);
-  useEffect(() => {
-    if (localStorage.getItem("adminregistertoken")) {
-      f2();
-      setSuccess(true);
-    } else if (localStorage.getItem("admintoken")) {
-      console.log("u r logedin");
-      setSuccess(true);
-    } else {
-      console.log("Kindly register or use correct ");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("adminregistertoken")) {
+  //     f2();
+  //     setSuccess(true);
+  //   } else if (localStorage.getItem("admintoken")) {
+  //     console.log("u r logedin");
+  //     setSuccess(true);
+  //   } else {
+  //     console.log("Kindly register or use correct ");
+  //   }
+  // }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -92,13 +94,14 @@ function HeaderComponent() {
         handleDrawerToggle={handleDrawerToggle}
         handleDrawerClose={handleDrawerClose}
       />
-      {success ? <FlashMessage message={"Your are logedIn"} /> : ""}
+      {/* {success ? <FlashMessage message={"Your are logedIn"} /> : ""} */}
       <Box className={classes.wrapper}>
         <Switch>
           <Route path="/admin" exact component={Dashboard} />
           <Route path="/admin/:token" exact component={Dashboard} />
           <Route path="/notification" exact component={Notification} />
           <Route path="/sales" exact component={Sales} />
+          <Route path="/sales/manual" exact component={ManualSale} />
           <Route path="/message" exact component={Message} />
           <Route path="/people" exact component={People} />
           <Route path="/expense" exact component={Expense} />
@@ -111,7 +114,9 @@ function HeaderComponent() {
           <Route path="/sales/add" exact component={AddNewSale} />
           <Route path="/sales/:saleId" exact component={SingleSale} />
           <Route path="/orders" exact component={Order} />
-          <Route path="/orders/add" exact component={AddOrder} />
+          <Route path="/ordermanual" exact component={ManualOrder} />
+
+          <Route path="/ordermanual/add" exact component={AddOrder} />
           <Route path="/category" exact component={Category} />
           <Route path="/category/add" exact component={AddCategory} />
           <Route path="/category/:id" exact component={EditCategory} />

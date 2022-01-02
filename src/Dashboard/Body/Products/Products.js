@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   edit: {},
 }));
-
+let tenantID = localStorage.getItem("tenantId");
 function Products() {
   const classes = useStyles();
   let { path, url } = useRouteMatch();
@@ -65,7 +65,7 @@ function Products() {
 
   useEffect(async () => {
     await axios
-      .get("http://localhost:3007/API/products")
+      .get(`http://localhost:3007/API/products/tenant/${tenantID}`)
       .then((res, req) => {
         // history.push("http://localhost:3000/store");
         console.log(res.data);
@@ -78,7 +78,7 @@ function Products() {
   }, []);
 
   const columns = [
-    // { field: "id", headerName: "ID", width: 100 },
+    { field: "id", headerName: "ID", width: 100 },
     {
       field: "name",
       headerName: "Name",
@@ -127,6 +127,11 @@ function Products() {
       headerName: "Time",
       width: 130,
       editable: true,
+    },
+    {
+      field: "Tenant_id",
+      headerName: "Tenant",
+      width: 130,
     },
     {
       field: "action",

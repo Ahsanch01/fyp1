@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px dashed grey",
   },
 }));
-
+let tenantID = localStorage.getItem("tenantId");
 function AddCategory() {
   let history = useHistory();
   let { id } = useParams();

@@ -67,14 +67,15 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
   },
 }));
+let tenantID = localStorage.getItem("tenantId");
 function Cart() {
   console.log("testing cart");
   const [productData, setProductData] = useState([]);
   const [openPopup, setOpenPopup] = useState(false);
   const theme = useTheme();
-  const user_id = localStorage.getItem("userID");
   // const matches = useMediaQuery(theme.breakpoints.down("md"));
   let price = 0;
+  const user_id = localStorage.getItem("userID");
   const handleCheckout = () => {
     debugger;
 
@@ -82,10 +83,12 @@ function Cart() {
     const payload = {
       address: addr,
       totalAmount: price,
+      user_id: user_id,
       payment: "COD",
+      tenant_id: `${tenantID}`,
       items: productData.map((data) => {
         return {
-          product: data.product,
+          product: data.product._id,
           quantity: data.quantity,
         };
       }),
@@ -100,7 +103,7 @@ function Cart() {
     axios
       .get(`http://localhost:3007/API/cart/${user_id}`)
       .then((res) => {
-        // debugger;
+        debugger;
         console.log("first data", res.data);
         // console.log("first data", res.data);
         // console.log("caaaart", res.data[0].cartItems);

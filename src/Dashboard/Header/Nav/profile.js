@@ -14,6 +14,7 @@ function Profile() {
   const handleClick = () => {
     debugger;
     localStorage.removeItem("admintoken");
+    localStorage.removeItem("tenantId");
     history.push("/adminlogin");
     window.location.reload();
   };

@@ -5,7 +5,7 @@ import MuiAlert from "@mui/material/Alert";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-function FlashMessage({ message }) {
+function FlashMessage({ message, severity }) {
   const [open, setOpen] = React.useState(true);
 
   const handleClose = (event, reason) => {
@@ -19,7 +19,11 @@ function FlashMessage({ message }) {
   return (
     <div>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleClose}
+          severity={severity ? severity : "success"}
+          sx={{ width: "100%" }}
+        >
           {message}
         </Alert>
       </Snackbar>
