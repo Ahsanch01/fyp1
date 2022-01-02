@@ -68,32 +68,29 @@ function People() {
       field: "firstname",
       headerName: "FirstName",
       width: 200,
-      editable: true,
+      editable: false,
     },
     {
       field: "lastname",
       headerName: "LastName",
       width: 200,
-      editable: true,
-    },
-    {
-      field: "username",
-      headerName: "LastName",
-      width: 200,
-      editable: true,
+      editable: false,
     },
 
     {
       field: "email",
       headerName: "Email",
       width: 400,
-      editable: true,
     },
     {
       field: "contact",
       headerName: "Contact",
       width: 200,
-      editable: true,
+    },
+    {
+      field: "ActivationStatus",
+      headerName: "Activation_Status",
+      width: 200,
     },
     {
       field: "action",
@@ -118,7 +115,59 @@ function People() {
           </>
         );
       },
-      width: 260,
+      width: 120,
+    },
+
+    {
+      field: "deactivate",
+      headerName: "Deactivate",
+      renderCell: (params) => {
+        return (
+          <>
+            {/* <Link> */}
+            <Button
+              variant="contained"
+              style={{
+                marginRight: "5px",
+                // cursor: "pointer",
+                backgroundColor: "red",
+                color: "white",
+              }}
+              onClick={() => handleDelete(params.row.email)}
+            >
+              Deactivate
+            </Button>
+            {/* </Link> */}
+          </>
+        );
+      },
+      width: 160,
+    },
+
+    {
+      field: "activate",
+      headerName: "Activate",
+      renderCell: (params) => {
+        return (
+          <>
+            {/* <Link> */}
+            <Button
+              variant="contained"
+              style={{
+                marginRight: "5px",
+                // cursor: "pointer",
+                backgroundColor: "green",
+                color: "white",
+              }}
+              onClick={() => handleDelete(params.row._id)}
+            >
+              Activate
+            </Button>
+            {/* </Link> */}
+          </>
+        );
+      },
+      width: 160,
     },
   ];
 
