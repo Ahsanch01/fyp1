@@ -110,7 +110,7 @@ function HeaderComponent() {
 
           <Route path="/products" exact component={Products} />
           <Route path="/products/add" exact component={AddNewProduct} />
-          <Route path="/products/:productId" exact component={SingleProduct} />
+          <Route path="/products/:id" exact component={SingleProduct} />
           <Route path="/sales/add" exact component={AddNewSale} />
           <Route path="/sales/:saleId" exact component={SingleSale} />
           <Route path="/orders" exact component={Order} />

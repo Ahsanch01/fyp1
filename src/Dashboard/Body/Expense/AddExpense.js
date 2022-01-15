@@ -12,6 +12,19 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+let schema = yup
+  .object({
+    product_name: yup.string().min(3).max(15).required(),
+    description: yup.string().min(10).required(),
+    date: yup.string().required(),
+    time: yup.string().required(),
+    id: yup.string().required(),
+    travellingExpense: yup.number().required(),
+    labourExpense: yup.number().required(),
+  })
+  .required();
 const useStyles = makeStyles((theme) => ({
   img: {
     width: "250px",
@@ -31,7 +44,15 @@ const useStyles = makeStyles((theme) => ({
 function AddNewOrder() {
   let history = useHistory();
   const classes = useStyles();
-  const { register, handleSubmit, control } = useForm();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const [available, setAvailable] = useState("");
   const [success, setSuccess] = useState(false);
   const [category, setCategory] = useState("");
@@ -99,6 +120,13 @@ function AddNewOrder() {
                     name="product_name"
                     {...register("product_name")}
                   />
+                  {errors.product_name ? (
+                    <p style={{ color: "red" }}>
+                      {errors.product_name.message}
+                    </p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 {/* <Grid item xs={12} sm={6}>
                   <TextField
@@ -141,6 +169,11 @@ function AddNewOrder() {
                     {...register("description")}
                     variant="outlined"
                   />
+                  {errors.description ? (
+                    <p style={{ color: "red" }}>{errors.description.message}</p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <Grid item xs={12} sm={6}>
@@ -163,6 +196,11 @@ function AddNewOrder() {
                         />
                       )}
                     />
+                    {errors.date ? (
+                      <p style={{ color: "red" }}>{errors.date.message}</p>
+                    ) : (
+                      ""
+                    )}
                   </Grid>
 
                   <Grid item xs={12} sm={6}>
@@ -184,6 +222,11 @@ function AddNewOrder() {
                         />
                       )}
                     />
+                    {errors.time ? (
+                      <p style={{ color: "red" }}>{errors.time.message}</p>
+                    ) : (
+                      ""
+                    )}
                   </Grid>
                 </MuiPickersUtilsProvider>
               </Grid>
@@ -205,6 +248,11 @@ function AddNewOrder() {
                     name="id"
                     {...register("id")}
                   />
+                  {errors.id ? (
+                    <p style={{ color: "red" }}>{errors.id.message}</p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -214,6 +262,13 @@ function AddNewOrder() {
                     name="travellingExpense"
                     {...register("travellingExpense")}
                   />
+                  {errors.travellingExpense ? (
+                    <p style={{ color: "red" }}>
+                      {errors.travellingExpense.message}
+                    </p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -223,6 +278,13 @@ function AddNewOrder() {
                     name="labourExpense"
                     {...register("labourExpense")}
                   />
+                  {errors.labourExpense ? (
+                    <p style={{ color: "red" }}>
+                      {errors.labourExpense.message}
+                    </p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={12}>
                   <TextField
@@ -242,7 +304,7 @@ function AddNewOrder() {
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                      history.push("/expense");
+                      history.goBack();
                     }}
                   >
                     Cencel

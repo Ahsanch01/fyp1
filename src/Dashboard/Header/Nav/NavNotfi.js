@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -6,6 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import {
   Avatar,
+  Button,
   IconButton,
   ListItem,
   ListItemIcon,
@@ -14,6 +15,7 @@ import {
 
 import { makeStyles } from "@material-ui/core";
 import Badge from "@material-ui/core/Badge";
+import axios from "axios";
 const useStyles = makeStyles((theme) => ({
   micon: {
     color: "Black",
@@ -22,8 +24,32 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "blue",
     color: "white",
   },
+  btn: {
+    backgroundColor: "green",
+    color: "white",
+    marginTop: "10px",
+    textAlign: "center",
+    alignItems: "center",
+  },
 }));
+const id = localStorage.getItem("adminID");
 function NavNotfi() {
+  const [TenantItem, setTenantItem] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3007/API/tenant/Admin/${id}`)
+
+      .then((res) => {
+        debugger;
+        console.log(res.data);
+        setTenantItem(res.data[0].Tenant);
+        //   history.push("/store");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -34,21 +60,27 @@ function NavNotfi() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const dropdown = [
-    { label: "Settings", desc: "Like your feed" },
-    { label: "Logout", desc: "comments on products" },
-  ];
+  const handleTenantClick = (id) => {
+    debugger;
+    localStorage.setItem("tenantId", id);
+    window.location.reload();
+    setAnchorEl(null);
+  };
+  const dropdown = [{ label: "Settings", desc: "Like your feed" }];
   return (
     <div>
-      <IconButton
+      <Button
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
+        variant="contained"
+        className={classes.btn}
       >
-        <Badge badgeContent={4} color="secondary">
+        Swith Tenant
+        {/* <Badge badgeContent={4} color="secondary">
           <NotificationsNoneIcon fontSize="medium" className={classes.micon} />
-        </Badge>
-      </IconButton>
+        </Badge> */}
+      </Button>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -56,19 +88,23 @@ function NavNotfi() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {dropdown.map((item, i) => (
-          <MenuItem key={i} component={ListItem} onClick={handleClose}>
-            <ListItemIcon>
-              <Avatar className={classes.Avatar}>
-                {item.label[0].toUpperCase()}
-              </Avatar>
-            </ListItemIcon>
-            <ListItemText
-              primary={item.label}
-              secondary={item.desc}
-            ></ListItemText>
-          </MenuItem>
-        ))}
+        {TenantItem.length > 0 &&
+          TenantItem.map((item, i) => (
+            <MenuItem
+              key={i}
+              component={ListItem}
+              onClick={() => handleTenantClick(item.Tenant_id)}
+            >
+              <ListItemIcon>
+                <Avatar className={classes.Avatar}>
+                  {item.Tenant_name[0].toUpperCase()}
+                </Avatar>
+              </ListItemIcon>
+              <ListItemText
+                primary={item.Tenant_name.toUpperCase()}
+              ></ListItemText>
+            </MenuItem>
+          ))}
       </Menu>
     </div>
   );

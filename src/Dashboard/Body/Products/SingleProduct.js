@@ -1,9 +1,11 @@
 import { Button, Grid, TextField } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { FcUpload } from "react-icons/fc";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
+import axios from "axios";
+import { Form } from "react-bootstrap";
 const useStyles = makeStyles((theme) => ({
   img: {
     width: "250px",
@@ -31,22 +33,76 @@ const Category = [
   { value: "mobile", label: "Mobile" },
   { value: "tv", label: "TV" },
 ];
-
+let tenantID = localStorage.getItem("tenantId");
 function SingleProduct() {
   let history = useHistory();
+  let { id } = useParams();
   const classes = useStyles();
+  const [rowdata, setRowdata] = useState({});
+
   const { register, handleSubmit } = useForm();
   const [available, setAvailable] = useState("");
-  const [category, setCategory] = useState("");
+  const [Category, setCategory] = useState("");
+  const [productdata, setProductData] = useState({
+    name: "",
+    price: "",
+    stock: "",
+    color: "",
+    picture: "",
+    category: "",
+    date: "",
+    time: "",
+    description: "",
+  });
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3007/API/categories/${tenantID}`)
+      .then((res) => {
+        debugger;
+        console.log(res.data);
+        setCategory(res.data);
+        //   history.push("/store");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  useEffect(async () => {
+    await axios
+      .get(`http://localhost:3007/API/products/${id}`)
+      .then((res) => {
+        debugger;
+        // history.push("http://localhost:3000/store");
+        console.log(res.data);
+
+        setRowdata(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  console.log(Category, "Category");
 
   const handleChange2 = (event) => {
     setAvailable(event.target.value);
   };
 
   const handleChange1 = (event) => {
-    setCategory(event.target.value);
+    debugger;
+    event.preventDefault();
+    const { value, name } = event.target;
+    setProductData({
+      ...productdata,
+      [name]: value,
+    });
+    // setCategory(event.target.value);
   };
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    debugger;
+    console.log(data);
+  };
   return (
     <div>
       <h1>Edit Product</h1>
@@ -57,102 +113,95 @@ function SingleProduct() {
             <Grid item md={8}>
               <Grid container spacing={1}>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Name"
-                    variant="outlined"
-                    fullWidth
-                    name="name"
-                    {...register("name")}
-                  />
+                  <Form.Group style={{ marginRight: ".25em" }} className="mb-3">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="name"
+                      {...register("name")}
+                      defaultValue={rowdata.name && rowdata.name}
+                      placeholder="Enter Name"
+                    />
+                  </Form.Group>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Color"
-                    variant="outlined"
-                    fullWidth
-                    name="color"
-                    {...register("color")}
-                  />
+                  <Form.Group style={{ marginRight: ".25em" }} className="mb-3">
+                    <Form.Label>Color</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="color"
+                      {...register("color")}
+                      defaultValue={rowdata.color && rowdata.color}
+                      placeholder="Enter Color"
+                    />
+                  </Form.Group>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Quantity"
-                    variant="outlined"
-                    fullWidth
-                    name="quantity"
-                    type="number"
-                    {...register("quantity")}
-                  />
+                  <Form.Group style={{ marginRight: ".25em" }} className="mb-3">
+                    <Form.Label>price</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="price"
+                      {...register("price")}
+                      defaultValue={rowdata.price && rowdata.price}
+                      placeholder="Enter Price"
+                    />
+                  </Form.Group>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="price"
-                    variant="outlined"
-                    fullWidth
-                    name="price"
-                    {...register("price")}
-                  />
+                  <Form.Group style={{ marginRight: ".25em" }} className="mb-3">
+                    <Form.Label>Id</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="id"
+                      {...register("id")}
+                      defaultValue={rowdata.id && rowdata.id}
+                      placeholder="Enter Id"
+                    />
+                  </Form.Group>
                 </Grid>
-
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="category"
-                    select
-                    fullWidth
-                    label="Category"
-                    value={category}
-                    defaultValue=""
-                    name="category"
-                    {...register("category")}
+                  <Form.Label>Id</Form.Label>
+                  <Form.Control
                     onChange={handleChange1}
-                    SelectProps={{
-                      native: true,
-                    }}
-                    helperText="Please select category"
-                    variant="outlined"
+                    name="category"
+                    value={
+                      rowdata.category ? rowdata.category : productdata.category
+                    }
+                    as="select"
                   >
-                    {Category.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
+                    <option hidden>Open this select menu</option>
+                    {Category.length > 0 &&
+                      Category.map((cat, i) => (
+                        <option key={i} value={cat.name}>
+                          {cat.name}
+                        </option>
+                      ))}
+                  </Form.Control>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="outlined-select-currency-native"
-                    select
-                    fullWidth
-                    name="status"
-                    {...register("status")}
-                    label="Status"
-                    value={available}
-                    onChange={handleChange2}
-                    SelectProps={{
-                      native: true,
-                    }}
-                    helperText="Please select status"
-                    variant="outlined"
-                  >
-                    {Status.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
+                  <Form.Group style={{ marginRight: ".25em" }} className="mb-3">
+                    <Form.Label>Stock</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="stock"
+                      {...register("stock")}
+                      defaultValue={rowdata.stock && rowdata.stock}
+                      placeholder="Enter Stock"
+                    />
+                  </Form.Group>
                 </Grid>
                 <Grid item xs={12} sm={12}>
-                  <TextField
-                    id="outlined-multiline-static"
-                    fullWidth
-                    label="Description"
-                    multiline
-                    rows={4}
-                    defaultValue=""
-                    name="desc"
-                    {...register("desc")}
-                    variant="outlined"
-                  />
+                  <Form.Group style={{ marginRight: ".25em" }} className="mb-3">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="description"
+                      {...register("description")}
+                      defaultValue={rowdata.description && rowdata.description}
+                      placeholder="Enter Description"
+                    />
+                  </Form.Group>
                 </Grid>
               </Grid>
             </Grid>
@@ -166,7 +215,9 @@ function SingleProduct() {
               >
                 <Grid item>
                   <img
-                    src="https://image.shutterstock.com/image-photo/gamer-workspace-concept-top-view-260nw-1043175670.jpg"
+                    src={`http://localhost:3007/uploads/${
+                      rowdata.picture && rowdata.picture
+                    }`}
                     alt="photo"
                     className={classes.img}
                   />
@@ -193,9 +244,9 @@ function SingleProduct() {
                     variant="contained"
                     color="secondary"
                     type="submit"
-                    onClick={() => {
-                      history.push("/products");
-                    }}
+                    // onClick={() => {
+                    //   history.push("/products");
+                    // }}
                   >
                     Update
                   </Button>

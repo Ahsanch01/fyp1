@@ -13,6 +13,22 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+let schema = yup
+  .object({
+    name: yup.string().min(3).max(15).required(),
+    color: yup.string().required(),
+    price: yup.number().required(),
+    id: yup.string().required(),
+    category: yup.string().required(),
+    stock: yup.number().required(),
+    description: yup.string().min(10).required(),
+    date: yup.string().required(),
+    time: yup.string().required(),
+  })
+  .required();
+
 // import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   img: {
@@ -29,14 +45,28 @@ const useStyles = makeStyles((theme) => ({
     border: "1px dashed grey",
   },
 }));
-
+// const Category = [
+//   { vale: "computer", label: "Computer" },
+//   { value: "mobile", label: "Mobile" },
+//   { value: "tv", label: "TV" },
+// ];
+let tenantID = localStorage.getItem("tenantId");
 function AddNewProduct() {
   let history = useHistory();
   const classes = useStyles();
   const [success, setSuccess] = useState(false);
-  const { register, handleSubmit, control } = useForm();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const [stateimage, Setsatateimage] = useState();
   const [selectedDate, setSelectedDate] = useState("");
+  const [Category, setCategory] = useState([]);
   const [productdata, setProductData] = useState({
     name: "",
     price: "",
@@ -48,17 +78,31 @@ function AddNewProduct() {
     time: "",
     description: "",
   });
-  const {
-    name,
-    price,
-    stock,
-    color,
-    picture,
-    category,
-    date,
-    time,
-    description,
-  } = productdata;
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3007/API/categories/${tenantID}`)
+
+      .then((res) => {
+        debugger;
+        console.log(res.data);
+        setCategory(res.data);
+        //   history.push("/store");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  // const {
+  //   name,
+  //   price,
+  //   stock,
+  //   color,
+  //   picture,
+  //   category,
+  //   date,
+  //   time,
+  //   description,
+  // } = productdata;
   let formData = new FormData();
   // formData.append("data", productdata);
   // console.log("formDATA", formData);
@@ -80,11 +124,21 @@ function AddNewProduct() {
   //     console.log(obj);
   //   }
   // };
+  const handleChange1 = (event) => {
+    debugger;
+    event.preventDefault();
+    setProductData({
+      ...productdata,
+      ["category"]: event.target.value,
+    });
+    // setCategory(event.target.value);
+  };
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
   const f1 = async (info) => {
+    debugger;
     let formData = new FormData();
     formData.append("name", info.name);
     formData.append("price", info.price);
@@ -132,6 +186,7 @@ function AddNewProduct() {
   };
 
   const handleimage = (e) => {
+    debugger;
     Setsatateimage(e.target.files[0]);
     const selected = e.target.files[0];
     const Allowed_Tpes = ["picture/*"];
@@ -143,9 +198,12 @@ function AddNewProduct() {
     }
   };
 
+  console.log(Category, "Category");
+
   console.log(productdata);
-  let tenantID = localStorage.getItem("tenantId");
+  // let tenantID = localStorage.getItem("tenantId");
   const onSubmit = (data) => {
+    debugger;
     console.log(data);
     // staticData();
     setProductData(data);
@@ -167,6 +225,11 @@ function AddNewProduct() {
                     name="name"
                     {...register("name")}
                   />
+                  {errors.name ? (
+                    <p style={{ color: "red" }}>{errors.name.message}</p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -176,6 +239,11 @@ function AddNewProduct() {
                     name="color"
                     {...register("color")}
                   />
+                  {errors.color ? (
+                    <p style={{ color: "red" }}>{errors.color.message}</p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
@@ -186,6 +254,11 @@ function AddNewProduct() {
                     name="price"
                     {...register("price")}
                   />
+                  {errors.price ? (
+                    <p style={{ color: "red" }}>{errors.price.message}</p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -195,16 +268,51 @@ function AddNewProduct() {
                     name="id"
                     {...register("id")}
                   />
+                  {errors.id ? (
+                    <p style={{ color: "red" }}>{errors.id.message}</p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    id="category"
+                    select
+                    fullWidth
+                    label="Category"
+                    // value={Category}
+                    value={productdata.category && productdata.category}
+                    name="category"
+                    {...register("category")}
+                    onChange={handleChange1}
+                    SelectProps={{
+                      native: true,
+                    }}
+                    helperText="Please select category"
+                    variant="outlined"
+                  >
+                    <option hidden>Please Select</option>
+                    {Category.length > 0 &&
+                      Category.map((cat, i) => (
+                        <option key={i} value={cat.name}>
+                          {cat.name}
+                        </option>
+                      ))}
+                  </TextField>
+
+                  {/* <TextField
                     label="Category"
                     variant="outlined"
                     fullWidth
                     name="category"
                     {...register("category")}
-                  />
+                  /> */}
+                  {errors.category ? (
+                    <p style={{ color: "red" }}>{errors.category.message}</p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -215,6 +323,11 @@ function AddNewProduct() {
                     type="number"
                     {...register("stock")}
                   />
+                  {errors.stock ? (
+                    <p style={{ color: "red" }}>{errors.stock.message}</p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={12}>
                   <TextField
@@ -228,6 +341,11 @@ function AddNewProduct() {
                     {...register("description")}
                     variant="outlined"
                   />
+                  {errors.description ? (
+                    <p style={{ color: "red" }}>{errors.description.message}</p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <Grid item xs={12} sm={6}>
@@ -250,6 +368,11 @@ function AddNewProduct() {
                         />
                       )}
                     />
+                    {errors.date ? (
+                      <p style={{ color: "red" }}>{errors.date.message}</p>
+                    ) : (
+                      ""
+                    )}
                   </Grid>
 
                   <Grid item xs={12} sm={6}>
@@ -271,6 +394,11 @@ function AddNewProduct() {
                         />
                       )}
                     />
+                    {errors.time ? (
+                      <p style={{ color: "red" }}>{errors.time.message}</p>
+                    ) : (
+                      ""
+                    )}
                   </Grid>
                 </MuiPickersUtilsProvider>
               </Grid>
@@ -284,11 +412,11 @@ function AddNewProduct() {
                 style={{ marginBottom: "5em" }}
               >
                 <Grid item>
-                  <img
-                    src="https://image.shutterstock.com/image-photo/gamer-workspace-concept-top-view-260nw-1043175670.jpg"
+                  {/* <img
+                    src={`http://localhost:3007/uploads/${image}`}
                     alt="photo"
                     className={classes.img}
-                  />
+                  /> */}
                 </Grid>
                 <Grid item>
                   <TextField

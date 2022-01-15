@@ -150,7 +150,7 @@ function Products() {
               <DeleteOutlineIcon style={{ color: "red", marginRight: "5px" }} />
             </Button>
 
-            <Link to={`${url}/:productId` + params.row._id}>
+            <Link to={`${url}/` + params.row._id}>
               <Button variant="contained">
                 <EditIcon style={{ color: "blue", cursor: "pointer" }} />
               </Button>

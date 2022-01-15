@@ -49,6 +49,8 @@ const f2 = async () => {
     });
 };
 
+const id = localStorage.getItem("adminID");
+
 function Login() {
   let history = useHistory();
   const classes = useStyles();
@@ -67,8 +69,10 @@ function Login() {
       console.log("Kindly register or use correct ");
     }
     axios
-      .get(`http://localhost:3007/API/tenant`)
+      .get(`http://localhost:3007/API/tenant/Admin/${id}`)
+
       .then((res) => {
+        debugger;
         console.log(res.data);
         setTenantItem(res.data[0].Tenant);
         //   history.push("/store");

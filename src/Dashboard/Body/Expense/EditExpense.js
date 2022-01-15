@@ -68,10 +68,11 @@ function AddNewOrder() {
 
   const functionName = async (data) => {
     axios
-      .post("http://localhost:3007/API/expense", data)
+      .put(`http://localhost:3007/API/expense/${id}`, data)
       .then((res) => {
         console.log(res.data);
         setSuccess(true);
+        history.push("/expense");
       })
       .catch((err) => {
         console.log(err);
@@ -338,7 +339,7 @@ function AddNewOrder() {
             </Grid>
           </Grid>
         </form>
-        {success ? <FlashMessage message={"Expense Added"} /> : ""}
+        {success ? <FlashMessage message={"Expense Edited"} /> : ""}
       </Grid>
     </div>
   );

@@ -9,7 +9,7 @@ import orders from "../OrderList";
 import {
   getManualOrders,
   getOrders,
-  Manualorderplaced,
+  UpdateManualOrderPlaced,
   orderplaced,
 } from "../../../Actions/Order";
 
@@ -57,7 +57,7 @@ function Order() {
   const columns = [
     { field: "id", headerName: "ID", width: 95 },
     {
-      field: "name",
+      field: "customerName",
       headerName: "Customer_Name",
       width: 200,
     },
@@ -97,7 +97,7 @@ function Order() {
                 variant="contained"
                 fullWidth
                 style={{ cursor: "pointer" }}
-                onClick={() => Manualorderplaced(params.row.id)}
+                onClick={() => UpdateManualOrderPlaced(params.row.id)}
               >
                 Deliver
               </Button>
@@ -125,11 +125,11 @@ function Order() {
               <DeleteOutlineIcon style={{ color: "red", marginRight: "5px" }} />
             </Button>
 
-            <Link to={`${url}/${params.row.id}`}>
+            {/* <Link to={`${url}/${params.row.id}`}>
               <Button variant="contained">
                 <EditIcon style={{ color: "blue", cursor: "pointer" }} />
               </Button>
-            </Link>
+            </Link> */}
           </>
         );
       },

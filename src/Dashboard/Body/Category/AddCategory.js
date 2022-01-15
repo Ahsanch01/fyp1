@@ -11,6 +11,15 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+let schema = yup
+  .object({
+    name: yup.string().min(3).max(15).required(),
+
+    id: yup.string().required(),
+  })
+  .required();
 const useStyles = makeStyles((theme) => ({
   img: {
     width: "250px",
@@ -40,7 +49,15 @@ let tenantID = localStorage.getItem("tenantId");
 function AddCategory() {
   let history = useHistory();
   const classes = useStyles();
-  const { register, handleSubmit, reset, control } = useForm();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const [available, setAvailable] = useState("");
   const [category, setCategory] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -92,6 +109,11 @@ function AddCategory() {
                 name="name"
                 {...register("name")}
               />
+              {errors.name ? (
+                <p style={{ color: "red" }}>{errors.name.message}</p>
+              ) : (
+                ""
+              )}
             </Grid>
             {/* <Grid item xs={12} sm={12}>
               <TextField
@@ -112,6 +134,11 @@ function AddCategory() {
                 name="id"
                 {...register("id")}
               />
+              {errors.id ? (
+                <p style={{ color: "red" }}>{errors.id.message}</p>
+              ) : (
+                ""
+              )}
             </Grid>
 
             <Grid item>

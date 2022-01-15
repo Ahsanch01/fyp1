@@ -14,6 +14,16 @@ import {
 } from "@material-ui/pickers";
 import { DataGrid } from "@material-ui/data-grid";
 import axios from "axios";
+import { placeManualOrder } from "../../../Actions/Order";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+let schema = yup
+  .object({
+    name: yup.string().min(3).max(15).required(),
+    contact: yup.string().required(),
+    address: yup.string().required(),
+  })
+  .required();
 const useStyles = makeStyles((theme) => ({
   img: {
     width: "250px",
@@ -42,31 +52,32 @@ const useStyles = makeStyles((theme) => ({
     border: "1px dashed grey",
   },
 }));
-const Status = [
-  { value: "available", label: "Available" },
-  { value: "not-available", label: "Not Available" },
-];
-const Category = [
-  { vale: "computer", label: "Computer" },
-  { value: "mobile", label: "Mobile" },
-  { value: "tv", label: "TV" },
-];
 
 let tenantID = localStorage.getItem("tenantId");
 function AddNewOrder() {
   let history = useHistory();
   const classes = useStyles();
-  const { register, handleSubmit, control } = useForm();
   const {
-    register: register2,
-    handleSubmit: handleSubmit2,
-    control: control2,
-  } = useForm();
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  // const {
+  //   register: register2,
+  //   handleSubmit: handleSubmit2,
+  //   control: control2,
+  // } = useForm();
 
   const [available, setAvailable] = useState("");
   const [category, setCategory] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [dropdownitem, setDropdownitem] = useState();
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [rowdata, setRowdata] = useState([]);
   const [customOrder, setCustomOrder] = useState([]);
   const columns = [
@@ -169,9 +180,6 @@ function AddNewOrder() {
     await axios
       .get(`http://localhost:3007/API/products/tenant/${tenantID}`)
       .then((res, req) => {
-        // history.push("http://localhost:3000/store");
-        console.log(res.data);
-
         setRowdata(res.data);
       })
       .catch((err) => {
@@ -196,7 +204,35 @@ function AddNewOrder() {
   const handleChange1 = (event) => {
     setCategory(event.target.value);
   };
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    debugger;
+    console.log(data, "data");
+    const tenantId = localStorage.getItem("tenantId");
+    let getTotal = 0;
+    const checkData = rowdata
+      .map((el) => {
+        debugger;
+        if (el.isSelected) {
+          getTotal = getTotal + Number(el.qty) * Number(el.price);
+          return {
+            product: el.id,
+            quantity: el.qty,
+          };
+        }
+      })
+      .filter((el) => el !== undefined);
+    data.payment = "COD";
+    debugger;
+    if (!checkData.length > 0) {
+      setErrorMessage("Please Select Altleast one Product");
+    } else {
+      setErrorMessage("");
+      data.items = checkData;
+      data.totalAmount = getTotal;
+      data.tenant_id = tenantId;
+    }
+    placeManualOrder(data);
+  };
   const onSubmit1 = (data1) => {
     debugger;
     console.log(data1, "data1");
@@ -220,6 +256,11 @@ function AddNewOrder() {
                     name="name"
                     {...register("name")}
                   />
+                  {errors.name ? (
+                    <p style={{ color: "red" }}>{errors.name.message}</p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -229,6 +270,11 @@ function AddNewOrder() {
                     name="contact"
                     {...register("contact")}
                   />
+                  {errors.contact ? (
+                    <p style={{ color: "red" }}>{errors.contact.message}</p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -236,9 +282,14 @@ function AddNewOrder() {
                     variant="outlined"
                     fullWidth
                     name="address"
-                    type="number"
-                    {...register("number")}
+                    type="text"
+                    {...register("address")}
                   />
+                  {errors.address ? (
+                    <p style={{ color: "red" }}>{errors.address.message}</p>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
                 {/* <Grid item xs={12} sm={6}>
                   <TextField
@@ -313,16 +364,21 @@ function AddNewOrder() {
                 </Grid> */}
               </Grid>
 
-              <Grid container justifyContent="center" spacing={1}>
+              <Grid
+                container
+                justifyContent="center"
+                spacing={1}
+                sx={{ my: 2 }}
+              >
                 <Grid item>
                   <Button
                     variant="contained"
                     color="primary"
-                    // onClick={() => {
-                    //   history.push("/orders");
-                    // }}
+                    onClick={() => {
+                      history.push("/ordermanual");
+                    }}
                   >
-                    Cencel
+                    Cancel
                   </Button>
                 </Grid>
                 <Grid item>
@@ -334,7 +390,7 @@ function AddNewOrder() {
                     //   history.push("/orders");
                     // }}
                   >
-                    Add
+                    Place Order
                   </Button>
                 </Grid>
               </Grid>
@@ -342,7 +398,7 @@ function AddNewOrder() {
           </Grid>
           <Grid item md={6} style={{ borderLeft: "1px dashed grey" }}>
             <Typography variant="h4"> Product Details</Typography>
-            <form key={2} onSubmit={handleSubmit2(onSubmit1)}>
+            {/* <form key={2} onSubmit={handleSubmit2(onSubmit1)}>
               <Grid
                 container
                 alignItems="center"
@@ -369,24 +425,7 @@ function AddNewOrder() {
                     {...register2("quantity")}
                   />
                 </Grid>
-                {/* <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Customer Number"
-                    variant="outlined"
-                    fullWidth
-                    name="customernumber"
-                    {...register("customernumber")}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Email"
-                    variant="outlined"
-                    fullWidth
-                    name="email"
-                    {...register("email")}
-                  />
-                </Grid> */}
+               
 
                 <Grid item>
                   <Button
@@ -399,7 +438,7 @@ function AddNewOrder() {
                   </Button>
                 </Grid>
               </Grid>
-            </form>
+            </form> */}
             <Grid item md={12}>
               {rowdata.length > 0 && (
                 <div className={classes.miandiv}>

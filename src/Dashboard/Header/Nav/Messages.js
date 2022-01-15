@@ -42,7 +42,7 @@ function Message() {
   ];
   return (
     <div>
-      <IconButton
+      {/* <IconButton
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
@@ -68,7 +68,7 @@ function Message() {
             <ListItemText>{item.label}</ListItemText>
           </MenuItem>
         ))}
-      </Menu>
+      </Menu> */}
     </div>
   );
 }

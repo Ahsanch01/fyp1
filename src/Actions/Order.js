@@ -1,6 +1,8 @@
 import axios from "axios";
+
 let tenantID = localStorage.getItem("tenantId");
 const userId = localStorage.getItem("userID");
+
 export const OrderCheckout = (payload) => {
   // debugger;
   axios
@@ -70,13 +72,28 @@ export const orderplaced = (id) => {
     .then((error) => console.log(error));
 };
 
-export const Manualorderplaced = (id) => {
+export const UpdateManualOrderPlaced = (id) => {
   // debugger;
 
   axios
     .put(`http://localhost:3007/API/ManualOrders/${id}`)
     .then((res) => {
       // debugger;
+      console.log("UpdateManualOrderPlaced   ", res.data);
+    })
+    .then((error) => console.log(error));
+};
+
+export const placeManualOrder = (data) => {
+  debugger;
+
+  axios
+    .post(
+      `http://localhost:3007/API/ManualOrders/ManualOrder/${data.tenant_id}`,
+      data
+    )
+    .then((res) => {
+      debugger;
       console.log("Manualorderplaced   ", res.data);
     })
     .then((error) => console.log(error));

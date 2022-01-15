@@ -8,6 +8,10 @@ import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import FlashMessage from "../../../Pages/FlashMessage";
 import EditCategory from "../Category/EditCategory";
 import axios from "axios";
+import {
+  activateInActiveUser,
+  getAllUser,
+} from "../../../Actions/User/getUser";
 const useStyles = makeStyles((theme) => ({
   miandiv: {
     // width: "100%",
@@ -62,6 +66,11 @@ function People() {
     //   });
   };
 
+  const handleActiveStatus = (data) => {
+    debugger;
+    console.log(data, "data");
+    activateInActiveUser(data, setRowdata);
+  };
   const columns = [
     // { field: "id", headerName: "Name", width: 195 },
     {
@@ -117,37 +126,14 @@ function People() {
       },
       width: 120,
     },
-
-    {
-      field: "deactivate",
-      headerName: "Deactivate",
-      renderCell: (params) => {
-        return (
-          <>
-            {/* <Link> */}
-            <Button
-              variant="contained"
-              style={{
-                marginRight: "5px",
-                // cursor: "pointer",
-                backgroundColor: "red",
-                color: "white",
-              }}
-              onClick={() => handleDelete(params.row.email)}
-            >
-              Deactivate
-            </Button>
-            {/* </Link> */}
-          </>
-        );
-      },
-      width: 160,
-    },
-
     {
       field: "activate",
-      headerName: "Activate",
+      headerName: "Change Status",
       renderCell: (params) => {
+        let data = {
+          email: params.row.email,
+          id: params.row._id,
+        };
         return (
           <>
             {/* <Link> */}
@@ -156,12 +142,18 @@ function People() {
               style={{
                 marginRight: "5px",
                 // cursor: "pointer",
-                backgroundColor: "green",
+                backgroundColor: `${
+                  params.row.ActivationStatus ? "red" : "green"
+                }`,
                 color: "white",
               }}
-              onClick={() => handleDelete(params.row._id)}
+              onClick={() =>
+                handleActiveStatus(
+                  params.row.ActivationStatus ? data : params.row.email
+                )
+              }
             >
-              Activate
+              {params.row.ActivationStatus ? "Deactivate" : "Activate"}
             </Button>
             {/* </Link> */}
           </>
@@ -172,17 +164,7 @@ function People() {
   ];
 
   useEffect(async () => {
-    await axios
-      .get("http://localhost:3007/API/users")
-      .then((res, req) => {
-        // history.push("http://localhost:3000/store");
-        console.log(res.data);
-
-        setRowdata(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getAllUser(setRowdata);
   }, []);
   console.log(rowdata);
 
